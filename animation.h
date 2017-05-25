@@ -5,7 +5,7 @@
 #include <QPixmap>
 #include <QTimer>
 
-
+// Pomocná třída pro animace objektů
 
 class Animation : public QObject
 {
