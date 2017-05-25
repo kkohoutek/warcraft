@@ -1,5 +1,6 @@
 #include "animation.h"
 
+// Pomocná třída pro animace objektů
 
 Animation::Animation(int subImageWidth, int subImageHeight, QList<QList<int>> *frames, int duration, bool repeat) {
     this->subImageWidth = subImageWidth;
