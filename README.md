@@ -2,3 +2,4 @@
 
 dobrý ďeň
 #nudlezdarma
+programovanie že ?
