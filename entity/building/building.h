@@ -2,29 +2,54 @@
 #define BUILDING_H
 
 #include "entity/entity.h"
-//#include "entity/unit/unit.h"
+#include <QPixmap>
 
-// Tohle je blbost a musí být změněna
+/*
+
+*/
 
 class Building : public Entity
 {
+    Q_ENUMS(BuildingType)
+
 public:
-    Building();
+    enum BuildingType {
+                        GOLDMINE,
+                        H_BARRACKS,
+                        H_BLACKSMITH,
+                        H_CHURCH,
+                        H_FARM,
+                        H_MILL,
+                        H_STABLES,
+                        H_TOWER,
+                        H_TOWNHALL,
+                        O_BLACKSMITH,
+                        O_FARM,
+                        O_TEMPLE,
+                        O_TOWNHALL,
+                        O_MILL,
+                        O_KENNELS,
+                        O_BARRACKS,
+                        O_TOWER
+                      };
 
-    enum BuildingType {H_BARRACKS, H_FARM};
+    static const int H_FARM_COST_GOLD = 500;
+    static const int H_FARM_COST_LUMBER = 300;
+    static const int H_FARM_BUILDTIME = 500000;
 
-    // Entity interface
+
+    Building(QPointF pos, BuildingType);
+    ~Building();
+
     void update() override;
 
+    bool isBuildingFinished();
 
 private:
-    QPixmap *buildAnimation;
+    int buildTime;
+    Animation *buildAnimation;
 
-    QList<BuildingType> *unitsAvailable;
-    QList<BuildingType> *unitsTrained;
 
-    QTimer *trainingTimer;
-    QTimer *buildTimer;
 };
 
 #endif // BUILDING_H
