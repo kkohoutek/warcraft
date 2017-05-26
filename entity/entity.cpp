@@ -18,8 +18,14 @@ Entity::~Entity()
 
 void Entity::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
 
+
     painter->drawPixmap(0, 0, *spriteSheet, currentAnimation->currentPositionX(), currentAnimation->currentPositionY(),
                                             currentAnimation->getSubImageWidth(), currentAnimation->getSubImageHeight());
+
+    painter->setBrush(QBrush(Qt::green));
+
+
+    painter->drawRect(0,0, hp*currentAnimation->getSubImageWidth()/getMaxHP(), 2);
 
     Q_UNUSED(option);
     Q_UNUSED(widget);
@@ -40,4 +46,14 @@ void Entity::setHP(int hp)
 
 int Entity::getHP(){
     return hp;
+}
+
+void Entity::setMaxHP(int hp)
+{
+    maxHP = hp;
+}
+
+int Entity::getMaxHP()
+{
+    return maxHP;
 }

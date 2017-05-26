@@ -3,6 +3,7 @@
 
 #include <QGraphicsItem>
 #include <QPixmap>
+#include <QObject>
 #include "animation.h"
 
 
@@ -22,6 +23,9 @@ public:
     void setHP(int hp);
     int getHP();
 
+    void setMaxHP(int hp);
+    int getMaxHP();
+
 protected:
     QPixmap *spriteSheet;
 
@@ -30,7 +34,9 @@ protected:
  private:
     int width;
     int height;
-    int hp = -1;
+    int hp = 0;
+    int maxHP;
+
     Animation *currentAnimation;
 
 };
