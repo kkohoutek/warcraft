@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/graphics">
+        <file alias="BUILDINGS_H">res/BUILDINGS_H_edit.png</file>
+    </qresource>
+</RCC>

@@ -29,3 +29,6 @@ HEADERS  += mainwindow.h \
     common.h
 
 FORMS    += mainwindow.ui
+
+RESOURCES += \
+    gameresources.qrc
