@@ -2,6 +2,10 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QWheelEvent>
+#include "warcraft.h"
+
+#include <QMouseEvent>
 
 namespace Ui {
 class MainWindow;
@@ -17,6 +21,9 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    Warcraft warcraft;
+
+
 };
 
 #endif // MAINWINDOW_H

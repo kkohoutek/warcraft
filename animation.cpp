@@ -1,5 +1,6 @@
 #include "animation.h"
 
+
 Animation::Animation(int subImageWidth, int subImageHeight, QList<QList<int>> *frames, int duration, bool repeat) {
     this->subImageWidth = subImageWidth;
     this->subImageHeight = subImageHeight;
@@ -8,15 +9,19 @@ Animation::Animation(int subImageWidth, int subImageHeight, QList<QList<int>> *f
 
     animationTimer = new QTimer();
     animationTimer->setInterval(duration);
+    animationTimer->start();
 
-    connect(animationTimer, SIGNAL(timeout()), this, SLOT(nextFrame()));
+    connect(animationTimer, &QTimer::timeout, this, &nextFrame);
 }
 
 void Animation::nextFrame() {
-    if(currentFrameIndex < frames->size()){
+    if(currentFrameIndex < frames->size()-1){
         currentFrameIndex++;
     } else if (repeat){
         currentFrameIndex = 0;
+    } else {
+        animationTimer->stop();
+
     }
 }
 
@@ -24,6 +29,7 @@ Animation::~Animation() {
     delete frames;
     delete animationTimer;
 }
+
 
 int Animation::currentPositionX() {
     return frames->at(currentFrameIndex).at(0) * subImageWidth;
@@ -40,6 +46,10 @@ int Animation::getSubImageWidth(){
 
 int Animation::getSubImageHeight(){
     return subImageHeight;
+}
+
+QTimer *Animation::getTimer(){
+    return animationTimer;
 }
 
 

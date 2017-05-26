@@ -5,7 +5,7 @@
 #include <QPixmap>
 #include <QTimer>
 
-// Pomocná třída pro animace objektů
+
 
 class Animation : public QObject
 {
@@ -17,6 +17,8 @@ public:
     int currentPositionY();
     int getSubImageWidth();
     int getSubImageHeight();
+
+    QTimer *getTimer();
 
 
 private:

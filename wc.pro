@@ -17,12 +17,15 @@ SOURCES += main.cpp\
     entity/entity.cpp \
     animation.cpp \
     warcraft.cpp \
-    entity/building/building.cpp
+    entity/building/building.cpp \
+    entity/unit/unit.cpp
 
 HEADERS  += mainwindow.h \
     entity/entity.h \
     animation.h \
     warcraft.h \
-    entity/building/building.h
+    entity/building/building.h \
+    entity/unit/unit.h \
+    common.h
 
 FORMS    += mainwindow.ui
