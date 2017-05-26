@@ -13,9 +13,8 @@ Entity::Entity(QPointF pos, QPixmap *spriteSheet, int width, int height) {
 Entity::~Entity()
 {
     delete spriteSheet;
+    delete currentAnimation;
 }
-
-
 
 void Entity::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
 
@@ -30,14 +29,15 @@ QRectF Entity::boundingRect() const {
     return QRectF(0,0,width,height);
 }
 
-int Entity::getHP(){
-    return hp;
+void Entity::setCurrentAnimation(Animation *anim) {
+    currentAnimation = anim;
 }
 
-void Entity::setHP(int hp){
+void Entity::setHP(int hp)
+{
     this->hp = hp;
 }
 
-void Entity::setCurrentAnimation(Animation *anim) {
-    currentAnimation = anim;
+int Entity::getHP(){
+    return hp;
 }

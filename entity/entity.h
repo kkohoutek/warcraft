@@ -17,25 +17,24 @@ public:
     QRectF boundingRect() const override;
 
     virtual void update() = 0;
+    void setCurrentAnimation(Animation *anim);
 
-    int getHP();
     void setHP(int hp);
-
+    int getHP();
 
 protected:
     QPixmap *spriteSheet;
-    Animation *currentAnimation;
 
-    int hp = 0; // 0 nezranitelnost
+
+
+ private:
     int width;
     int height;
-
-    void setCurrentAnimation(Animation *anim);
-
-
-
-
+    int hp = -1;
+    Animation *currentAnimation;
 
 };
+
+
 
 #endif // ENTITY_H
