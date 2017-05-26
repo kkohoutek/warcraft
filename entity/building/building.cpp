@@ -9,8 +9,10 @@ Building::Building(QPointF pos, BuildingType type) : Entity(pos, NULL, 48, 48)
     // v budoucnu: list s trénovatelnými typy jednotek, list s právě trénovanými jednotkami
 
 
-    QPixmap *human = new QPixmap("../wc/res/BUILDINGS_H_edit.png");
-    QPixmap *orc = new QPixmap("../wc/res/BUILDINGS_O_edit.png");
+    QPixmap *human = new QPixmap(":/graphics/BUILDINGS_H");
+    QPixmap *orc = new QPixmap(":/graphics/BUILDINGS_O");
+
+    int targetHP;
 
     switch(type){
 
@@ -18,7 +20,8 @@ Building::Building(QPointF pos, BuildingType type) : Entity(pos, NULL, 48, 48)
 
     case H_FARM:
         spriteSheet = human;
-        buildTime = H_FARM_BUILDTIME;
+        buildTime = 7000;
+        setMaxHP(H_FARM_HP);
 
         frames->append(QList<int>() << 0 << 0);
         frames->append(QList<int>() << 1 << 0);
@@ -31,13 +34,15 @@ Building::Building(QPointF pos, BuildingType type) : Entity(pos, NULL, 48, 48)
     case H_BLACKSMITH:
         spriteSheet = human;
 
-        buildTime = 10000;
-        setHP(400);
+
+        setMaxHP(400);
 
         frames->append(QList<int>() << 0 << 0);
         frames->append(QList<int>() << 1 << 0);
         frames->append(QList<int>() << 3 << 0);
         frames->append(QList<int>() << 2 << 0);
+
+        buildTime = 10000;
 
 
 
@@ -93,6 +98,11 @@ Building::Building(QPointF pos, BuildingType type) : Entity(pos, NULL, 48, 48)
     buildAnimation = new Animation(48,48,frames, buildTime/frames->size(), false);
     setCurrentAnimation(buildAnimation);
 
+    buildTimer = new QTimer();
+    buildTimer->setInterval(buildTime/getMaxHP());
+    buildTimer->start();
+    connect(buildTimer, &QTimer::timeout, this, &constructionUpdate);
+
 
 }
 
@@ -107,5 +117,14 @@ void Building::update(){
 
 bool Building::isBuildingFinished()
 {
-    return !buildAnimation->getTimer()->isActive();
+    return !buildTimer->isActive();
+}
+
+void Building::constructionUpdate()
+{
+    if(getHP() + 1 < getMaxHP()){
+        setHP(getHP()+1);
+    } else {
+        buildTimer->stop();
+    }
 }

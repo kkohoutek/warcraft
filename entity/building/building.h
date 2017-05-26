@@ -8,7 +8,7 @@
 
 */
 
-class Building : public Entity
+class Building : public Entity, public QObject
 {
     Q_ENUMS(BuildingType)
 
@@ -36,6 +36,7 @@ public:
     static const int H_FARM_COST_GOLD = 500;
     static const int H_FARM_COST_LUMBER = 300;
     static const int H_FARM_BUILDTIME = 500000;
+    static const int H_FARM_HP = 400;
 
 
     Building(QPointF pos, BuildingType);
@@ -48,6 +49,11 @@ public:
 private:
     int buildTime;
     Animation *buildAnimation;
+
+    QTimer *buildTimer;
+
+private slots:
+    void constructionUpdate();
 
 
 };
