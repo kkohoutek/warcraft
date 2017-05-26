@@ -4,7 +4,7 @@
 #include "entity/entity.h"
 //#include "entity/unit/unit.h"
 
-
+// Tohle je blbost a musí být změněna
 
 class Building : public Entity
 {
