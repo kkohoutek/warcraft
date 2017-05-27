@@ -21,10 +21,11 @@ void Entity::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
 
     painter->drawPixmap(0, 0, *spriteSheet, currentAnimation->currentPositionX(), currentAnimation->currentPositionY(),
                                             currentAnimation->getSubImageWidth(), currentAnimation->getSubImageHeight());
-    painter->setBrush(QBrush(Qt::green));
-    painter->setPen(QPen(Qt::green));
 
-    painter->drawRect(0,0, hp*currentAnimation->getSubImageWidth()/maxHP, 2); // health bar
+    painter->setBrush(QBrush(Qt::green));
+
+
+    painter->drawRect(0,0, hp*currentAnimation->getSubImageWidth()/getMaxHP(), 2);
 
     Q_UNUSED(option);
     Q_UNUSED(widget);
