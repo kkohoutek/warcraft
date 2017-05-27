@@ -10,7 +10,7 @@
 class Animation : public QObject
 {
 public:
-    Animation(int subImageWidth, int subImageHeight, QList<QList<int>> *frames, int duration, bool looping);
+    Animation(int subImageWidth, int subImageHeight, QList<QList<int>> *frames, int duration, bool repeat);
     ~Animation();
 
     int currentPositionX();
@@ -18,16 +18,18 @@ public:
     int getSubImageWidth();
     int getSubImageHeight();
 
+    QTimer *getTimer();
+
 
 private:
-    // list s souřadnicemi snímků animace v spriteSheetu
     QList<QList<int>>   *frames;
-    int                 subImageWidth;  // šířka snímku
-    int                 subImageHeight; // výška snímku
-    int                 currentFrameIndex = 0;
-    bool                looping;
-
     QTimer              *animationTimer;
+
+    int                 subImageWidth;
+    int                 subImageHeight;
+    int                 currentFrameIndex = 0;
+
+    bool                repeat;
 
 private slots:
     void nextFrame();
