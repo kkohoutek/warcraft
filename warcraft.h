@@ -3,6 +3,7 @@
 
 #include <QGraphicsView>
 #include <QMouseEvent>
+#include <QKeyEvent>
 
 
 
@@ -12,6 +13,7 @@ public:
     Warcraft();
 
     void timerEvent(QTimerEvent *event);
+    void keyPressEvent(QKeyEvent *event);
 
 };
 
