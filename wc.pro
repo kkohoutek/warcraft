@@ -18,7 +18,9 @@ SOURCES += main.cpp\
     animation.cpp \
     warcraft.cpp \
     entity/building/building.cpp \
-    entity/unit/unit.cpp
+    entity/unit/unit.cpp \
+    entity/building/humanfarm.cpp \
+    entity/building/humanblacksmith.cpp
 
 HEADERS  += mainwindow.h \
     entity/entity.h \
@@ -26,7 +28,9 @@ HEADERS  += mainwindow.h \
     warcraft.h \
     entity/building/building.h \
     entity/unit/unit.h \
-    common.h
+    common.h \
+    entity/building/humanfarm.h \
+    entity/building/humanblacksmith.h
 
 FORMS    += mainwindow.ui
 

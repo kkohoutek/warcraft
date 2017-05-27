@@ -5,7 +5,8 @@
 #include <QGraphicsScene>
 #include <QMouseEvent>
 
-#include "entity/building/building.h"
+#include "entity/building/humanfarm.h"
+#include "entity/building/humanblacksmith.h"
 
 Warcraft::Warcraft()
 {
@@ -14,23 +15,28 @@ Warcraft::Warcraft()
     scene->setSceneRect(0,0,1024,1024);
 
 
+    /* První se budou testovat budovy */
     // testing
-    Building *farm = new Building(QPointF(512,512), Building::H_FARM);
+    HumanFarm *farm = new HumanFarm(QPointF(512,512), false);
     scene->addItem(farm);
 
-    Building *bs = new Building(QPointF(450,512), Building::H_BLACKSMITH);
+    HumanBlacksmith *bs = new HumanBlacksmith(QPointF(450,502), false);
     scene->addItem(bs);
 
     this->setScene(scene);
     this->startTimer(17);
     this->setTransform(QTransform().scale(3,3));
+
     // testing
 
 
 }
 
-void Warcraft::timerEvent(QTimerEvent *event)
-{
+void Warcraft::timerEvent(QTimerEvent *event) {
     this->viewport()->update();
+}
+
+void Warcraft::keyPressEvent(QKeyEvent *event){
+
 }
 
