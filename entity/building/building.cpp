@@ -1,18 +1,18 @@
 #include "building.h"
 
 
-Building::Building(QPointF pos, BuildingType type) : Entity(pos, NULL, 48, 48) // spriteSheet = NULL, ještě nevime jestli human nebo orc sada
-
+Building::Building(QPointF pos, BuildingType type) : Entity(pos, NULL, 48, 48)
 {
 
     QList<QList<int>> *frames = new QList<QList<int>>();;
 
-    // v budoucnu: list s trénovatelnými typy jednotek, list s právě trénovanými jednotkami atd
+    // v budoucnu: list s trénovatelnými typy jednotek, list s právě trénovanými jednotkami
 
 
     QPixmap *human = new QPixmap(":/graphics/BUILDINGS_H");
     QPixmap *orc = new QPixmap(":/graphics/BUILDINGS_O");
 
+    int targetHP;
 
     switch(type){
 
@@ -20,7 +20,7 @@ Building::Building(QPointF pos, BuildingType type) : Entity(pos, NULL, 48, 48) /
 
     case H_FARM:
         spriteSheet = human;
-        buildTime = 1000 * 1000;
+        buildTime = 7000;
         setMaxHP(H_FARM_HP);
 
         frames->append(QList<int>() << 0 << 0);
@@ -99,7 +99,8 @@ Building::Building(QPointF pos, BuildingType type) : Entity(pos, NULL, 48, 48) /
     setCurrentAnimation(buildAnimation);
 
     buildTimer = new QTimer();
-    buildTimer->start(buildTime/getMaxHP());
+    buildTimer->setInterval(buildTime/getMaxHP());
+    buildTimer->start();
     connect(buildTimer, &QTimer::timeout, this, &constructionUpdate);
 
 
