@@ -3,7 +3,7 @@
 
 enum Race {HUMAN, ORC};
 
-static const int TIME_DIVISOR = 4;
+const int TIME_DIVISOR = 10;
 
 
 #endif // COMMON_H
