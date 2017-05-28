@@ -20,7 +20,13 @@ SOURCES += main.cpp\
     entity/building/building.cpp \
     entity/unit/unit.cpp \
     entity/building/humanfarm.cpp \
-    entity/building/humanblacksmith.cpp
+    entity/building/humanblacksmith.cpp \
+    entity/building/humantownhall.cpp \
+    entity/building/humanbarracks.cpp \
+    entity/building/humanlumbermill.cpp \
+    entity/building/humanstables.cpp \
+    entity/building/humanchurch.cpp \
+    entity/building/humantower.cpp
 
 HEADERS  += mainwindow.h \
     entity/entity.h \
@@ -30,7 +36,13 @@ HEADERS  += mainwindow.h \
     entity/unit/unit.h \
     common.h \
     entity/building/humanfarm.h \
-    entity/building/humanblacksmith.h
+    entity/building/humanblacksmith.h \
+    entity/building/humantownhall.h \
+    entity/building/humanbarracks.h \
+    entity/building/humanlumbermill.h \
+    entity/building/humanstables.h \
+    entity/building/humanchurch.h \
+    entity/building/humantower.h
 
 FORMS    += mainwindow.ui
 
