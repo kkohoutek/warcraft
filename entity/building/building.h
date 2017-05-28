@@ -13,7 +13,7 @@ class Building : public Entity, public QObject
 {
 public:
     // preFrame - předposlední snímek animace, endFrame - poslední snímek
-    Building(QPointF pos, bool finishedOnSpawn, Race race, QList<int> preFrame, QList<int> endFrame, int width, int height, int buildTime, int maxHP);
+    Building(QPointF pos, bool finishedOnSpawn, Race race, QList<int> preFrame, QList<int> endFrame, int buildTime, int maxHP);
     ~Building();
 
     virtual void update() override;

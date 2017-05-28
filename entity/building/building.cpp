@@ -1,7 +1,7 @@
 #include "building.h"
 
 
-Building::Building(QPointF pos, bool finishedOnSpawn, Race race, QList<int> preFrame, QList<int> endFrame, int width, int height, int buildTime, int maxHP) : Entity(pos, NULL, width, height)
+Building::Building(QPointF pos, bool finishedOnSpawn, Race race, QList<int> preFrame, QList<int> endFrame, int buildTime, int maxHP) : Entity(pos, NULL)
 
 {
     setMaxHP(maxHP);
