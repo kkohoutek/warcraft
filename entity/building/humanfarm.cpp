@@ -9,3 +9,9 @@ void HumanFarm::update()
 {
 
 }
+
+QRectF HumanFarm::boundingRect() const
+{
+    return QRectF(6,6,36,36);
+}
+

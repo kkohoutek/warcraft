@@ -11,11 +11,10 @@
 class Entity : public QGraphicsItem
 {
 public:
-    Entity(QPointF pos, QPixmap *spriteSheet, int width, int height);
+    Entity(QPointF pos, QPixmap *spriteSheet);
     virtual ~Entity();
 
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
-    QRectF boundingRect() const override;
 
     virtual void update() = 0;
     void setCurrentAnimation(Animation *anim);

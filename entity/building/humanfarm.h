@@ -15,8 +15,12 @@ public:
 
     HumanFarm(QPointF pos, bool finishedOnSpawn);
 
+
     // Entity interface
     void update() override;
+
+    // QGraphicsItem interface
+    QRectF boundingRect() const override;
 };
 
 #endif // HUMANFARM_H
