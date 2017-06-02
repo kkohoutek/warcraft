@@ -23,7 +23,6 @@ public:
 private:
     int buildTime;
     Animation *buildAnimation;
-
     QTimer *buildTimer;
 
 private slots:

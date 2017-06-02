@@ -1,8 +1,11 @@
 #ifndef COMMON_H
 #define COMMON_H
 
-enum Race {HUMAN, ORC};
-const int TIME_DIVISOR = 10;
+enum Race {HUMAN, ORC, OTHER};
+const int TIME_DIVISOR = 100;
+
+
+
 
 
 #endif // COMMON_H

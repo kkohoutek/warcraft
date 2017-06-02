@@ -6,7 +6,6 @@
 #include <QTimer>
 
 
-
 class Animation : public QObject
 {
 public:
@@ -23,8 +22,8 @@ public:
 
 
 private:
-    // list s souřadnicemi snímků animace v spriteSheetu
-    QList<QList<int>>   *frames;
+
+    QList<QList<int>>   *frames;        // list s souřadnicemi snímků animace v spriteSheetu
     int                 subImageWidth;  // šířka snímku
     int                 subImageHeight; // výška snímku
     int                 currentFrameIndex = 0;

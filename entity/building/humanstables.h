@@ -11,7 +11,7 @@ public:
     static const int BUILD_TIME = (1500*1000)/TIME_DIVISOR;
 
     HumanStables(QPointF pos, bool finishedOnSpawn);
-
+    QRectF boundingRect() const override;
     void update() override;
 };
 

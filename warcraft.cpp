@@ -23,11 +23,12 @@ Warcraft::Warcraft()
     /* První se budou testovat budovy */
     // testing
     scene->addItem(new HumanFarm(QPointF(512,512), false));
-    scene->addItem(new HumanBlacksmith(QPointF(450,502), false));
-    scene->addItem(new HumanChurch(QPointF(450,555), false));
+    scene->addItem(new HumanBlacksmith(QPointF(460,502), false));
+    scene->addItem(new HumanChurch(QPointF(450,572), false));
     scene->addItem(new HumanBarracks(QPointF(450,400), false));
     scene->addItem(new HumanStables(QPointF(410, 512), false));
-    scene->addItem(new HumanTower(QPointF(410, 385), false));
+    scene->addItem(new HumanTower(QPointF(390, 385), false));
+    scene->addItem(new HumanTownHall(QPointF(300, 500), false));
 
 
 

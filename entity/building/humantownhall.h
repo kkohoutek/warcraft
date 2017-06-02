@@ -13,6 +13,9 @@ public:
 
     HumanTownHall(QPointF pos, bool finishedOnSpawn);
 
+    // QGraphicsItem interface
+    QRectF boundingRect() const override;
+
     // Entity interface
     void update() override;
 };

@@ -11,6 +11,7 @@ public:
     static const int BUILD_TIME = (2000*1000)/TIME_DIVISOR;
 
     HumanTower(QPointF pos, bool finishedOnSpawn);
+    QRectF boundingRect() const override;
     void update() override;
 };
 
