@@ -86,25 +86,6 @@ void Warcraft::timerEvent(QTimerEvent *event) {
     viewport()->update();
 }
 
-void Warcraft::mouseMoveEvent(QMouseEvent *event){
-    if(event->x() >= this->viewport()->width() - 8){
-        //this->viewport()->scroll(2,0);
-        this->horizontalScrollBar()->setValue(horizontalScrollBar()->value()+8);
-    }
-    else if(event->x() <= 8){
-        this->horizontalScrollBar()->setValue(horizontalScrollBar()->value()-8);
-    }
-
-    if(event->y() >= this->viewport()->height() - 8){
-        this->verticalScrollBar()->setValue(verticalScrollBar()->value()+8);
-    }
-
-    else if(event->y() <= 8){
-        this->verticalScrollBar()->setValue(verticalScrollBar()->value()+8);
-    }
-
-
-}
 
 void Warcraft::keyPressEvent(QKeyEvent *event){
 

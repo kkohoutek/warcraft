@@ -17,7 +17,6 @@ public:
 
     void timerEvent(QTimerEvent *event);
     void keyPressEvent(QKeyEvent *event);
-    void mouseMoveEvent(QMouseEvent *event);
 
 };
 
