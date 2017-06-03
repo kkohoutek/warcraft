@@ -2,7 +2,7 @@
 #define COMMON_H
 
 enum Race {HUMAN, ORC, OTHER};
-const int TIME_DIVISOR = 100;
+const int TIME_DIVISOR = 10;
 
 
 
