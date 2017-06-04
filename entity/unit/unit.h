@@ -1,5 +1,3 @@
-
-/**
 #ifndef UNIT_H
 #define UNIT_H
 
@@ -10,22 +8,32 @@
 class Unit : public Entity
 {
 public:
-    enum UnitType {
-                    H_PEASANT,
-                    H_FOOTMAN,
-                    H_ARCHER,
-                    H_KNIGHT,
 
-                    O_PEON,
-                    O_GRUNT,
-                    O_SPEARMAN,
-                    O_RAIDER
+    Unit(QPointF pos, int speed, int damage, int armor, int range);
 
-    };
+    void moveToTarget();
+    void setTarget(QPointF target);
+    void updateAnimation();
+    void update();
 
-    Unit();
+
+
+protected:
+    int speed;
+    int damage;
+    int armor;
+    int range;
+
+    QList<Animation *> *movementAnims;
+    QList<Animation *> *attackAnims;
+    QList<Animation *> *deathAnims;
+
+    QPointF targetPoint;
+    QPointF direction;
+    QLineF  path;
+    Entity *targetEntity;
 
 };
 
 #endif // UNIT_H
-*/
+

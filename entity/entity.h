@@ -11,7 +11,7 @@
 class Entity : public QGraphicsItem
 {
 public:
-    Entity(QPointF pos, QPixmap *spriteSheet);
+    Entity(QPointF pos);
     virtual ~Entity();
 
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
@@ -27,16 +27,13 @@ public:
 
 protected:
     QPixmap *spriteSheet;
-
-
+    Animation *currentAnimation;
 
  private:
-    int width;
-    int height;
     int hp = 0;
     int maxHP;
 
-    Animation *currentAnimation;
+
 
 };
 

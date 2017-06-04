@@ -5,6 +5,7 @@
 #include <QGraphicsScene>
 #include <QMouseEvent>
 #include <QScrollBar>
+#include <QDebug>
 
 #include "entity/building/humanfarm.h"
 #include "entity/building/humanblacksmith.h"
@@ -14,7 +15,10 @@
 #include "entity/building/humantownhall.h"
 #include "entity/building/humanlumbermill.h"
 #include "entity/building/humantower.h"
+#include "entity/unit/footman.h"
 
+
+Footman *f;
 Warcraft::Warcraft()
 {
 
@@ -33,6 +37,10 @@ Warcraft::Warcraft()
 
     loadBackground();
     loadBuildings();
+
+    f = new Footman(QPointF(400,421));
+    f->setTarget(QPointF(100,421));
+    scene->addItem(f);
 
 
 
@@ -83,7 +91,13 @@ void Warcraft::timerEvent(QTimerEvent *event) {
     }
 
 
+    f->update();
     viewport()->update();
+}
+
+void Warcraft::mousePressEvent(QMouseEvent *event){
+    qDebug() << event->pos();
+    f->setTarget(event->pos());
 }
 
 

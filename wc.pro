@@ -26,7 +26,8 @@ SOURCES += main.cpp\
     entity/building/humanlumbermill.cpp \
     entity/building/humanstables.cpp \
     entity/building/humanchurch.cpp \
-    entity/building/humantower.cpp
+    entity/building/humantower.cpp \
+    entity/unit/footman.cpp
 
 HEADERS  += mainwindow.h \
     entity/entity.h \
@@ -42,7 +43,8 @@ HEADERS  += mainwindow.h \
     entity/building/humanlumbermill.h \
     entity/building/humanstables.h \
     entity/building/humanchurch.h \
-    entity/building/humantower.h
+    entity/building/humantower.h \
+    entity/unit/footman.h
 
 FORMS    += mainwindow.ui
 

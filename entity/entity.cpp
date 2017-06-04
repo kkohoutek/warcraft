@@ -2,23 +2,21 @@
 
 #include <QPainter>
 
-Entity::Entity(QPointF pos, QPixmap *spriteSheet) {
-    this->spriteSheet = spriteSheet;
+Entity::Entity(QPointF pos) {
     this->setPos(pos);
 
 }
 
 Entity::~Entity()
 {
-    delete spriteSheet;
     delete currentAnimation;
 }
 
 void Entity::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
 
-
-    painter->drawPixmap(0, 0, *spriteSheet, currentAnimation->currentPositionX(), currentAnimation->currentPositionY(),
+    painter->drawPixmap(0, 0, *currentAnimation->getSpriteSheet(), currentAnimation->currentPositionX(), currentAnimation->currentPositionY(),
                                             currentAnimation->getSubImageWidth(), currentAnimation->getSubImageHeight());
+
 
     //painter->drawRect(boundingRect());
     painter->setBrush(QBrush(Qt::green));

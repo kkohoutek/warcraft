@@ -1,13 +1,13 @@
 #include "building.h"
 
 
-Building::Building(QPointF pos, bool finishedOnSpawn, Race race, QList<int> preFrame, QList<int> endFrame, int buildTime, int maxHP) : Entity(pos, NULL)
+Building::Building(QPointF pos, bool finishedOnSpawn, Race race, QList<int> preFrame, QList<int> endFrame, int buildTime, int maxHP) : Entity(pos)
 
 {
     setMaxHP(maxHP);
     this->buildTime = buildTime;
 
-
+    QPixmap *spriteSheet;
     switch(race){
     case HUMAN:
         spriteSheet = new QPixmap(":/graphics/BUILDINGS_H");
@@ -23,7 +23,7 @@ Building::Building(QPointF pos, bool finishedOnSpawn, Race race, QList<int> preF
     frames->append(preFrame);
     frames->append(endFrame);
 
-    buildAnimation = new Animation(48, 48, frames, buildTime/frames->size(), false);
+    buildAnimation = new Animation(spriteSheet, 48, 48, frames, buildTime/frames->size(), false);
     setCurrentAnimation(buildAnimation);
 
     if(finishedOnSpawn){
