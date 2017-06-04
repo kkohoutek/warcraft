@@ -26,12 +26,12 @@ Warcraft::Warcraft()
     this->horizontalScrollBar()->hide();
 
     QGraphicsScene *scene = new QGraphicsScene();
-    scene->setSceneRect(0,0,1024,1024);
+    scene->setSceneRect(0,0,2048,2048);
 
 
     setScene(scene);
     startTimer(17);
-    setTransform(QTransform().scale(2,2));
+    //setTransform(QTransform().scale(2,2));
     setMouseTracking(true);
 
 
@@ -41,10 +41,6 @@ Warcraft::Warcraft()
     f = new Footman(QPointF(400,421));
     f->setTarget(QPointF(100,421));
     scene->addItem(f);
-
-
-
-
 
 }
 
@@ -62,12 +58,12 @@ void Warcraft::loadBackground()
 void Warcraft::loadBuildings()
 {
     // testing
-    scene()->addItem(new HumanFarm(QPointF(512,512), false));
-    scene()->addItem(new HumanBlacksmith(QPointF(460,502), false));
-    scene()->addItem(new HumanChurch(QPointF(450,572), false));
-    scene()->addItem(new HumanBarracks(QPointF(450,400), false));
-    scene()->addItem(new HumanStables(QPointF(410, 512), false));
-    scene()->addItem(new HumanTower(QPointF(390, 385), false));
+    scene()->addItem(new HumanFarm(QPointF(160,512), false));
+    scene()->addItem(new HumanBlacksmith(QPointF(410,502), false));
+    scene()->addItem(new HumanChurch(QPointF(500,572), false));
+    scene()->addItem(new HumanBarracks(QPointF(600,400), false));
+    scene()->addItem(new HumanStables(QPointF(410, 330), false));
+    scene()->addItem(new HumanTower(QPointF(290, 390), false));
     scene()->addItem(new HumanTownHall(QPointF(300, 500), false));
 
 }

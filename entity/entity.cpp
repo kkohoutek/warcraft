@@ -13,7 +13,7 @@ Entity::~Entity()
 }
 
 void Entity::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
-
+    painter->scale(2,2);
     painter->drawPixmap(0, 0, *currentAnimation->getSpriteSheet(), currentAnimation->currentPositionX(), currentAnimation->currentPositionY(),
                                             currentAnimation->getSubImageWidth(), currentAnimation->getSubImageHeight());
 
