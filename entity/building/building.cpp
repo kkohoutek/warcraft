@@ -2,7 +2,6 @@
 
 
 Building::Building(QPointF pos, bool finishedOnSpawn, Race race, QList<int> preFrame, QList<int> endFrame, int buildTime, int maxHP) : Entity(pos)
-
 {
     setMaxHP(maxHP);
     this->buildTime = buildTime;

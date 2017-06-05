@@ -1,7 +1,7 @@
 #ifndef UNIT_H
 #define UNIT_H
 
-#include <entity/entity.h>
+#include "entity/entity.h"
 
 
 
@@ -29,9 +29,8 @@ protected:
     QList<Animation *> *deathAnims;
 
     QPointF targetPoint;
-    QPointF direction;
     QLineF  path;
-    Entity *targetEntity;
+    Entity *targetEntity = NULL;
 
 };
 

@@ -10,21 +10,17 @@ Unit::Unit(QPointF pos, int speed, int damage, int armor, int range):Entity(pos)
     this->damage = damage;
     this->range = range;
     this->armor = armor;
-
     setPos(pos);
 }
 
 void Unit::moveToTarget()
 {
-    if(pos() == targetPoint){
-        currentAnimation->setCurrentFrame(0);
-
+    if(pos() == targetPoint || (targetEntity != NULL && this->collidesWithItem(targetEntity))){
+        getCurrentAnimation()->setCurrentFrame(0);
         return;
     }
 
     this->moveBy(2 * cos(qDegreesToRadians(path.angle())),2 * sin(qDegreesToRadians(path.angle())));
-
-
 }
 
 void Unit::updateAnimation(){
@@ -46,6 +42,7 @@ void Unit::update(){
 void Unit::setTarget(QPointF target){
     targetPoint = target;
     path = QLineF(pos(), targetPoint);
-
 }
+
+
 

@@ -27,7 +27,11 @@ SOURCES += main.cpp\
     entity/building/humanstables.cpp \
     entity/building/humanchurch.cpp \
     entity/building/humantower.cpp \
-    entity/unit/footman.cpp
+    entity/unit/footman.cpp \
+    player.cpp \
+    entity/goldmine.cpp \
+    entity/unit/worker.cpp \
+    entity/tree.cpp
 
 HEADERS  += mainwindow.h \
     entity/entity.h \
@@ -44,7 +48,11 @@ HEADERS  += mainwindow.h \
     entity/building/humanstables.h \
     entity/building/humanchurch.h \
     entity/building/humantower.h \
-    entity/unit/footman.h
+    entity/unit/footman.h \
+    player.h \
+    entity/goldmine.h \
+    entity/unit/worker.h \
+    entity/tree.h
 
 FORMS    += mainwindow.ui
 

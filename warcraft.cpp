@@ -17,8 +17,6 @@
 #include "entity/building/humantower.h"
 #include "entity/unit/footman.h"
 
-
-Footman *f;
 Warcraft::Warcraft()
 {
 
@@ -37,10 +35,6 @@ Warcraft::Warcraft()
 
     loadBackground();
     loadBuildings();
-
-    f = new Footman(QPointF(400,421));
-    f->setTarget(QPointF(100,421));
-    scene->addItem(f);
 
 }
 
@@ -71,7 +65,6 @@ void Warcraft::loadBuildings()
 void Warcraft::timerEvent(QTimerEvent *event) {
     QPoint p = mapFromGlobal(QCursor::pos());
     if(p.x() >= this->viewport()->width() - 20){
-        //this->viewport()->scroll(2,0);
         this->horizontalScrollBar()->setValue(horizontalScrollBar()->value()+20);
     }
     else if(p.x() <= 20){
@@ -86,14 +79,11 @@ void Warcraft::timerEvent(QTimerEvent *event) {
         this->verticalScrollBar()->setValue(verticalScrollBar()->value()-20);
     }
 
-
-    f->update();
     viewport()->update();
 }
 
 void Warcraft::mousePressEvent(QMouseEvent *event){
-    qDebug() << event->pos();
-    f->setTarget(event->pos());
+    qDebug() << event->pos();;
 }
 
 

@@ -2,7 +2,6 @@
 
 Footman::Footman(QPointF pos) : Unit(pos, 60, 1, 2, 0)
 {
-
     setMaxHP(60);
     setHP(60);
     QPixmap *spriteSheet = new QPixmap(":graphics/FOOTMAN");
@@ -27,9 +26,9 @@ Footman::Footman(QPointF pos) : Unit(pos, 60, 1, 2, 0)
 
     Animation *walk180Deg = new Animation(spriteSheetFlipped, 48,48, walk180DegFrames, 250, true);
 
-    movementAnims->append(NULL);
-    movementAnims->append(NULL);
-    movementAnims->append(NULL);
+    movementAnims->append(NULL); // 45
+    movementAnims->append(NULL); // 90
+    movementAnims->append(NULL); // 135
     movementAnims->append(walk180Deg);
 
 }

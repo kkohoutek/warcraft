@@ -6,8 +6,6 @@
 #include <QObject>
 #include "animation.h"
 
-
-
 class Entity : public QGraphicsItem
 {
 public:
@@ -18,6 +16,7 @@ public:
 
     virtual void update() = 0;
     void setCurrentAnimation(Animation *anim);
+    Animation *getCurrentAnimation();
 
     void setHP(int hp);
     int getHP();
@@ -25,13 +24,11 @@ public:
     void setMaxHP(int hp);
     int getMaxHP();
 
-protected:
-    QPixmap *spriteSheet;
-    Animation *currentAnimation;
 
  private:
     int hp = 0;
     int maxHP;
+    Animation *currentAnimation;
 
 
 
