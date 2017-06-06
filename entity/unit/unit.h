@@ -13,10 +13,9 @@ public:
 
     void moveToTarget();
     void setTarget(QPointF target);
+
     void updateAnimation();
-    void update();
-
-
+    virtual void update() override;
 
 protected:
     int speed;
@@ -31,6 +30,8 @@ protected:
     QPointF targetPoint;
     QLineF  path;
     Entity *targetEntity = NULL;
+
+
 
 };
 

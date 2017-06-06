@@ -49,6 +49,7 @@ HEADERS  += mainwindow.h \
     entity/building/humanchurch.h \
     entity/building/humantower.h \
     entity/unit/footman.h \
+    entity/unit/peasant.h \
     player.h \
     entity/goldmine.h \
     entity/unit/worker.h \

@@ -17,6 +17,9 @@
 #include "entity/building/humantower.h"
 #include "entity/unit/footman.h"
 
+
+Worker *worker;
+
 Warcraft::Warcraft()
 {
 
@@ -33,14 +36,31 @@ Warcraft::Warcraft()
     setMouseTracking(true);
 
 
+    player = new Player(HUMAN);
+    enemy = new Player(ORC);
+
+    player->addGold(10000);
+    player->addLumber(10000);
+    player->addFood(10000);
+
     loadBackground();
+    worker = new Worker(QPointF(500,1024) , HUMAN);
+    scene->addItem(worker);
+    newBuilding(new HumanFarm(QPointF(1023,1023),false),worker,player,1,1);
     loadBuildings();
 
 }
 
+Warcraft::~Warcraft()
+{
+    delete enemy;
+    delete player;
+}
+
 void Warcraft::loadBackground()
 {
-    QRect rect(0, 0, 32, 32);
+
+    QRect rect(3*32, 0, 32, 32);
     QImage original(":graphics/WORLD");
     QImage cropped = original.copy(rect);
     QBrush brush(cropped);
@@ -51,20 +71,13 @@ void Warcraft::loadBackground()
 
 void Warcraft::loadBuildings()
 {
-    // testing
-    scene()->addItem(new HumanFarm(QPointF(160,512), false));
-    scene()->addItem(new HumanBlacksmith(QPointF(410,502), false));
-    scene()->addItem(new HumanChurch(QPointF(500,572), false));
-    scene()->addItem(new HumanBarracks(QPointF(600,400), false));
-    scene()->addItem(new HumanStables(QPointF(410, 330), false));
-    scene()->addItem(new HumanTower(QPointF(290, 390), false));
-    scene()->addItem(new HumanTownHall(QPointF(300, 500), false));
+
 
 }
 
 void Warcraft::timerEvent(QTimerEvent *event) {
     QPoint p = mapFromGlobal(QCursor::pos());
-    if(p.x() >= this->viewport()->width() - 40 && p.x() <= MainWindow::WIDTH ){
+    if(p.x() >= this->viewport()->width() - 40 && p.x() <= this->window()->width() ){
         this->horizontalScrollBar()->setValue(horizontalScrollBar()->value()+20);
 
     }
@@ -73,7 +86,7 @@ void Warcraft::timerEvent(QTimerEvent *event) {
 
     }
 
-    if(p.y() >= this->viewport()->height() - 40 && p.y() <= MainWindow::HEIGHT){
+    if(p.y() >= this->viewport()->height() - 40 && p.y() <= this->window()->height()){
         this->verticalScrollBar()->setValue(verticalScrollBar()->value()+20);
 
     }
@@ -83,6 +96,8 @@ void Warcraft::timerEvent(QTimerEvent *event) {
 
     }
 
+    worker->update();
+
     viewport()->update();
 }
 
@@ -90,14 +105,14 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
     qDebug() << event->pos();
 }
 
-bool Warcraft::build(Building *building, Worker *worker, Player &player, int costGold, int costLumber) {
-    bool success;
+void Warcraft::newBuilding(Building *building, Worker *worker, Player *player, int costGold, int costLumber) {
 
-    player.addGold(-costGold);
-    player.addLumber(-costLumber);
+    if(player->getGold() > costGold && player->getLumber() > costLumber){
+        player->addGold(-costGold);
+        player->addLumber(-costLumber);
+        worker->goBuild(building);
+    }
 
-    building->setWorker(worker);
-    worker->build(building);
 }
 
 

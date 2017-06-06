@@ -8,8 +8,3 @@ HumanChurch::HumanChurch(QPointF pos, bool finishedOnSpawn): Building(pos, finis
 QRectF HumanChurch::boundingRect() const {
     return QRectF(0,0,48,48);
 }
-
-void HumanChurch::update()
-{
-
-}

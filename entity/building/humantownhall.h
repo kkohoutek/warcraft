@@ -16,8 +16,6 @@ public:
     // QGraphicsItem interface
     QRectF boundingRect() const override;
 
-    // Entity interface
-    void update() override;
 };
 
 #endif // HUMANTOWNHALL_H

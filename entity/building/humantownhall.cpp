@@ -8,8 +8,3 @@ HumanTownHall::HumanTownHall(QPointF pos, bool finishedOnSpawn) : Building(pos, 
 QRectF HumanTownHall::boundingRect() const {
     return QRectF(0,0,48,48);
 }
-
-void HumanTownHall::update()
-{
-
-}

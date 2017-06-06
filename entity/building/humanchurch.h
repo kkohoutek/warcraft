@@ -12,7 +12,6 @@ public:
     HumanChurch(QPointF pos, bool finishedOnSpawn);
 
     QRectF boundingRect() const override;
-    void update() override;
 };
 
 #endif // HUMANCHURCH_H

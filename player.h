@@ -1,7 +1,6 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "entity/building/building.h"
 #include "entity/unit/unit.h"
 #include "entity/unit/worker.h"
 
@@ -14,9 +13,14 @@ public:
     void addLumber(int amount);
     void addFood(int amount);
 
+    int getGold();
+    int getLumber();
+    int getFood();
+
     QList<Building *> *getBuildings();
     QList<Unit *> *getUnits();
     QList<Worker *> *getWorkers();
+    QList<Unit *> *getSelectedUnits();
 
 
 protected:
@@ -28,9 +32,9 @@ protected:
     QList<Unit *>       selectedUnits;
 
 
-    int gold;
-    int lumber;
-    int food;
+    int gold = 0;
+    int lumber = 0;
+    int food = 0;
 };
 
 #endif // PLAYER_H

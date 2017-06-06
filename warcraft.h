@@ -7,11 +7,11 @@
 #include "player.h"
 
 
-
 class Warcraft : public QGraphicsView
 {
 public:
     Warcraft();
+    ~Warcraft();
 
     void loadBackground();
     void loadBuildings();
@@ -20,13 +20,13 @@ public:
 
     void mousePressEvent(QMouseEvent *event);
 
-    bool build(Building *building, Worker *worker, Player &player, int costGold, int costLumber);
+    void newBuilding(Building *building, Worker *worker, Player *player, int costGold, int costLumber);
 
 
 
 private:
-    Player player;
-    Player enemy;
+    Player *player;
+    Player *enemy;
 
 };
 

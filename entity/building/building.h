@@ -6,7 +6,6 @@
 #include "animation.h"
 #include <QPixmap>
 #include <QObject>
-
 /*
 
 */
@@ -19,6 +18,8 @@ public:
     virtual ~Building();
 
     virtual void update() override;
+
+    void beginConstruction();
 
     bool isBuildingFinished();
 

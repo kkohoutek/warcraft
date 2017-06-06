@@ -13,6 +13,7 @@ public:
     ~Animation();
 
     void stop();
+    void start();
     void setCurrentFrame(int index);
 
     int currentPositionX();

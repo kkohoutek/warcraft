@@ -10,8 +10,3 @@ QRectF HumanLumberMill::boundingRect() const
 {
     return QRectF(0,0,48,48);
 }
-
-void HumanLumberMill::update()
-{
-
-}

@@ -18,8 +18,6 @@ public:
     // QGraphicsItem interface
     QRectF boundingRect() const override;
 
-    // Entity interface
-    void update() override;
 };
 
 #endif // HUMANBLACKSMITH_H

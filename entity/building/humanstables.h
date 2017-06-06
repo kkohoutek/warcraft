@@ -12,7 +12,7 @@ public:
 
     HumanStables(QPointF pos, bool finishedOnSpawn);
     QRectF boundingRect() const override;
-    void update() override;
+
 };
 
 #endif // HUMANSTABLES_H

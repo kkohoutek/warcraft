@@ -8,8 +8,3 @@ HumanBarracks::HumanBarracks(QPointF pos, bool finishedOnSpawn) : Building(pos, 
 QRectF HumanBarracks::boundingRect() const {
     return QRectF(0,0,48,48);
 }
-
-void HumanBarracks::update()
-{
-
-}

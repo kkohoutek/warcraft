@@ -8,8 +8,3 @@ HumanBlacksmith::HumanBlacksmith(QPointF pos, bool finishedOnSpawn) : Building(p
 QRectF HumanBlacksmith::boundingRect() const {
     return QRectF(6,6,36,36);
 }
-
-void HumanBlacksmith::update()
-{
-
-}

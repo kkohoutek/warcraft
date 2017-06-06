@@ -20,7 +20,6 @@ public:
     ~MainWindow();
     static const int WIDTH = 960;
     static const int HEIGHT = 720;
-    static const bool END = false;
 
 private:
     Ui::MainWindow *ui;

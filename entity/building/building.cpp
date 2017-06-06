@@ -1,6 +1,5 @@
 #include "building.h"
 
-
 Building::Building(QPointF pos, bool finishedOnSpawn, Race race, QList<int> preFrame, QList<int> endFrame, int buildTime, int maxHP) : Entity(pos)
 {
     setMaxHP(maxHP);
@@ -24,6 +23,7 @@ Building::Building(QPointF pos, bool finishedOnSpawn, Race race, QList<int> preF
 
     buildAnimation = new Animation(spriteSheet, 48, 48, frames, buildTime/frames->size(), false);
     setCurrentAnimation(buildAnimation);
+    buildAnimation->stop();
 
     if(finishedOnSpawn){
         buildTimer = NULL;
@@ -32,11 +32,9 @@ Building::Building(QPointF pos, bool finishedOnSpawn, Race race, QList<int> preF
         buildAnimation->stop();
     } else {
         buildTimer = new QTimer();
-        buildTimer->start(buildTime/maxHP);
+        buildTimer->setInterval(buildTime/maxHP);
         connect(buildTimer, &QTimer::timeout, this, &constructionUpdate);
     }
-
-
 }
 
 Building::~Building()
@@ -49,9 +47,20 @@ void Building::update(){
 
 }
 
-bool Building::isBuildingFinished()
-{
-    return buildTimer == NULL || !buildTimer->isActive();
+void Building::beginConstruction(){
+    buildTimer->start();
+    buildAnimation->start();
+}
+
+bool Building::isBuildingFinished(){
+    if(buildTimer != NULL){
+        if(!buildTimer->isActive()){
+            return false;
+        } else {
+            return true;
+        }
+    }
+    return true;
 }
 
 

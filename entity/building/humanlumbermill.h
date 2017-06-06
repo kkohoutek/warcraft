@@ -12,7 +12,7 @@ public:
     HumanLumberMill(QPointF pos, bool finishedOnSpawn);
 
     QRectF boundingRect() const override;
-    void update() override;
+
 };
 
 #endif // HUMANLUMBERMILL_H

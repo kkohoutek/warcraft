@@ -16,6 +16,18 @@ void Player::addFood(int amount) {
     food += amount;
 }
 
+int Player::getGold(){
+    return gold;
+}
+
+int Player::getLumber(){
+    return lumber;
+}
+
+int Player::getFood(){
+    return food;
+}
+
 
 QList<Building *> *Player::getBuildings() {
     return &buildings;

@@ -36,6 +36,10 @@ void Animation::setCurrentFrame(int index)
     currentFrameIndex = index;
 }
 
+void Animation::start(){
+    animationTimer->start();
+}
+
 void Animation::stop(){
     animationTimer->stop();
 }
