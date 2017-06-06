@@ -16,6 +16,7 @@ void Player::addFood(int amount) {
     food += amount;
 }
 
+
 QList<Building *> *Player::getBuildings() {
     return &buildings;
 }
@@ -23,4 +24,12 @@ QList<Building *> *Player::getBuildings() {
 QList<Unit *> *Player::getUnits() {
     return &units;
 
+}
+
+QList<Worker *> *Player::getWorkers(){
+    return &workers;
+}
+
+QList<Unit *> *Player::getSelectedUnits(){
+    return &selectedUnits;
 }

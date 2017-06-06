@@ -4,5 +4,6 @@
         <file alias="WORLD">res/WORLD.png</file>
         <file alias="FOOTMAN">res/FOOTMAN.png</file>
         <file alias="FOOTMAN2">res/FOOTMAN_flip.png</file>
+        <file alias="MISC">res/MISC.png</file>
     </qresource>
 </RCC>
