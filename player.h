@@ -16,9 +16,7 @@ public:
 
     QList<Building *> *getBuildings();
     QList<Unit *> *getUnits();
-
-
-    void build(Building *building, Worker *worker);
+    QList<Worker *> *getWorkers();
 
 
 protected:
@@ -27,6 +25,7 @@ protected:
     QList<Building *>   buildings;
     QList<Unit *>       units;
     QList<Worker *>     workers;
+    QList<Unit *>       selectedUnits;
 
 
     int gold;

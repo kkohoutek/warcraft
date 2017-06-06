@@ -86,6 +86,17 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
     qDebug() << event->pos();;
 }
 
+bool Warcraft::build(Building *building, Worker *worker, Player &player, int costGold, int costLumber) {
+    bool success;
+
+    player.addGold(-costGold);
+    player.addLumber(-costLumber);
+
+    building->setWorker(worker);
+    worker->build(building);
+}
+
+
 
 void Warcraft::keyPressEvent(QKeyEvent *event){
 
