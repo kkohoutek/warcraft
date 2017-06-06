@@ -2,7 +2,7 @@
 #include "ui_mainwindow.h"
 
 #include "warcraft.h"
-
+#include <QDebug>
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -12,11 +12,21 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     this->setCentralWidget(&warcraft);
+
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
+void MainWindow::keyPressEvent(QKeyEvent *event){
+    if(event->key() == Qt::Key_Escape){
+
+        this->close();
+    }
+}
+
+
+
 
 
