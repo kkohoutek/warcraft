@@ -6,7 +6,7 @@
 #include <QMouseEvent>
 #include <QScrollBar>
 #include <QDebug>
-
+#include "mainwindow.h"
 #include "entity/building/humanfarm.h"
 #include "entity/building/humanblacksmith.h"
 #include "entity/building/humanchurch.h"
@@ -64,26 +64,30 @@ void Warcraft::loadBuildings()
 
 void Warcraft::timerEvent(QTimerEvent *event) {
     QPoint p = mapFromGlobal(QCursor::pos());
-    if(p.x() >= this->viewport()->width() - 20){
+    if(p.x() >= this->viewport()->width() - 40 && p.x() <= MainWindow::WIDTH ){
         this->horizontalScrollBar()->setValue(horizontalScrollBar()->value()+20);
+
     }
-    else if(p.x() <= 20){
+    else if(p.x() <= 40 && p.x() >= 0 ){
         this->horizontalScrollBar()->setValue(horizontalScrollBar()->value()-20);
+
     }
 
-    if(p.y() >= this->viewport()->height() - 20){
+    if(p.y() >= this->viewport()->height() - 40 && p.y() <= MainWindow::HEIGHT){
         this->verticalScrollBar()->setValue(verticalScrollBar()->value()+20);
+
     }
 
-    else if(p.y() <= 20){
+    else if(p.y() <= 40 && p.y() >= 0){
         this->verticalScrollBar()->setValue(verticalScrollBar()->value()-20);
+
     }
 
     viewport()->update();
 }
 
 void Warcraft::mousePressEvent(QMouseEvent *event){
-    qDebug() << event->pos();;
+    qDebug() << event->pos();
 }
 
 bool Warcraft::build(Building *building, Worker *worker, Player &player, int costGold, int costLumber) {
@@ -98,7 +102,5 @@ bool Warcraft::build(Building *building, Worker *worker, Player &player, int cos
 
 
 
-void Warcraft::keyPressEvent(QKeyEvent *event){
 
-}
 
