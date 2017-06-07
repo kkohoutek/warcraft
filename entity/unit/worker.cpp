@@ -100,17 +100,92 @@ Worker::Worker(QPointF pos, Race race) : Unit(pos, 1, 0, 0, 0)
         miningAnims = new QList<Animation *>();
 
         QList<QList<int>> *mining0DegFrames = new QList<QList<int>>();
-        mining0DegFrames->append(QList<int>() << 3 << 0);
-        mining0DegFrames->append(QList<int>() << 3 << 1);
-        mining0DegFrames->append(QList<int>() << 3 << 2);
-        mining0DegFrames->append(QList<int>() << 3 << 1);
+        mining0DegFrames->append(QList<int>() << 7 << 2);
+        mining0DegFrames->append(QList<int>() << 7 << 0);
+        mining0DegFrames->append(QList<int>() << 7 << 1);
+        mining0DegFrames->append(QList<int>() << 7 << 0);
 
         Animation *mining0Deg = new Animation(spriteSheet, 32,32, mining0DegFrames, 250, true);
 
         miningAnims->append(mining0Deg);
 
+        QList<QList<int>> *mining45DegFrames = new QList<QList<int>>();
+        mining45DegFrames->append(QList<int>() << 6 << 1);
+        mining45DegFrames->append(QList<int>() << 6 << 2);
+        mining45DegFrames->append(QList<int>() << 6 << 3);
+        mining45DegFrames->append(QList<int>() << 6 << 2);
 
-        setCurrentAnimation(walk315Deg);
+        Animation *mining45Deg = new Animation(spriteSheet, 32,32, mining45DegFrames, 250, true);
+
+        miningAnims->append(mining45Deg);
+
+        QList<QList<int>> *mining90DegFrames = new QList<QList<int>>();
+        mining90DegFrames->append(QList<int>() << 5 << 2);
+        mining90DegFrames->append(QList<int>() << 5 << 1);
+        mining90DegFrames->append(QList<int>() << 5 << 0);
+        mining90DegFrames->append(QList<int>() << 5 << 1);
+
+        Animation *mining90Deg = new Animation(spriteSheet, 32,32, mining90DegFrames, 250, true);
+
+        miningAnims->append(mining90Deg);
+
+        QList<QList<int>> *mining135DegFrames = new QList<QList<int>>();
+        mining135DegFrames->append(QList<int>() << 8 << 3);
+        mining135DegFrames->append(QList<int>() << 8 << 4);
+        mining135DegFrames->append(QList<int>() << 8 << 3);
+
+        Animation *mining135Deg = new Animation(spriteSheetFlipped, 32,32, mining135DegFrames, 250, true);
+
+        miningAnims->append(mining135Deg);
+
+        QList<QList<int>> *mining180DegFrames = new QList<QList<int>>();
+        mining180DegFrames->append(QList<int>() << 7 << 3);
+        mining180DegFrames->append(QList<int>() << 7 << 4);
+        mining180DegFrames->append(QList<int>() << 7 << 3);
+
+        Animation *mining180Deg = new Animation(spriteSheetFlipped, 32,32, mining180DegFrames, 250, true);
+
+        miningAnims->append(mining180Deg);
+
+        QList<QList<int>> *mining225DegFrames = new QList<QList<int>>();
+        mining225DegFrames->append(QList<int>() << 6 << 3);
+        mining225DegFrames->append(QList<int>() << 6 << 4);
+        mining225DegFrames->append(QList<int>() << 6 << 3);
+
+        Animation *mining225Deg = new Animation(spriteSheetFlipped, 32,32, mining225DegFrames, 250, true);
+
+        miningAnims->append(mining225Deg);
+
+        QList<QList<int>> *mining270DegFrames = new QList<QList<int>>();
+        mining270DegFrames->append(QList<int>() << 5 << 3);
+        mining270DegFrames->append(QList<int>() << 5 << 4);
+        mining270DegFrames->append(QList<int>() << 5 << 3);
+
+        Animation *mining270Deg = new Animation(spriteSheetFlipped, 32,32, mining270DegFrames, 250, true);
+
+        miningAnims->append(mining270Deg);
+
+        QList<QList<int>> *mining315DegFrames = new QList<QList<int>>();
+        mining315DegFrames->append(QList<int>() << 8 << 2);
+        mining315DegFrames->append(QList<int>() << 8 << 1);
+        mining315DegFrames->append(QList<int>() << 8 << 2);
+
+        Animation *mining315Deg = new Animation(spriteSheet, 32,32, mining315DegFrames, 250, true);
+
+        miningAnims->append(mining315Deg);
+
+        goldCarryAnims = new QList<Animation *>();
+
+        QList<QList<int>> *goldCarry0DegFrames = new QList<QList<int>>();
+        goldCarry0DegFrames->append(QList<int>() << 1 << 11);
+        goldCarry0DegFrames->append(QList<int>() << 2 << 11);
+        goldCarry0DegFrames->append(QList<int>() << 1 << 11);
+
+        Animation *goldCarry0Deg = new Animation(spriteSheet, 32,32, goldCarry0DegFrames, 250, true);
+
+        miningAnims->append(goldCarry0Deg);
+
+        setCurrentAnimation(goldCarry0Deg);
         break;
     }
 
