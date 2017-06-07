@@ -28,6 +28,8 @@ private:
     Animation *buildAnimation;
     QTimer *buildTimer;
 
+    bool finished;
+
 private slots:
     void constructionUpdate();
 

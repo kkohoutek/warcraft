@@ -183,9 +183,8 @@ Worker::Worker(QPointF pos, Race race) : Unit(pos, 1, 0, 0, 0)
 
         Animation *goldCarry0Deg = new Animation(spriteSheet, 32,32, goldCarry0DegFrames, 250, true);
 
-        miningAnims->append(goldCarry0Deg);
+        goldCarryAnims->append(goldCarry0Deg);
 
-        setCurrentAnimation(goldCarry0Deg);
         break;
     }
 
@@ -196,7 +195,7 @@ Worker::Worker(QPointF pos, Race race) : Unit(pos, 1, 0, 0, 0)
 }
 
 QRectF Worker::boundingRect() const {
-    return QRectF(6,6,36,36);
+    return QRectF(16,16,32,32);
 
 }
 
@@ -205,6 +204,7 @@ void Worker::gatherGold(Goldmine *source, Building *destination){
     goldDestination = destination;
     currentTree = NULL;
     setTarget(currentGoldmine->pos());
+    move();
 }
 
 void Worker::gatherLumber(Tree *source, Building *destination){
@@ -212,46 +212,58 @@ void Worker::gatherLumber(Tree *source, Building *destination){
     lumberDestination = destination;
     currentGoldmine = NULL;
     setTarget(currentTree->pos());
+    move();
 }
 
-void Worker::stopGathering(){
+void Worker::cancel(){
+    Unit::cancel();
+    if(scene()->items().contains(currentBuilding)) {
+        scene()->removeItem(currentBuilding);
+    }
     currentGoldmine = NULL;
     currentTree = NULL;
+    currentBuilding = NULL;
+
+
 }
 
 void Worker::goBuild(Building *building){
-    currentBuilding = building;
-    setTarget(currentBuilding->pos());
+    if(currentBuilding == NULL){
+        currentBuilding = building;
+        setTarget(currentBuilding->pos());
+        move();
+    }
 }
 
 void Worker::update(){
-
     if(currentBuilding != NULL){
-        if(!currentBuilding->isBuildingFinished()){
+        if(!currentBuilding->isBuildingFinished() && !scene()->items().contains(currentBuilding)){
             if(collidesWithItem(currentBuilding)){
                 currentBuilding->beginConstruction();
                 scene()->addItem(currentBuilding);
-                setVisible(false);
-            } else {
-                moveToTarget();
+                this->hide();
+                stopMoving();
             }
         } else {
-            setVisible(true);
+            show();
             setPos(currentBuilding->pos()-QPointF(0,8));
             currentBuilding = NULL;
         }
     }
+    Unit::update();
+
 
 }
 
+
 bool Worker::isGatheringGold(){
-    return currentGoldmine != NULL;
+    return !(currentGoldmine == NULL);
 }
 
 bool Worker::isGatheringLumber(){
-    return currentTree = NULL;
+    return !(currentTree == NULL);
 }
 
-bool Worker::isBuilding(){
-    return currentBuilding != NULL;
+Building *Worker::getCurrentBuilding(){
+    return currentBuilding;
 }

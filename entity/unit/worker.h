@@ -14,13 +14,15 @@ public:
 
     void gatherGold(Goldmine *source, Building *destination);
     void gatherLumber(Tree *source, Building *destination);
-    void stopGathering();
+    void stopWorking();
     void goBuild(Building *building);
     void update() override;
+    void cancel() override;
 
     bool isGatheringGold();
     bool isGatheringLumber();
-    bool isBuilding();
+
+    Building *getCurrentBuilding();
 
 protected:
     Goldmine *currentGoldmine = NULL;
@@ -31,6 +33,7 @@ protected:
 
 private:
     QList<Animation *> *miningAnims;
+    QList<Animation *> *goldCarryAnims;
 
 };
 

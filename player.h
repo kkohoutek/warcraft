@@ -9,6 +9,10 @@ class Player
 public:
     Player(Race race);
 
+    void update();
+
+    void newBuilding(Building *building, Worker *worker, int costGold, int costLumber);
+
     void addGold(int amount);
     void addLumber(int amount);
     void addFood(int amount);
@@ -25,6 +29,7 @@ public:
     QList<Unit *> *getUnits();
     QList<Worker *> *getWorkers();
     QList<Unit *> *getSelectedUnits();
+
 
 
 protected:

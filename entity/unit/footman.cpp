@@ -1,6 +1,6 @@
 #include "footman.h"
 
-Footman::Footman(QPointF pos) : Unit(pos, 60, 1, 2, 0)
+Footman::Footman(QPointF pos) : Unit(pos, 1, 1, 2, 0)
 {
     setMaxHP(60);
     setHP(60);
@@ -188,17 +188,12 @@ Footman::Footman(QPointF pos) : Unit(pos, 60, 1, 2, 0)
     deathFrames->append(QList<int>() << 10 << 2);
     deathFrames->append(QList<int>() << 11 << 2);
 
-    Animation *death = new Animation(spriteSheet, 48,48, deathFrames, 250, true);
-
+    Animation *death = new Animation(spriteSheet, 48,48, deathFrames, 250, false);
 
     deathAnims->append(death);
 
-    setCurrentAnimation(attack90Deg);
-
-
 }
 
-QRectF Footman::boundingRect() const
-{
+QRectF Footman::boundingRect() const {
     return QRectF(6,6,36,36);
 }

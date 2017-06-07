@@ -25,10 +25,18 @@ public:
     int getMaxHP();
 
 
+    void setHighlighted(bool h);
+
+    qreal distanceFrom(Entity *entity);
+    qreal distanceFrom(QPointF point);
+
+
  private:
     int hp = 0;
     int maxHP;
     Animation *currentAnimation;
+
+    bool highlighted = false;
 
 
 
