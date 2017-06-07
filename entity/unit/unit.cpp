@@ -26,9 +26,12 @@ void Unit::moveToTarget()
 void Unit::updateAnimation(){
 
     if(path.angle() >= 0 && path.angle() < 45){
-        setCurrentAnimation(movementAnims->at(0));
+        setCurrentAnimation(currentAnimationSet->at(0));
     } else if (path.angle() > 135 && path.angle() <= 180){
-        setCurrentAnimation(movementAnims->at(4));
+        setCurrentAnimation(currentAnimationSet->at(1));
+    } else if (path.angle()){
+
+
     }
 }
 
@@ -42,6 +45,8 @@ void Unit::update(){
 void Unit::setTarget(QPointF target){
     targetPoint = target;
     path = QLineF(pos(), targetPoint);
+
+    currentAnimationSet = movementAnims;
 }
 
 

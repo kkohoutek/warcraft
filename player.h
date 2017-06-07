@@ -17,6 +17,10 @@ public:
     int getLumber();
     int getFood();
 
+    void selectUnit(Unit *unit);
+    void selectUnits(QList<Unit *> selected);
+    void selectBuilding(Building *building);
+
     QList<Building *> *getBuildings();
     QList<Unit *> *getUnits();
     QList<Worker *> *getWorkers();
@@ -30,6 +34,8 @@ protected:
     QList<Unit *>       units;
     QList<Worker *>     workers;
     QList<Unit *>       selectedUnits;
+
+    Building *selectedBuilding = NULL;
 
 
     int gold = 0;

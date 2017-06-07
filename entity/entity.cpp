@@ -1,10 +1,8 @@
 #include "entity.h"
-
-#include <QPainter>
+#include "common.h"
 
 Entity::Entity(QPointF pos) {
     this->setPos(pos);
-
 }
 
 Entity::~Entity() {
@@ -12,16 +10,15 @@ Entity::~Entity() {
 }
 
 void Entity::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
-    if(!isVisible()) return;
+
     painter->scale(2,2);
-    painter->drawPixmap(0, 0, *currentAnimation->getSpriteSheet(), currentAnimation->currentPositionX(), currentAnimation->currentPositionY(),
-                                                                   currentAnimation->getSubImageWidth(), currentAnimation->getSubImageHeight());
+    currentAnimation->draw(painter);
 
-
-    painter->setBrush(QBrush(Qt::green));
-    painter->setPen(QPen(Qt::green));
-    painter->drawRect(0,0, hp*currentAnimation->getSubImageWidth()/maxHP, 1.5f); // health bar
-
+    if(SHOW_HP_BARS){
+        painter->setBrush(QBrush(Qt::green));
+        painter->setPen(QPen(Qt::green));
+        painter->drawRect(0,0, hp*boundingRect().width()/maxHP, 1.5f); // health bar
+    }
 
     Q_UNUSED(option);
     Q_UNUSED(widget);

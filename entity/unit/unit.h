@@ -14,7 +14,9 @@ public:
     void moveToTarget();
     void setTarget(QPointF target);
 
-    void updateAnimation();
+    /* Aktualizace dosavadní animace na základě úhlu pohybu */
+    virtual void updateAnimation();
+
     virtual void update() override;
 
 protected:
@@ -26,6 +28,7 @@ protected:
     QList<Animation *> *movementAnims;
     QList<Animation *> *attackAnims;
     QList<Animation *> *deathAnims;
+    QList<Animation *> *currentAnimationSet;
 
     QPointF targetPoint;
     QLineF  path;
