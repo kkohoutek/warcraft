@@ -104,7 +104,9 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
 void Warcraft::mouseReleaseEvent(QMouseEvent *releaseEvent)
 {
     isPressedLeftButton = false;
-    scene()->removeItem(rect);
+    if(scene()->items().contains(rect)){
+        scene()->removeItem(rect);
+    }
 }
 
 void Warcraft::mouseMoveEvent(QMouseEvent *event)
