@@ -29,6 +29,10 @@ Warcraft::Warcraft()
     QGraphicsScene *scene = new QGraphicsScene();
     scene->setSceneRect(0,0,2048,2048);
 
+    rect = new QGraphicsRectItem();
+    position = new QPoint();
+
+
 
     setScene(scene);
     startTimer(17);
@@ -76,7 +80,7 @@ void Warcraft::loadBuildings()
 }
 
 void Warcraft::timerEvent(QTimerEvent *event) {
-    QPoint p = mapFromGlobal(QCursor::pos());
+    p = mapFromGlobal(QCursor::pos());
     if(p.x() >= this->viewport()->width() - 40 && p.x() <= this->window()->width() ){
         this->horizontalScrollBar()->setValue(horizontalScrollBar()->value()+20);
 
@@ -102,8 +106,38 @@ void Warcraft::timerEvent(QTimerEvent *event) {
 }
 
 void Warcraft::mousePressEvent(QMouseEvent *event){
-    qDebug() << event->pos();
+
+    if(event->button() == Qt::LeftButton){
+        QPointF point = mapToScene(p);
+        isPressedLeftButton = true;
+        position->setX(point.x());
+        position->setY(point.y());
+    }
 }
+
+void Warcraft::mouseReleaseEvent(QMouseEvent *releaseEvent)
+{
+    isPressedLeftButton = false;
+    if(scene()->items().contains(rect)){
+        scene()->removeItem(rect);
+    }
+}
+
+void Warcraft::mouseMoveEvent(QMouseEvent *event) {
+    if(isPressedLeftButton){
+        if(scene()->items().contains(rect)){
+            scene()->removeItem(rect);
+        }
+        QPointF actualPos = mapToScene(p);
+        rect->setPen(QPen(Qt::green));
+        rect->setRect(position->x(), position->y(),actualPos.x() -position->x() , actualPos.y()-position->y());
+        scene()->addItem(rect);
+
+    }
+
+}
+
+
 
 void Warcraft::newBuilding(Building *building, Worker *worker, Player *player, int costGold, int costLumber) {
 
@@ -114,7 +148,6 @@ void Warcraft::newBuilding(Building *building, Worker *worker, Player *player, i
     }
 
 }
-
 
 
 
