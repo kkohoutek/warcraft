@@ -29,6 +29,9 @@ protected:
     Building *goldDestination = NULL;
     Building *currentBuilding = NULL;
 
+private:
+    QList<Animation *> *miningAnims;
+
 };
 
 #endif // WORKER_H
