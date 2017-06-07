@@ -14,6 +14,12 @@ Animation::Animation(QPixmap *spriteSheet, int subImageWidth, int subImageHeight
     connect(animationTimer, &QTimer::timeout, this, &nextFrame);
 }
 
+Animation::~Animation() {
+    delete frames;
+    delete animationTimer;
+    delete spriteSheet;
+}
+
 void Animation::nextFrame() {
     if(currentFrameIndex < frames->size()-1){
         currentFrameIndex++;
@@ -25,14 +31,11 @@ void Animation::nextFrame() {
     }
 }
 
-Animation::~Animation() {
-    delete frames;
-    delete animationTimer;
-    delete spriteSheet;
+void Animation::draw(QPainter *painter){
+    painter->drawPixmap(0,0,*spriteSheet,currentPositionX(),currentPositionY(),subImageWidth,subImageHeight);
 }
 
-void Animation::setCurrentFrame(int index)
-{
+void Animation::setCurrentFrame(int index) {
     currentFrameIndex = index;
 }
 
@@ -44,25 +47,11 @@ void Animation::stop(){
     animationTimer->stop();
 }
 
-QPixmap *Animation::getSpriteSheet(){
-    return spriteSheet;
-}
-
-
 int Animation::currentPositionX() {
     return frames->at(currentFrameIndex).at(0) * subImageWidth;
-
 }
 
 int Animation::currentPositionY() {
     return frames->at(currentFrameIndex).at(1) * subImageHeight;
-}
-
-int Animation::getSubImageWidth(){
-    return subImageWidth;
-}
-
-int Animation::getSubImageHeight(){
-    return subImageHeight;
 }
 

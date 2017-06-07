@@ -6,7 +6,7 @@
 #include <QMouseEvent>
 #include <QScrollBar>
 #include <QDebug>
-#include "mainwindow.h"
+
 #include "entity/building/humanfarm.h"
 #include "entity/building/humanblacksmith.h"
 #include "entity/building/humanchurch.h"
@@ -46,7 +46,7 @@ Warcraft::Warcraft()
     loadBackground();
     worker = new Worker(QPointF(500,1024) , HUMAN);
     scene->addItem(worker);
-    newBuilding(new HumanFarm(QPointF(1023,1023),false),worker,player,1,1);
+    newBuilding(new HumanFarm(QPointF(1023,1023),false),worker,player,HumanFarm::COST_GOLD,HumanFarm::COST_LUMBER);
     loadBuildings();
 
 }

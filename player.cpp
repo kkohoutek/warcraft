@@ -4,6 +4,29 @@ Player::Player(Race race) {
     this->race = race;
 }
 
+
+void Player::selectUnit(Unit *unit){
+    selectedUnits.clear();
+    if(units.contains(unit)){
+        selectedUnits.append(unit);
+    }
+}
+
+void Player::selectUnits(QList<Unit *> selected){
+    for(Unit *u : selected){
+        if(units.contains(u)){
+            selectedUnits.append(u);
+        }
+    }
+}
+
+void Player::selectBuilding(Building *building){
+    if(buildings.contains(building)){
+        selectedBuilding = building;
+    }
+}
+
+
 void Player::addGold(int amount) {
     gold += amount;
 }
@@ -27,7 +50,6 @@ int Player::getLumber(){
 int Player::getFood(){
     return food;
 }
-
 
 QList<Building *> *Player::getBuildings() {
     return &buildings;

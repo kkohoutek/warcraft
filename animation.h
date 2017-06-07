@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QPixmap>
 #include <QTimer>
+#include <QPainter>
 
 
 class Animation : public QObject
@@ -12,15 +13,10 @@ public:
     Animation(QPixmap *spriteSheet, int subImageWidth, int subImageHeight, QList<QList<int>> *frames, int duration, bool looping);
     ~Animation();
 
+    void draw(QPainter *painter);
     void stop();
     void start();
     void setCurrentFrame(int index);
-
-    int currentPositionX();
-    int currentPositionY();
-    int getSubImageWidth();
-    int getSubImageHeight();
-    QPixmap *getSpriteSheet();
 
 
 private:
@@ -32,6 +28,9 @@ private:
     bool                looping;
 
     QTimer              *animationTimer;
+
+    int currentPositionX();
+    int currentPositionY();
 
 private slots:
     void nextFrame();
