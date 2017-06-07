@@ -4,14 +4,14 @@
 #include <QGraphicsView>
 #include <QMouseEvent>
 #include <QKeyEvent>
-#include "player.h"
-
+#include <QRectF>
+#include <QRect>
+#include <QGraphicsRectItem>
 
 class Warcraft : public QGraphicsView
 {
 public:
     Warcraft();
-    ~Warcraft();
 
     void loadBackground();
     void loadBuildings();
@@ -19,15 +19,13 @@ public:
     void timerEvent(QTimerEvent *event);
 
     void mousePressEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *releaseEvent);
+    void mouseMoveEvent(QMouseEvent *event);
+    QPoint p;
+    bool isPressedLeftButton = false;
+    QPoint *position;
 
-    void newBuilding(Building *building, Worker *worker, Player *player, int costGold, int costLumber);
-
-
-
-private:
-    Player *player;
-    Player *enemy;
-
+    QGraphicsRectItem *rect;
 };
 
 #endif // WARCRAFT_H
