@@ -419,7 +419,7 @@ void Worker::update(){
             currentBuilding = NULL;
         }
     }
-    //Unit::update();
+    Unit::update();
 
 
 }
