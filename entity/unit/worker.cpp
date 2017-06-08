@@ -177,13 +177,182 @@ Worker::Worker(QPointF pos, Race race) : Unit(pos, 1, 0, 0, 0)
         goldCarryAnims = new QList<Animation *>();
 
         QList<QList<int>> *goldCarry0DegFrames = new QList<QList<int>>();
-        goldCarry0DegFrames->append(QList<int>() << 1 << 11);
         goldCarry0DegFrames->append(QList<int>() << 2 << 11);
-        goldCarry0DegFrames->append(QList<int>() << 1 << 11);
+        goldCarry0DegFrames->append(QList<int>() << 2 << 12);
+        goldCarry0DegFrames->append(QList<int>() << 2 << 13);
+        goldCarry0DegFrames->append(QList<int>() << 2 << 12);
 
         Animation *goldCarry0Deg = new Animation(spriteSheet, 32,32, goldCarry0DegFrames, 250, true);
 
         goldCarryAnims->append(goldCarry0Deg);
+
+        //45deg chodi ak postihnuty
+        QList<QList<int>> *goldCarry45DegFrames = new QList<QList<int>>();
+        goldCarry45DegFrames->append(QList<int>() << 1 << 12);
+        goldCarry45DegFrames->append(QList<int>() << 1 << 13);
+        goldCarry45DegFrames->append(QList<int>() << 1 << 14);
+        goldCarry45DegFrames->append(QList<int>() << 1 << 13);
+
+        Animation *goldCarry45Deg = new Animation(spriteSheet, 32,32, goldCarry45DegFrames, 250, true);
+
+        goldCarryAnims->append(goldCarry45Deg);
+
+        QList<QList<int>> *goldCarry90DegFrames = new QList<QList<int>>();
+        goldCarry90DegFrames->append(QList<int>() << 0 << 11);
+        goldCarry90DegFrames->append(QList<int>() << 0 << 12);
+        goldCarry90DegFrames->append(QList<int>() << 0 << 11);
+
+        Animation *goldCarry90Deg = new Animation(spriteSheet, 32,32, goldCarry90DegFrames, 250, true);
+
+        goldCarryAnims->append(goldCarry90Deg);
+
+        QList<QList<int>> *goldCarry135DegFrames = new QList<QList<int>>();
+        goldCarry135DegFrames->append(QList<int>() << 13 << 10);
+        goldCarry135DegFrames->append(QList<int>() << 13 << 11);
+        goldCarry135DegFrames->append(QList<int>() << 13 << 12);
+        goldCarry135DegFrames->append(QList<int>() << 13 << 11);
+
+        Animation *goldCarry135Deg = new Animation(spriteSheetFlipped, 32,32, goldCarry135DegFrames, 250, true);
+
+        goldCarryAnims->append(goldCarry135Deg);
+
+        QList<QList<int>> *goldCarry180DegFrames = new QList<QList<int>>();
+        goldCarry180DegFrames->append(QList<int>() << 12 << 10);
+        goldCarry180DegFrames->append(QList<int>() << 12 << 11);
+        goldCarry180DegFrames->append(QList<int>() << 12 << 12);
+        goldCarry180DegFrames->append(QList<int>() << 12 << 11);
+
+        Animation *goldCarry180Deg = new Animation(spriteSheetFlipped, 32,32, goldCarry180DegFrames, 250, true);
+
+        goldCarryAnims->append(goldCarry180Deg);
+
+        QList<QList<int>> *goldCarry225DegFrames = new QList<QList<int>>();
+        goldCarry225DegFrames->append(QList<int>() << 11 << 14);
+        goldCarry225DegFrames->append(QList<int>() << 11 << 13);
+        goldCarry225DegFrames->append(QList<int>() << 11 << 12);
+        goldCarry225DegFrames->append(QList<int>() << 11 << 13);
+
+        Animation *goldCarry225Deg = new Animation(spriteSheetFlipped, 32,32, goldCarry225DegFrames, 250, true);
+
+        goldCarryAnims->append(goldCarry225Deg);
+
+        QList<QList<int>> *goldCarry270DegFrames = new QList<QList<int>>();
+        goldCarry270DegFrames->append(QList<int>() << 10 << 14);
+        goldCarry270DegFrames->append(QList<int>() << 10 << 13);
+        goldCarry270DegFrames->append(QList<int>() << 10 << 12);
+        goldCarry270DegFrames->append(QList<int>() << 10 << 13);
+
+        Animation *goldCarry270Deg = new Animation(spriteSheetFlipped, 32,32, goldCarry270DegFrames, 250, true);
+
+        goldCarryAnims->append(goldCarry270Deg);
+
+        QList<QList<int>> *goldCarry315DegFrames = new QList<QList<int>>();
+        goldCarry315DegFrames->append(QList<int>() << 3 << 14);
+        goldCarry315DegFrames->append(QList<int>() << 3 << 13);
+        goldCarry315DegFrames->append(QList<int>() << 3 << 12);
+        goldCarry315DegFrames->append(QList<int>() << 3 << 13);
+
+        Animation *goldCarry315Deg = new Animation(spriteSheet, 32,32, goldCarry315DegFrames, 250, true);
+
+        goldCarryAnims->append(goldCarry315Deg);
+
+
+        woodCarryAnims = new QList<Animation *>();
+
+
+        QList<QList<int>> *woodCarry0DegFrames = new QList<QList<int>>();
+        woodCarry0DegFrames->append(QList<int>() << 2 << 5);
+        woodCarry0DegFrames->append(QList<int>() << 2 << 6);
+        woodCarry0DegFrames->append(QList<int>() << 2 << 7);
+        woodCarry0DegFrames->append(QList<int>() << 2 << 6);
+
+        Animation *woodCarry0Deg = new Animation(spriteSheet, 32,32, woodCarry0DegFrames, 250, true);
+
+        woodCarryAnims->append(woodCarry0Deg);
+
+        QList<QList<int>> *woodCarry45DegFrames = new QList<QList<int>>();
+        woodCarry45DegFrames->append(QList<int>() << 1 << 5);
+        woodCarry45DegFrames->append(QList<int>() << 1 << 6);
+        woodCarry45DegFrames->append(QList<int>() << 1 << 7);
+        woodCarry45DegFrames->append(QList<int>() << 1 << 6);
+
+        Animation *woodCarry45Deg = new Animation(spriteSheet, 32,32, woodCarry45DegFrames, 250, true);
+
+        woodCarryAnims->append(woodCarry45Deg);
+
+        QList<QList<int>> *woodCarry90DegFrames = new QList<QList<int>>();
+        woodCarry90DegFrames->append(QList<int>() << 0 << 5);
+        woodCarry90DegFrames->append(QList<int>() << 0 << 6);
+        woodCarry90DegFrames->append(QList<int>() << 0 << 7);
+        woodCarry90DegFrames->append(QList<int>() << 0 << 6);
+
+        Animation *woodCarry90Deg = new Animation(spriteSheet, 32,32, woodCarry90DegFrames, 250, true);
+
+        woodCarryAnims->append(woodCarry90Deg);
+
+        QList<QList<int>> *woodCarry135DegFrames = new QList<QList<int>>();
+        woodCarry135DegFrames->append(QList<int>() << 13 << 5);
+        woodCarry135DegFrames->append(QList<int>() << 13 << 6);
+        woodCarry135DegFrames->append(QList<int>() << 13 << 7);
+        woodCarry135DegFrames->append(QList<int>() << 13 << 6);
+
+        Animation *woodCarry135Deg = new Animation(spriteSheetFlipped, 32,32, woodCarry135DegFrames, 250, true);
+
+        woodCarryAnims->append(woodCarry135Deg);
+
+        QList<QList<int>> *woodCarry180DegFrames = new QList<QList<int>>();
+        woodCarry180DegFrames->append(QList<int>() << 12 << 5);
+        woodCarry180DegFrames->append(QList<int>() << 12 << 6);
+        woodCarry180DegFrames->append(QList<int>() << 12 << 7);
+        woodCarry180DegFrames->append(QList<int>() << 12 << 6);
+
+        Animation *woodCarry180Deg = new Animation(spriteSheetFlipped, 32,32, woodCarry180DegFrames, 250, true);
+
+        woodCarryAnims->append(woodCarry180Deg);
+
+        QList<QList<int>> *woodCarry225DegFrames = new QList<QList<int>>();
+        woodCarry225DegFrames->append(QList<int>() << 11 << 5);
+        woodCarry225DegFrames->append(QList<int>() << 11 << 6);
+        woodCarry225DegFrames->append(QList<int>() << 11 << 7);
+        woodCarry225DegFrames->append(QList<int>() << 11 << 6);
+
+        Animation *woodCarry225Deg = new Animation(spriteSheetFlipped, 32,32, woodCarry225DegFrames, 250, true);
+
+        woodCarryAnims->append(woodCarry225Deg);
+
+        QList<QList<int>> *woodCarry270DegFrames = new QList<QList<int>>();
+        woodCarry270DegFrames->append(QList<int>() << 10 << 5);
+        woodCarry270DegFrames->append(QList<int>() << 10 << 6);
+        woodCarry270DegFrames->append(QList<int>() << 10 << 7);
+        woodCarry270DegFrames->append(QList<int>() << 10 << 6);
+
+        Animation *woodCarry270Deg = new Animation(spriteSheetFlipped, 32,32, woodCarry270DegFrames, 250, true);
+
+        woodCarryAnims->append(woodCarry270Deg);
+
+        QList<QList<int>> *woodCarry315DegFrames = new QList<QList<int>>();
+        woodCarry315DegFrames->append(QList<int>() << 3 << 5);
+        woodCarry315DegFrames->append(QList<int>() << 3 << 6);
+        woodCarry315DegFrames->append(QList<int>() << 3 << 7);
+        woodCarry315DegFrames->append(QList<int>() << 3 << 6);
+
+        Animation *woodCarry315Deg = new Animation(spriteSheet, 32,32, woodCarry315DegFrames, 250, true);
+
+        woodCarryAnims->append(woodCarry315Deg);
+
+        deathAnims = new QList<Animation *>();
+
+        QList<QList<int>> *deathFrames = new QList<QList<int>>();
+        deathFrames->append(QList<int>() << 12 << 0);
+        deathFrames->append(QList<int>() << 12 << 1);
+        deathFrames->append(QList<int>() << 12 << 2);
+
+
+        Animation *death = new Animation(spriteSheet, 32,32, deathFrames, 250, false);
+
+        woodCarryAnims->append(death);
+
+        setCurrentAnimation(death);
 
         break;
     }
@@ -250,7 +419,7 @@ void Worker::update(){
             currentBuilding = NULL;
         }
     }
-    Unit::update();
+    //Unit::update();
 
 
 }
