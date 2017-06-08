@@ -31,7 +31,15 @@ SOURCES += main.cpp\
     player.cpp \
     entity/goldmine.cpp \
     entity/unit/worker.cpp \
-    entity/tree.cpp
+    entity/tree.cpp \
+    entity/building/orcbarracks.cpp \
+    entity/building/orcfarm.cpp \
+    entity/building/orckennels.cpp \
+    entity/building/orclumbermill.cpp \
+    entity/building/orctemple.cpp \
+    entity/building/orctower.cpp \
+    entity/building/orctownhall.cpp \
+    entity/building/orcblacksmith.cpp
 
 HEADERS  += mainwindow.h \
     entity/entity.h \
@@ -53,7 +61,15 @@ HEADERS  += mainwindow.h \
     player.h \
     entity/goldmine.h \
     entity/unit/worker.h \
-    entity/tree.h
+    entity/tree.h \
+    entity/building/orcbarracks.h \
+    entity/building/orcfarm.h \
+    entity/building/orckennels.h \
+    entity/building/orclumbermill.h \
+    entity/building/orctemple.h \
+    entity/building/orctower.h \
+    entity/building/orctownhall.h \
+    entity/building/orcblacksmith.h
 
 FORMS    += mainwindow.ui
 
