@@ -1,11 +1,18 @@
 #include "goldmine.h"
 
+Goldmine::~Goldmine()
+{
+    delete basicAnimation;
+}
+
 Goldmine::Goldmine(QPointF pos) : Entity(pos)
 {
     setMaxHP(20000);
     setHP(20000);
-    setCurrentAnimation(new Animation(new QPixmap(":graphics/GOLDMINE"), 48, 48, new QList<QList<int>>(), 0, false));
-
+    QList<QList<int>> *basicAnimationFrames = new QList<QList<int>>();
+    basicAnimationFrames->append(QList<int>() << 8 << 5);
+    basicAnimation = new Animation(new QPixmap(":graphics/MISC"), 55, 45, basicAnimationFrames, 0, false);
+    setCurrentAnimation(basicAnimation);
 }
 
 QRectF Goldmine::boundingRect() const
@@ -17,3 +24,6 @@ void Goldmine::update()
 {
 
 }
+
+
+
