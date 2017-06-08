@@ -50,7 +50,7 @@ Warcraft::Warcraft()
     player->newBuilding(new HumanFarm(QPointF(1080,1555),false),w,HumanFarm::COST_GOLD,HumanFarm::COST_LUMBER);
 
     scene->addItem(w);
-    scene->addItem(f);
+    //scene->addItem(f);
 }
 
 Warcraft::~Warcraft() {
