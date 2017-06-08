@@ -3,10 +3,9 @@
 #include "animation.h"
 
 #include <QGraphicsScene>
-#include <QMouseEvent>
 #include <QScrollBar>
 #include <QDebug>
-#include "mainwindow.h"
+
 #include "entity/building/humanfarm.h"
 #include "entity/building/humanblacksmith.h"
 #include "entity/building/humanchurch.h"
@@ -17,10 +16,8 @@
 #include "entity/building/humantower.h"
 #include "entity/unit/footman.h"
 
-
 Warcraft::Warcraft()
 {
-
     this->verticalScrollBar()->hide();
     this->horizontalScrollBar()->hide();
 
@@ -28,24 +25,42 @@ Warcraft::Warcraft()
     scene->setSceneRect(0,0,2048,2048);
 
     rect = new QGraphicsRectItem();
+    position = new QPoint();
 
     setScene(scene);
     startTimer(17);
     //setTransform(QTransform().scale(2,2));
     setMouseTracking(true);
-
-
     loadBackground();
-    loadBuildings();
-
-    position = new QPoint();
 
 
+    player = new Player(HUMAN);
+    enemy = new Player(ORC);
+
+    player->addGold(10000);
+    player->addLumber(10000);
+    player->addFood(10000);
+
+    Worker *w =new Worker(QPointF(500,1024), HUMAN);
+    Footman *f = new Footman(QPointF(555, 1066));
+//    player->getUnits()->append(f);
+    player->getWorkers()->append(w);
+
+    scene->addItem(w);
+//    scene->addItem(f);
+    player->newBuilding(new HumanFarm(QPointF(1080,1555),false),w,HumanFarm::COST_GOLD,HumanFarm::COST_LUMBER);
+
+}
+
+Warcraft::~Warcraft() {
+    delete enemy;
+    delete player;
 }
 
 void Warcraft::loadBackground()
 {
-    QRect rect(0, 0, 32, 32);
+
+    QRect rect(3*32, 0, 32, 32);
     QImage original(":graphics/WORLD");
     QImage cropped = original.copy(rect);
     QBrush brush(cropped);
@@ -56,66 +71,96 @@ void Warcraft::loadBackground()
 
 void Warcraft::loadBuildings()
 {
-    // testing
-    scene()->addItem(new HumanFarm(QPointF(160,512), false));
-    scene()->addItem(new HumanBlacksmith(QPointF(410,502), false));
-    scene()->addItem(new HumanChurch(QPointF(500,572), false));
-    scene()->addItem(new HumanBarracks(QPointF(600,400), false));
-    scene()->addItem(new HumanStables(QPointF(410, 330), false));
-    scene()->addItem(new HumanTower(QPointF(290, 390), false));
-    scene()->addItem(new HumanTownHall(QPointF(300, 500), false));
-
 }
 
 void Warcraft::timerEvent(QTimerEvent *event) {
-     p = mapFromGlobal(QCursor::pos());
-    if(p.x() >= this->viewport()->width() - 40 && p.x() <= MainWindow::WIDTH ){
+    QPoint p = mapFromGlobal(QCursor::pos());
+    if(p.x() >= this->window()->width() - 50 && p.x() <= this->window()->width() && p.y() >= 0 && p.y() <= this->window()->height() ){
         this->horizontalScrollBar()->setValue(horizontalScrollBar()->value()+20);
 
+
     }
-    else if(p.x() <= 40 && p.x() >= 0 ){
+    else if(p.x() <= 50 && p.x() >= 0 && p.y() <= this->window()->height() && p.y() >= 0){
         this->horizontalScrollBar()->setValue(horizontalScrollBar()->value()-20);
 
     }
 
-    if(p.y() >= this->viewport()->height() - 40 && p.y() <= MainWindow::HEIGHT){
+    if(p.y() >= this->window()->height() - 50 && p.y() <= this->window()->height() && p.x() >= 0 && p.x() <= this->window()->width() ){
         this->verticalScrollBar()->setValue(verticalScrollBar()->value()+20);
 
     }
 
-    else if(p.y() <= 40 && p.y() >= 0){
-       this->verticalScrollBar()->setValue(verticalScrollBar()->value()-20);
+    else if(p.y() <= 50 && p.y() >= 0 && p.x() <= this->window()->width() && p.x() >= 0){
+        this->verticalScrollBar()->setValue(verticalScrollBar()->value()-20);
 
     }
+
+    player->update();
 
     viewport()->update();
 }
 
 void Warcraft::mousePressEvent(QMouseEvent *event){
-
+    QPointF actualPos = mapToScene(mapFromGlobal(QCursor::pos()));
     if(event->button() == Qt::LeftButton){
-        QPointF point = mapToScene(p);
         isPressedLeftButton = true;
-        position->setX(point.x());
-        position->setY(point.y());
+        position->setX(actualPos.x());
+        position->setY(actualPos.y());
+
+
+        for(Unit *unit : *player->getUnits()){
+            if(unit->boundingRect().translated(unit->pos()).contains(actualPos)){
+                player->selectUnit(unit);
+            }
+        }
+        for(Worker *worker : *player->getWorkers()){
+            if(worker->boundingRect().translated(worker->pos()).contains(actualPos)){
+                player->selectUnit(worker);
+            }
+        }
+
+    } else if (event->button() == Qt::RightButton){
+        for(Unit *unit : *player->getSelectedUnits()){
+            unit->cancel();
+            unit->setTarget(actualPos);
+            unit->move();
+        }
+
     }
 }
 
 void Warcraft::mouseReleaseEvent(QMouseEvent *releaseEvent)
 {
-    isPressedLeftButton = false;
-    if(scene()->items().contains(rect)){
-        scene()->removeItem(rect);
+    if(releaseEvent->button() == Qt::LeftButton){
+
+        isPressedLeftButton = false;
+
+        /*
+        QList<Unit *> selected;
+        for(Unit *unit : *player->getUnits()){
+            if(rect->rect().contains(unit->boundingRect().translated(unit->pos()).center())){
+                selected.append(unit);
+            }
+        }
+        for(Worker *worker : *player->getWorkers()){
+            if(rect->rect().contains(worker->boundingRect().translated(worker->pos()).center())){
+                selected.append(worker);
+            }
+        }
+        if(!selected.empty()) player->selectUnits(selected);*/
+
+        if(scene()->items().contains(rect)){
+            scene()->removeItem(rect);
+        }
     }
 }
 
-void Warcraft::mouseMoveEvent(QMouseEvent *event)
-{
+void Warcraft::mouseMoveEvent(QMouseEvent *event) {
     if(isPressedLeftButton){
         if(scene()->items().contains(rect)){
             scene()->removeItem(rect);
         }
-        QPointF actualPos = mapToScene(p);
+        QPointF actualPos = mapToScene(mapFromGlobal(QCursor::pos()));
         rect->setPen(QPen(Qt::green));
         rect->setRect(position->x(), position->y(),actualPos.x() -position->x() , actualPos.y()-position->y());
         scene()->addItem(rect);
@@ -123,3 +168,4 @@ void Warcraft::mouseMoveEvent(QMouseEvent *event)
     }
 
 }
+
