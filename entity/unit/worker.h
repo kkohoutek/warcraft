@@ -34,6 +34,8 @@ protected:
 private:
     QList<Animation *> *miningAnims;
     QList<Animation *> *goldCarryAnims;
+    QList<Animation *> *woodCarryAnims;
+    QList<Animation *> *deathAnims;
 
 };
 
