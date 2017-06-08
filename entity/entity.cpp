@@ -15,6 +15,7 @@ void Entity::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
     currentAnimation->draw(painter);
     painter->scale(0.5f,0.5f);
     if(highlighted){
+        painter->setPen(QPen(Qt::green));
         painter->drawRect(boundingRect());
     }
     if(SHOW_HP_BARS){
