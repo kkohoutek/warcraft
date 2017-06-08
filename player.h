@@ -25,10 +25,10 @@ public:
     void selectUnits(QList<Unit *> selected);
     void selectBuilding(Building *building);
 
-    QList<Building *> *getBuildings();
-    QList<Unit *> *getUnits();
-    QList<Worker *> *getWorkers();
-    QList<Unit *> *getSelectedUnits();
+    QList<Building *> &getBuildings();
+    QList<Unit *> &getUnits();
+    QList<Worker *> &getWorkers();
+    QList<Unit *> &getSelectedUnits();
 
 
 

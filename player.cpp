@@ -86,19 +86,19 @@ int Player::getFood(){
     return food;
 }
 
-QList<Building *> *Player::getBuildings() {
-    return &buildings;
+QList<Building *> &Player::getBuildings() {
+    return buildings;
 }
 
-QList<Unit *> *Player::getUnits() {
-    return &units;
+QList<Unit *> &Player::getUnits() {
+    return units;
 
 }
 
-QList<Worker *> *Player::getWorkers(){
-    return &workers;
+QList<Worker *> &Player::getWorkers(){
+    return workers;
 }
 
-QList<Unit *> *Player::getSelectedUnits(){
-    return &selectedUnits;
+QList<Unit *> &Player::getSelectedUnits(){
+    return selectedUnits;
 }
