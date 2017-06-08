@@ -30,6 +30,7 @@ void Unit::updateAnimation(){
     qreal angle = QLineF(boundingRect().translated(pos()).center(), targetPoint).angle();
 
     int index;
+
     if(currentAnimationSet->size() == 8){
         if(angle >= 0 && angle < 45){
             index = 0;

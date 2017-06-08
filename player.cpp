@@ -61,7 +61,6 @@ void Player::selectBuilding(Building *building){
     }
 }
 
-
 void Player::addGold(int amount) {
     gold += amount;
 }

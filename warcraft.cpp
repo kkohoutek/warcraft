@@ -43,13 +43,14 @@ Warcraft::Warcraft()
 
     Worker *w =new Worker(QPointF(500,1024), HUMAN);
     Footman *f = new Footman(QPointF(555, 1066));
-//    player->getUnits()->append(f);
-    player->getWorkers()->append(w);
+    //player->getUnits().append(f);
+    player->getWorkers().append(w);
 
-    scene->addItem(w);
-//    scene->addItem(f);
+
     player->newBuilding(new HumanFarm(QPointF(1080,1555),false),w,HumanFarm::COST_GOLD,HumanFarm::COST_LUMBER);
 
+    scene->addItem(w);
+    scene->addItem(f);
 }
 
 Warcraft::~Warcraft() {
@@ -108,19 +109,19 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
         position->setY(actualPos.y());
 
 
-        for(Unit *unit : *player->getUnits()){
+        for(Unit *unit : player->getUnits()){
             if(unit->boundingRect().translated(unit->pos()).contains(actualPos)){
                 player->selectUnit(unit);
             }
         }
-        for(Worker *worker : *player->getWorkers()){
+        for(Worker *worker : player->getWorkers()){
             if(worker->boundingRect().translated(worker->pos()).contains(actualPos)){
                 player->selectUnit(worker);
             }
         }
 
     } else if (event->button() == Qt::RightButton){
-        for(Unit *unit : *player->getSelectedUnits()){
+        for(Unit *unit : player->getSelectedUnits()){
             unit->cancel();
             unit->setTarget(actualPos);
             unit->move();
