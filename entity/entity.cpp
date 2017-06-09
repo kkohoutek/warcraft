@@ -33,7 +33,12 @@ void Entity::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
 
 
 void Entity::setCurrentAnimation(Animation *anim) {
+    if(currentAnimation != NULL) {
+        currentAnimation->stop();
+        currentAnimation->setCurrentFrame(0);
+    }
     currentAnimation = anim;
+    currentAnimation->start();
 }
 
 Animation *Entity::getCurrentAnimation() {

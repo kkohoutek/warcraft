@@ -9,9 +9,9 @@ Animation::Animation(QPixmap *spriteSheet, int subImageWidth, int subImageHeight
 
     animationTimer = new QTimer();
     animationTimer->setInterval(duration);
-    animationTimer->start();
-
+    //animationTimer->start();
     connect(animationTimer, &QTimer::timeout, this, &nextFrame);
+
 }
 
 Animation::~Animation() {

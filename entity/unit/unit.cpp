@@ -2,6 +2,7 @@
 #include <QDebug>
 #include <QVector2D>
 
+
 Unit::Unit(QPointF pos, int speed, int damage, int armor, int range):Entity(pos)
 {
     this->speed = speed;
@@ -70,7 +71,9 @@ void Unit::updateAnimation(){
         index = 0;
     }
     qDebug() << index;
+
     setCurrentAnimation(currentAnimationSet->at(index));
+
 }
 
 void Unit::update(){
