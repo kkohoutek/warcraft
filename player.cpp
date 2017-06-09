@@ -5,13 +5,14 @@ Player::Player(Race race) {
 }
 
 void Player::update(){
-    /*
-    for(Unit *unit : units){
-        unit->update();
-    }*/
+
+
 
     for(Worker *worker : workers){
         worker->update();
+    }
+    for(Unit *unit : units){
+        unit->update();
     }
 
     for(Building *building : buildings){

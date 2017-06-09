@@ -10,6 +10,7 @@ class Unit : public Entity
 public:
 
     Unit(QPointF pos, int speed, int damage, int armor, int range);
+    virtual ~Unit();
 
     void setTarget(QPointF target);
 
@@ -42,6 +43,7 @@ protected:
 
     void moveToTarget();
     bool moving = false;
+
 
 };
 

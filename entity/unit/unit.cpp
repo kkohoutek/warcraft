@@ -12,8 +12,26 @@ Unit::Unit(QPointF pos, int speed, int damage, int armor, int range):Entity(pos)
     currentAnimationSet = movementAnims;
 }
 
+Unit::~Unit() {
+    for(Animation *a : *movementAnims){
+        delete a;
+    }
+    for(Animation *a : *deathAnims){
+        delete a;
+    }
+    for(Animation *a : *attackAnims){
+        delete a;
+    }
+
+    delete movementAnims;
+    delete attackAnims;
+    delete deathAnims;
+
+}
+
 void Unit::moveToTarget()
 {
+    //currentAnimationSet = movementAnims;
     /*
     if(pos() == targetPoint || contains(targetPoint)){
         //getCurrentAnimation()->setCurrentFrame(0);
@@ -29,8 +47,7 @@ void Unit::moveToTarget()
 void Unit::updateAnimation(){
     qreal angle = QLineF(boundingRect().translated(pos()).center(), targetPoint).angle();
 
-    int index;
-
+    int index = 0;
     if(currentAnimationSet->size() == 8){
         if(angle >= 0 && angle < 45){
             index = 0;
@@ -52,7 +69,7 @@ void Unit::updateAnimation(){
     } else {
         index = 0;
     }
-
+    qDebug() << index;
     setCurrentAnimation(currentAnimationSet->at(index));
 }
 
@@ -65,13 +82,12 @@ void Unit::update(){
         getCurrentAnimation()->setCurrentFrame(0);
         moving = false;
     }
-
-    updateAnimation();
 }
 
 void Unit::setTarget(QPointF target){
     targetPoint = target;
     currentAnimationSet = movementAnims;
+    updateAnimation();
 }
 
 void Unit::cancel(){
@@ -79,6 +95,7 @@ void Unit::cancel(){
 }
 
 void Unit::move() {
+    //currentAnimationSet = movementAnims;
     moving = true;
 }
 

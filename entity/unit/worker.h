@@ -10,6 +10,8 @@ class Worker : public Unit
 {
 public:
     Worker(QPointF pos, Race race);
+    ~Worker();
+
     QRectF boundingRect() const override;
 
     void gatherGold(Goldmine *source, Building *destination);
@@ -35,7 +37,6 @@ private:
     QList<Animation *> *miningAnims;
     QList<Animation *> *goldCarryAnims;
     QList<Animation *> *woodCarryAnims;
-    QList<Animation *> *deathAnims;
 
 };
 

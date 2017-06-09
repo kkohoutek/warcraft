@@ -43,14 +43,14 @@ Warcraft::Warcraft()
 
     Worker *w =new Worker(QPointF(500,1024), HUMAN);
     Footman *f = new Footman(QPointF(555, 1066));
-    //player->getUnits().append(f);
+    player->getUnits().append(f);
     player->getWorkers().append(w);
 
 
     player->newBuilding(new HumanFarm(QPointF(1080,1555),false),w,HumanFarm::COST_GOLD,HumanFarm::COST_LUMBER);
 
     scene->addItem(w);
-    //scene->addItem(f);
+    scene->addItem(f);
 }
 
 Warcraft::~Warcraft() {

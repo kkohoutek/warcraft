@@ -34,7 +34,7 @@ public:
  private:
     int hp = 0;
     int maxHP;
-    Animation *currentAnimation;
+    Animation *currentAnimation = NULL;
 
     bool highlighted = false;
 

@@ -12,7 +12,9 @@ Entity::~Entity() {
 void Entity::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
 
     painter->scale(2,2);
-    currentAnimation->draw(painter);
+    if(currentAnimation != NULL){
+        currentAnimation->draw(painter);
+    }
     painter->scale(0.5f,0.5f);
     if(highlighted){
         painter->setPen(QPen(Qt::green));

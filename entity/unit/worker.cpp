@@ -363,6 +363,23 @@ Worker::Worker(QPointF pos, Race race) : Unit(pos, 1, 0, 0, 0)
     }
 }
 
+Worker::~Worker() {
+    for(Animation *a : *goldCarryAnims){
+        delete a;
+    }
+    for(Animation *a : *woodCarryAnims){
+        delete a;
+    }
+    for(Animation *a : *woodCarryAnims){
+        delete a;
+    }
+
+    delete goldCarryAnims;
+    delete woodCarryAnims;
+    delete miningAnims;
+
+}
+
 QRectF Worker::boundingRect() const {
     return QRectF(16,16,32,32);
 
