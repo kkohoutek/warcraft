@@ -191,6 +191,8 @@ Footman::Footman(QPointF pos) : Unit(pos, 1, 1, 2, 0)
     Animation *death = new Animation(spriteSheet, 48,48, deathFrames, 250, false);
 
     deathAnims->append(death);
+    
+    setCurrentAnimation(walk0Deg);
 
 }
 
