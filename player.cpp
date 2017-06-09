@@ -39,17 +39,17 @@ void Player::newBuilding(Building *building, Worker *worker, int costGold, int c
 
 
 void Player::selectUnit(Unit *unit){
-    selectedUnits.clear();
     if(units.contains(unit) || workers.contains(static_cast<Worker *>(unit))){
+        deselect();
         selectedUnits.append(unit);
         unit->setHighlighted(true);
     }
 }
 
 void Player::selectUnits(QList<Unit *> selected){
-    selectedUnits.clear();
     for(Unit *u : selected){
         if(units.contains(u)){
+            deselect();
             selectedUnits.append(u);
             u->setHighlighted(true);
         }
@@ -58,8 +58,21 @@ void Player::selectUnits(QList<Unit *> selected){
 
 void Player::selectBuilding(Building *building){
     if(buildings.contains(building)){
+        deselect();
         selectedBuilding = building;
         selectedBuilding->setHighlighted(true);
+    }
+}
+
+void Player::deselect() {
+    for(Unit * u : selectedUnits){
+        u->setHighlighted(false);
+    }
+    selectedUnits.clear();
+
+    if(selectedBuilding != NULL){
+        selectedBuilding->setHighlighted(false);
+        selectedBuilding = NULL;
     }
 }
 

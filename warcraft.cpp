@@ -43,6 +43,7 @@ Warcraft::Warcraft()
 
     Worker *w =new Worker(QPointF(500,1024), HUMAN);
     Footman *f = new Footman(QPointF(555, 1066));
+
     player->getUnits().append(f);
     player->getWorkers().append(w);
 

@@ -11,6 +11,7 @@ Footman::Footman(QPointF pos) : Unit(pos, 1, 1, 2, 0)
 
     movementAnims = new QList<Animation *>();
 
+
     QList<QList<int>> *walk0DegFrames = new QList<QList<int>>();
     walk0DegFrames->append(QList<int>() << 2 << 0);
     walk0DegFrames->append(QList<int>() << 2 << 1);
@@ -72,10 +73,10 @@ Footman::Footman(QPointF pos) : Unit(pos, 1, 1, 2, 0)
     movementAnims->append(walk225Deg);
 
     QList<QList<int>> *walk270DegFrames = new QList<QList<int>>();
-    walk135DegFrames->append(QList<int>() << 4 << 0);
-    walk135DegFrames->append(QList<int>() << 4 << 1);
-    walk135DegFrames->append(QList<int>() << 4 << 2);
-    walk135DegFrames->append(QList<int>() << 4 << 1);
+    walk270DegFrames->append(QList<int>() << 4 << 0);
+    walk270DegFrames->append(QList<int>() << 4 << 1);
+    walk270DegFrames->append(QList<int>() << 4 << 2);
+    walk270DegFrames->append(QList<int>() << 4 << 1);
 
     Animation *walk270Deg = new Animation(spriteSheet, 48,48, walk270DegFrames, 250, true);
 
@@ -197,5 +198,5 @@ Footman::Footman(QPointF pos) : Unit(pos, 1, 1, 2, 0)
 }
 
 QRectF Footman::boundingRect() const {
-    return QRectF(6,6,36,36);
+    return QRectF(24,24,44,44);
 }

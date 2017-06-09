@@ -24,6 +24,7 @@ public:
     void selectUnit(Unit *unit);
     void selectUnits(QList<Unit *> selected);
     void selectBuilding(Building *building);
+    void deselect();
 
     QList<Building *> &getBuildings();
     QList<Unit *> &getUnits();

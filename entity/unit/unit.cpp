@@ -1,7 +1,7 @@
 #include "unit.h"
 #include <QDebug>
 #include <QVector2D>
-
+#include <QtMath>
 
 Unit::Unit(QPointF pos, int speed, int damage, int armor, int range):Entity(pos)
 {
@@ -10,7 +10,9 @@ Unit::Unit(QPointF pos, int speed, int damage, int armor, int range):Entity(pos)
     this->range = range;
     this->armor = armor;
 
+
     currentAnimationSet = movementAnims;
+
 }
 
 Unit::~Unit() {
@@ -48,7 +50,7 @@ void Unit::moveToTarget()
 void Unit::updateAnimation(){
     qreal angle = QLineF(boundingRect().translated(pos()).center(), targetPoint).angle();
 
-    int index = 0;
+    int index;
     if(currentAnimationSet->size() == 8){
         if(angle >= 0 && angle < 45){
             index = 0;
@@ -70,8 +72,8 @@ void Unit::updateAnimation(){
     } else {
         index = 0;
     }
-    qDebug() << index;
 
+    //setCurrentAnimation(currentAnimationSet->at(qFloor(angle/45)));
     setCurrentAnimation(currentAnimationSet->at(index));
 
 }
@@ -98,7 +100,6 @@ void Unit::cancel(){
 }
 
 void Unit::move() {
-    //currentAnimationSet = movementAnims;
     moving = true;
 }
 
