@@ -352,7 +352,7 @@ Worker::Worker(QPointF pos, Race race) : Unit(pos, 1, 0, 0, 0)
 
         woodCarryAnims->append(death);
 
-        setCurrentAnimation(death);
+        setCurrentAnimation(walk270Deg);
 
         break;
     }
@@ -422,25 +422,22 @@ void Worker::goBuild(Building *building){
 }
 
 void Worker::update(){
+    Unit::update();
     if(currentBuilding != NULL){
-        if(!currentBuilding->isBuildingFinished() && !scene()->items().contains(currentBuilding)){
+        if(!currentBuilding->isBuildingFinished()){
             if(collidesWithItem(currentBuilding)){
                 currentBuilding->beginConstruction();
                 scene()->addItem(currentBuilding);
-                this->hide();
+                hide();
                 stopMoving();
             }
         } else {
             show();
-            setPos(currentBuilding->pos()-QPointF(0,8));
+            setPos(currentBuilding->pos()-QPointF(0,6));
             currentBuilding = NULL;
         }
     }
-    Unit::update();
-
-
 }
-
 
 bool Worker::isGatheringGold(){
     return !(currentGoldmine == NULL);

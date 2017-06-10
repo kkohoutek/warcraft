@@ -75,6 +75,7 @@ void Unit::updateAnimation(){
 
     //setCurrentAnimation(currentAnimationSet->at(qFloor(angle/45)));
     setCurrentAnimation(currentAnimationSet->at(index));
+    getCurrentAnimation()->start();
 
 }
 
@@ -85,6 +86,7 @@ void Unit::update(){
 
     if(distanceFrom(targetPoint) < 2){
         getCurrentAnimation()->setCurrentFrame(0);
+        getCurrentAnimation()->stop();
         moving = false;
     }
 }

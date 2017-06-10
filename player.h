@@ -22,7 +22,7 @@ public:
     int getFood();
 
     void selectUnit(Unit *unit);
-    void selectUnits(QList<Unit *> selected);
+    void selectUnits(QList<Unit *> &selected);
     void selectBuilding(Building *building);
     void deselect();
 
@@ -30,6 +30,8 @@ public:
     QList<Unit *> &getUnits();
     QList<Worker *> &getWorkers();
     QList<Unit *> &getSelectedUnits();
+
+    Race getRace();
 
 
 

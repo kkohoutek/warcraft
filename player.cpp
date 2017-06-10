@@ -46,10 +46,11 @@ void Player::selectUnit(Unit *unit){
     }
 }
 
-void Player::selectUnits(QList<Unit *> selected){
+void Player::selectUnits(QList<Unit *> &selected){
+    if(selected.empty()) return;
+    deselect();
     for(Unit *u : selected){
         if(units.contains(u)){
-            deselect();
             selectedUnits.append(u);
             u->setHighlighted(true);
         }
@@ -115,4 +116,9 @@ QList<Worker *> &Player::getWorkers(){
 
 QList<Unit *> &Player::getSelectedUnits(){
     return selectedUnits;
+}
+
+Race Player::getRace() {
+    return race;
+
 }

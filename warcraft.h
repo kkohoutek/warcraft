@@ -18,6 +18,8 @@ public:
 
     void loadBackground();
     void loadBuildings();
+    void loadUnits();
+    void loadWorld();
 
     void timerEvent(QTimerEvent *event);
 

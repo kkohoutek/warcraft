@@ -21,10 +21,10 @@ void Entity::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
         painter->drawRect(boundingRect());
     }
     if(SHOW_HP_BARS){
-        painter->scale(2,2);
+
         painter->setBrush(QBrush(Qt::green));
         painter->setPen(QPen(Qt::green));
-        painter->drawRect(0,0, hp*boundingRect().width()/maxHP, 1.5f); // health bar
+        painter->drawRect(boundingRect().topLeft().x(),boundingRect().topLeft().y()-5, hp*boundingRect().width()/maxHP, 1.25f); // health bar
     }
 
     Q_UNUSED(option);
@@ -38,7 +38,7 @@ void Entity::setCurrentAnimation(Animation *anim) {
         currentAnimation->setCurrentFrame(0);
     }
     currentAnimation = anim;
-    currentAnimation->start();
+    //currentAnimation->start();
 }
 
 Animation *Entity::getCurrentAnimation() {

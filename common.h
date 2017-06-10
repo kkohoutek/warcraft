@@ -2,7 +2,7 @@
 #define COMMON_H
 
 enum Race {HUMAN, ORC};
-const int TIME_DIVISOR = 10;
+const int TIME_DIVISOR = 100;
 const bool SHOW_HP_BARS = true;
 
 

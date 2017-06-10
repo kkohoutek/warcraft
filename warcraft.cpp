@@ -20,6 +20,7 @@ Warcraft::Warcraft()
 {
     this->verticalScrollBar()->hide();
     this->horizontalScrollBar()->hide();
+    setMouseTracking(true);
 
     QGraphicsScene *scene = new QGraphicsScene();
     scene->setSceneRect(0,0,2048,2048);
@@ -28,11 +29,6 @@ Warcraft::Warcraft()
     position = new QPoint();
 
     setScene(scene);
-    startTimer(17);
-    //setTransform(QTransform().scale(2,2));
-    setMouseTracking(true);
-    loadBackground();
-
 
     player = new Player(HUMAN);
     enemy = new Player(ORC);
@@ -41,17 +37,13 @@ Warcraft::Warcraft()
     player->addLumber(10000);
     player->addFood(10000);
 
-    Worker *w =new Worker(QPointF(500,1024), HUMAN);
-    Footman *f = new Footman(QPointF(555, 1066));
 
-    player->getUnits().append(f);
-    player->getWorkers().append(w);
+    loadBackground();
+    loadWorld();
+    loadUnits();
+    loadBuildings();
 
-
-    player->newBuilding(new HumanFarm(QPointF(1080,1555),false),w,HumanFarm::COST_GOLD,HumanFarm::COST_LUMBER);
-
-    scene->addItem(w);
-    scene->addItem(f);
+    startTimer(17);
 }
 
 Warcraft::~Warcraft() {
@@ -71,8 +63,30 @@ void Warcraft::loadBackground()
 
 }
 
-void Warcraft::loadBuildings()
-{
+void Warcraft::loadBuildings() {
+    Building *th = new HumanTownHall(QPointF(216,216), true);
+    player->getBuildings().append(th);
+    scene()->addItem(th);
+
+}
+
+void Warcraft::loadUnits(){
+    for(int i = 0; i < 4; i++){
+        Worker *w = new Worker(QPointF(128+i*28,128), player->getRace());
+        player->getWorkers().append(w);
+        scene()->addItem(w);
+    }
+
+    Footman *f = new Footman(QPointF(112,138));
+    scene()->addItem(f);
+    player->getUnits().append(f);
+}
+
+void Warcraft::loadWorld() {
+    scene()->addItem(new Goldmine(QPointF(64,64)));
+    scene()->addItem(new Goldmine(QPointF(2048-128, 2048-128)));
+
+
 }
 
 void Warcraft::timerEvent(QTimerEvent *event) {
@@ -137,19 +151,19 @@ void Warcraft::mouseReleaseEvent(QMouseEvent *releaseEvent)
 
         isPressedLeftButton = false;
 
-        /*
+    /*
         QList<Unit *> selected;
-        for(Unit *unit : *player->getUnits()){
+        for(Unit *unit : player->getUnits()){
             if(rect->rect().contains(unit->boundingRect().translated(unit->pos()).center())){
                 selected.append(unit);
             }
         }
-        for(Worker *worker : *player->getWorkers()){
+        for(Worker *worker : player->getWorkers()){
             if(rect->rect().contains(worker->boundingRect().translated(worker->pos()).center())){
                 selected.append(worker);
             }
         }
-        if(!selected.empty()) player->selectUnits(selected);*/
+        player->selectUnits(selected);*/
 
         if(scene()->items().contains(rect)){
             scene()->removeItem(rect);

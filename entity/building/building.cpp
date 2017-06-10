@@ -51,6 +51,7 @@ void Building::update(){
 }
 
 void Building::beginConstruction(){
+    if(buildTimer->isActive()) return;
     buildTimer->start();
     buildAnimation->start();
 }
