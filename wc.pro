@@ -70,7 +70,6 @@ HEADERS  += mainwindow.h \
     entity/building/orctower.h \
     entity/building/orctownhall.h \
     entity/building/orcblacksmith.h \
-    resources.h
 
 FORMS    += mainwindow.ui
 
