@@ -11,7 +11,7 @@ Goldmine::Goldmine(QPointF pos) : Entity(pos)
 
 QRectF Goldmine::boundingRect() const
 {
-    return QRectF(0,0,48,48);
+    return QRectF(-8,0,96,92);
 }
 
 void Goldmine::update()
