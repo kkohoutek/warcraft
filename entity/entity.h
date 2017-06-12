@@ -32,7 +32,7 @@ public:
 
 
  private:
-    int hp = 0;
+    int hp;
     int maxHP;
     Animation *currentAnimation = NULL;
 
