@@ -85,9 +85,7 @@ void Unit::update(){
     }
 
     if(distanceFrom(targetPoint) < 2){
-        getCurrentAnimation()->setCurrentFrame(0);
-        getCurrentAnimation()->stop();
-        moving = false;
+        stopMoving();
     }
 }
 
@@ -107,6 +105,8 @@ void Unit::move() {
 
 void Unit::stopMoving(){
     moving = false;
+    getCurrentAnimation()->setCurrentFrame(0);
+    getCurrentAnimation()->stop();
 }
 
 bool Unit::isMoving(){

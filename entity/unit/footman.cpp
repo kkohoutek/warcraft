@@ -198,5 +198,5 @@ Footman::Footman(QPointF pos) : Unit(pos, 1, 1, 2, 0)
 }
 
 QRectF Footman::boundingRect() const {
-    return QRectF(24,24,44,44);
+    return QRectF(32,32,36,36);
 }
