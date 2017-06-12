@@ -24,18 +24,16 @@ Warcraft::Warcraft()
 
     QGraphicsScene *scene = new QGraphicsScene();
     scene->setSceneRect(0,0,2048,2048);
+    setScene(scene);
 
     rect = new QGraphicsRectItem();
     position = new QPoint();
 
-    setScene(scene);
 
-    player = new Player(HUMAN);
-    enemy = new Player(ORC);
 
-    player->addGold(10000);
-    player->addLumber(10000);
-    player->addFood(10000);
+    player.addGold(10000);
+    player.addLumber(10000);
+    player.addFood(10000);
 
 
     loadBackground();
@@ -47,8 +45,12 @@ Warcraft::Warcraft()
 }
 
 Warcraft::~Warcraft() {
-    delete enemy;
-    delete player;
+    for(Goldmine *g : *goldmines){
+        delete g;
+    }
+    delete goldmines;
+    delete rect;
+    delete position;
 }
 
 void Warcraft::loadBackground()
@@ -65,27 +67,53 @@ void Warcraft::loadBackground()
 
 void Warcraft::loadBuildings() {
     Building *th = new HumanTownHall(QPointF(216,216), true);
-    player->getBuildings().append(th);
+    player.getBuildings().append(th);
     scene()->addItem(th);
 
 }
 
 void Warcraft::loadUnits(){
     for(int i = 0; i < 4; i++){
-        Worker *w = new Worker(QPointF(128+i*28,128), player->getRace());
-        player->getWorkers().append(w);
+        Worker *w = new Worker(QPointF(128+i*28,128), player.getRace());
+        player.getWorkers().append(w);
         scene()->addItem(w);
     }
 
     Footman *f = new Footman(QPointF(112,138));
     scene()->addItem(f);
-    player->getUnits().append(f);
+    player.getUnits().append(f);
 }
 
 void Warcraft::loadWorld() {
-    scene()->addItem(new Goldmine(QPointF(64,64)));
-    scene()->addItem(new Goldmine(QPointF(2048-128, 2048-128)));
+    goldmines = new QList<Goldmine *>();
+    Goldmine *a = new Goldmine(QPointF(64,64));
+    Goldmine *b = new Goldmine(QPointF(2048-128, 2048-128));
+    scene()->addItem(a);
+    scene()->addItem(b);
 
+    goldmines->append(a);
+    goldmines->append(b);
+
+}
+
+void Warcraft::solveCollisions() {
+    QList<Unit *> allUnits;
+    allUnits.append(player.getUnits());
+    allUnits.append(enemy.getUnits());
+
+    QList<Building *> allBuildings;
+    allBuildings.append(player.getBuildings());
+    allBuildings.append(enemy.getBuildings());
+
+    for(Unit *u : allUnits){
+        for(Building *b : allBuildings){
+            if(u->collidesWithItem(b)){
+                //u->setTarget(b->pos()-QPointF(5,5));
+                u->stopMoving();
+                break;
+            }
+        }
+    }
 
 }
 
@@ -110,8 +138,9 @@ void Warcraft::timerEvent(QTimerEvent *event) {
         this->verticalScrollBar()->setValue(verticalScrollBar()->value()-20);
 
     }
+    player.update();
 
-    player->update();
+    solveCollisions();
 
     viewport()->update();
 }
@@ -124,19 +153,19 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
         position->setY(actualPos.y());
 
 
-        for(Unit *unit : player->getUnits()){
+        for(Unit *unit : player.getUnits()){
             if(unit->boundingRect().translated(unit->pos()).contains(actualPos)){
-                player->selectUnit(unit);
+                player.selectUnit(unit);
             }
         }
-        for(Worker *worker : player->getWorkers()){
+        for(Worker *worker : player.getWorkers()){
             if(worker->boundingRect().translated(worker->pos()).contains(actualPos)){
-                player->selectUnit(worker);
+                player.selectUnit(worker);
             }
         }
 
     } else if (event->button() == Qt::RightButton){
-        for(Unit *unit : player->getSelectedUnits()){
+        for(Unit *unit : player.getSelectedUnits()){
             unit->cancel();
             unit->setTarget(actualPos);
             unit->move();
@@ -153,17 +182,17 @@ void Warcraft::mouseReleaseEvent(QMouseEvent *releaseEvent)
 
     /*
         QList<Unit *> selected;
-        for(Unit *unit : player->getUnits()){
+        for(Unit *unit : player.getUnits()){
             if(rect->rect().contains(unit->boundingRect().translated(unit->pos()).center())){
                 selected.append(unit);
             }
         }
-        for(Worker *worker : player->getWorkers()){
+        for(Worker *worker : player.getWorkers()){
             if(rect->rect().contains(worker->boundingRect().translated(worker->pos()).center())){
                 selected.append(worker);
             }
         }
-        player->selectUnits(selected);*/
+        player.selectUnits(selected);*/
 
         if(scene()->items().contains(rect)){
             scene()->removeItem(rect);

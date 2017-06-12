@@ -8,6 +8,7 @@
 #include <QRect>
 #include <QGraphicsRectItem>
 #include "player.h"
+#include "entity/goldmine.h"
 
 
 class Warcraft : public QGraphicsView
@@ -20,6 +21,7 @@ public:
     void loadBuildings();
     void loadUnits();
     void loadWorld();
+    void solveCollisions();
 
     void timerEvent(QTimerEvent *event);
 
@@ -33,8 +35,10 @@ public:
 
 
 private:
-    Player *player;
-    Player *enemy;
+    Player player = Player(HUMAN);
+    Player enemy = Player(ORC);
+
+    QList<Goldmine *> *goldmines;
 
 };
 
