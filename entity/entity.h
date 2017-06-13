@@ -29,6 +29,7 @@ public:
 
     qreal distanceFrom(Entity *entity);
     qreal distanceFrom(QPointF point);
+    QPointF center();
 
 
  private:

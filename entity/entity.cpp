@@ -74,3 +74,8 @@ qreal Entity::distanceFrom(Entity *entity){
 qreal Entity::distanceFrom(QPointF point){
     return QLineF(boundingRect().translated(pos()).center(), point).length();
 }
+
+QPointF Entity::center() {
+    return boundingRect().translated(pos()).center();
+
+}
