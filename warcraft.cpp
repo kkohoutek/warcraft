@@ -143,6 +143,7 @@ void Warcraft::timerEvent(QTimerEvent *event) {
 }
 
 void Warcraft::mousePressEvent(QMouseEvent *event){
+
     QPointF actualPos = mapToScene(mapFromGlobal(QCursor::pos()));
     if(event->button() == Qt::LeftButton){
         isPressedLeftButton = true;
@@ -162,10 +163,12 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
         }
 
     } else if (event->button() == Qt::RightButton){
+        int i = 0 ;
         for(Unit *unit : player.getSelectedUnits()){
             unit->cancel();
-            unit->setTarget(actualPos);
+            unit->setTarget(actualPos+QPoint(i,i));
             unit->move();
+            i +=40;
         }
 
     }
@@ -177,7 +180,6 @@ void Warcraft::mouseReleaseEvent(QMouseEvent *releaseEvent)
 
         isPressedLeftButton = false;
 
-    /*
         QList<Unit *> selected;
         for(Unit *unit : player.getUnits()){
             if(rect->rect().contains(unit->boundingRect().translated(unit->pos()).center())){
@@ -189,12 +191,13 @@ void Warcraft::mouseReleaseEvent(QMouseEvent *releaseEvent)
                 selected.append(worker);
             }
         }
-        player.selectUnits(selected);*/
+        player.selectUnits(selected);
 
         if(scene()->items().contains(rect)){
             scene()->removeItem(rect);
         }
     }
+
 }
 
 void Warcraft::mouseMoveEvent(QMouseEvent *event) {
@@ -205,6 +208,7 @@ void Warcraft::mouseMoveEvent(QMouseEvent *event) {
         QPointF actualPos = mapToScene(mapFromGlobal(QCursor::pos()));
         rect->setPen(QPen(Qt::green));
         rect->setRect(position->x(), position->y(),actualPos.x() -position->x() , actualPos.y()-position->y());
+
         scene()->addItem(rect);
 
     }
