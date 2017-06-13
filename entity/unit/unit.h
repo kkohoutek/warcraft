@@ -9,7 +9,7 @@ class Unit : public Entity
 {
 public:
 
-    Unit(QPointF pos, int speed, int damage, int armor, int range);
+    Unit(QPointF pos, float speed, int damage, int armor, int range);
     virtual ~Unit();
 
     void setTarget(QPointF target);
@@ -23,11 +23,13 @@ public:
     /* Začni se hýbat, setTarget musí být voláno před použitím */
     void move();
 
+    float getSpeed();
+    void setSpeed(float speed);
     void stopMoving();
     bool isMoving();
 
 protected:
-    int speed;
+    float speed;
     int damage;
     int armor;
     int range;

@@ -3,7 +3,7 @@
 #include <QVector2D>
 #include <QtMath>
 
-Unit::Unit(QPointF pos, int speed, int damage, int armor, int range):Entity(pos)
+Unit::Unit(QPointF pos, float speed, int damage, int armor, int range):Entity(pos)
 {
     this->speed = speed;
     this->damage = damage;
@@ -41,14 +41,14 @@ void Unit::moveToTarget()
         return;
     }*/
 
-    QVector2D dir(targetPoint - boundingRect().translated(pos()).center());
+    QVector2D dir(targetPoint - center());
     dir.normalize();
     moveBy(speed * dir.x(), speed * dir.y());
 
 }
 
 void Unit::updateAnimation(){
-    qreal angle = QLineF(boundingRect().translated(pos()).center(), targetPoint).angle();
+    qreal angle = QLineF(center(), targetPoint).angle();
 
     int index;
     if(currentAnimationSet->size() == 8){
@@ -112,6 +112,14 @@ void Unit::stopMoving(){
 bool Unit::isMoving(){
     return moving;
 
+}
+
+void Unit::setSpeed(float speed){
+    this->speed = speed;
+}
+
+float Unit::getSpeed(){
+    return speed;
 }
 
 
