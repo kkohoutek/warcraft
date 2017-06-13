@@ -33,6 +33,8 @@ public:
     void mouseReleaseEvent(QMouseEvent *releaseEvent);
     void mouseMoveEvent(QMouseEvent *event);
 
+    QList<Entity *> staticEntities();
+
 
 private:
     Player player = Player(HUMAN);

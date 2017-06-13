@@ -29,8 +29,6 @@ Warcraft::Warcraft()
     rect = new QGraphicsRectItem();
     position = new QPoint();
 
-
-
     player.addGold(10000);
     player.addLumber(10000);
     player.addFood(10000);
@@ -106,15 +104,14 @@ void Warcraft::solveCollisions() {
     allBuildings.append(enemy.getBuildings());
 
     for(Unit *u : allUnits){
-        for(Building *b : allBuildings){
-            if(u->collidesWithItem(b)){
-                //u->setTarget(b->pos()-QPointF(5,5));
+        for(Entity *e : staticEntities()){
+            if(u->collidesWithItem(e)){
+                //u->setTarget(e->pos()-QPointF(5,5));
                 u->stopMoving();
                 break;
             }
         }
     }
-
 }
 
 void Warcraft::timerEvent(QTimerEvent *event) {
@@ -212,5 +209,17 @@ void Warcraft::mouseMoveEvent(QMouseEvent *event) {
 
     }
 
+}
+
+
+QList<Entity *> Warcraft::staticEntities(){
+    QList<Entity *> list;
+    for(Building *b : player.getBuildings()){
+        list.append(b);
+    }
+    for(Goldmine *g : *goldmines){
+        list.append(g);
+    }
+    return list;
 }
 
