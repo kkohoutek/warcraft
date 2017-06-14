@@ -1,8 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-
 #include "warcraft.h"
-#include <QDebug>
 
 
 MainWindow::MainWindow(QWidget *parent) :

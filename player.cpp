@@ -6,8 +6,6 @@ Player::Player(Race race) {
 
 void Player::update(){
 
-
-
     for(Worker *worker : workers){
         worker->update();
     }
@@ -31,11 +29,10 @@ void Player::newBuilding(Building *building, Worker *worker, int costGold, int c
         worker->goBuild(building);
         buildings.append(building);
 
-        selectedUnits.clear();
+        deselect();
     }
 
 }
-
 
 
 void Player::selectUnit(Unit *unit){
@@ -46,7 +43,7 @@ void Player::selectUnit(Unit *unit){
     }
 }
 
-void Player::selectUnits(QList<Unit *> &selected){
+void Player::selectUnits(QList<Unit *> selected){
     if(selected.empty()) return;
     deselect();
     for(Unit *u : selected){
@@ -107,7 +104,6 @@ QList<Building *> &Player::getBuildings() {
 
 QList<Unit *> &Player::getUnits() {
     return units;
-
 }
 
 QList<Worker *> &Player::getWorkers(){
@@ -116,6 +112,16 @@ QList<Worker *> &Player::getWorkers(){
 
 QList<Unit *> &Player::getSelectedUnits(){
     return selectedUnits;
+}
+
+QList<Unit *> Player::allUnits(){
+    QList<Unit *> all;
+    all.append(units);
+    for(Worker *w : workers){
+        all.append(w);
+    }
+    return all;
+
 }
 
 Race Player::getRace() {

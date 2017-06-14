@@ -21,15 +21,16 @@ public:
     int getLumber();
     int getFood();
 
-    void selectUnit(Unit *unit);
-    void selectUnits(QList<Unit *> &selected);
+    void selectUnit(Unit *unit);                // select jedné jednotky
+    void selectUnits(QList<Unit *> selected);   // hromadný select
     void selectBuilding(Building *building);
-    void deselect();
+    void deselect();                            // zruš výběr jednotek
 
     QList<Building *> &getBuildings();
     QList<Unit *> &getUnits();
     QList<Worker *> &getWorkers();
     QList<Unit *> &getSelectedUnits();
+    QList<Unit *> allUnits();                   // units + workers
 
     Race getRace();
 

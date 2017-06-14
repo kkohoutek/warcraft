@@ -95,15 +95,7 @@ void Warcraft::loadWorld() {
 }
 
 void Warcraft::solveCollisions() {
-    QList<Unit *> allUnits;
-    allUnits.append(player.getUnits());
-    allUnits.append(enemy.getUnits());
-
-    QList<Building *> allBuildings;
-    allBuildings.append(player.getBuildings());
-    allBuildings.append(enemy.getBuildings());
-
-    for(Unit *u : allUnits){
+    for(Unit *u : allUnits()){
         for(Entity *e : staticEntities()){
             if(u->collidesWithItem(e)){
                 //u->setTarget(e->pos()-QPointF(5,5));
@@ -206,9 +198,7 @@ void Warcraft::mouseMoveEvent(QMouseEvent *event) {
         rect->setPen(QPen(Qt::green));
         rect->setRect(position->x(), position->y(),actualPos.x() -position->x() , actualPos.y()-position->y());
         scene()->addItem(rect);
-
     }
-
 }
 
 
@@ -221,5 +211,23 @@ QList<Entity *> Warcraft::staticEntities(){
         list.append(g);
     }
     return list;
+}
+
+QList<Unit *> Warcraft::allUnits(){
+    QList<Unit *> allUnits;
+    allUnits.append(player.getUnits());
+    allUnits.append(enemy.getUnits());
+    for(Worker *w : player.getWorkers()){
+        allUnits.append(w);
+    }
+    for(Worker *w : enemy.getWorkers()){
+        allUnits.append(w);
+    }
+
+    QList<Building *> allBuildings;
+    allBuildings.append(player.getBuildings());
+    allBuildings.append(enemy.getBuildings());
+    return allUnits;
+
 }
 
