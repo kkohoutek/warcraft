@@ -34,6 +34,7 @@ public:
     void mouseMoveEvent(QMouseEvent *event);
 
     QList<Entity *> staticEntities();
+    QList<Unit *> allUnits();
 
 
 private:
