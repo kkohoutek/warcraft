@@ -44,7 +44,7 @@ protected:
     Entity *targetEntity = NULL;
 
     void moveToTarget();
-    bool moving = false;
+    bool moving = false;    // viditelný rect
 
 
 };
