@@ -23,10 +23,10 @@ Footman::Footman(QPointF pos) : Unit(pos, 1, 1, 2, 0)
     movementAnims->append(walk0Deg);
 
     QList<QList<int>> *walk45DegFrames = new QList<QList<int>>();
-    walk45DegFrames->append(QList<int>() << 6 << 0);
-    walk45DegFrames->append(QList<int>() << 6 << 1);
-    walk45DegFrames->append(QList<int>() << 6 << 2);
-    walk45DegFrames->append(QList<int>() << 6 << 1);
+    walk45DegFrames->append(QList<int>() << 2 << 0);
+    walk45DegFrames->append(QList<int>() << 2 << 1);
+    walk45DegFrames->append(QList<int>() << 2 << 2);
+    walk45DegFrames->append(QList<int>() << 2 << 1);
 
     Animation *walk45Deg = new Animation(spriteSheet, 48,48, walk45DegFrames, 250, true);
 
@@ -38,25 +38,25 @@ Footman::Footman(QPointF pos) : Unit(pos, 1, 1, 2, 0)
     walk90DegFrames->append(QList<int>() << 0 << 2);
     walk90DegFrames->append(QList<int>() << 0 << 1);
 
-    Animation *walk90Deg = new Animation(spriteSheetFlipped, 48,48, walk90DegFrames, 250, true);
+    Animation *walk90Deg = new Animation(spriteSheet, 48,48, walk90DegFrames, 250, true);
 
     movementAnims->append(walk90Deg);
 
     QList<QList<int>> *walk135DegFrames = new QList<QList<int>>();
-    walk135DegFrames->append(QList<int>() << 14-6 << 0);
-    walk135DegFrames->append(QList<int>() << 14-6 << 1);
-    walk135DegFrames->append(QList<int>() << 14-6 << 2);
-    walk135DegFrames->append(QList<int>() << 14-6 << 1);
+    walk135DegFrames->append(QList<int>() << 14-2 << 0);
+    walk135DegFrames->append(QList<int>() << 14-2 << 1);
+    walk135DegFrames->append(QList<int>() << 14-2 << 2);
+    walk135DegFrames->append(QList<int>() << 14-2 << 1);
 
     Animation *walk135Deg = new Animation(spriteSheetFlipped, 48,48, walk135DegFrames, 250, true);
 
     movementAnims->append(walk135Deg);
 
     QList<QList<int>> *walk180DegFrames = new QList<QList<int>>();
-    walk180DegFrames->append(QList<int>() << 14-2 << 0);
-    walk180DegFrames->append(QList<int>() << 14-2 << 1);
-    walk180DegFrames->append(QList<int>() << 14-2 << 2);
-    walk180DegFrames->append(QList<int>() << 14-2 << 1);
+    walk180DegFrames->append(QList<int>() << 14-3 << 0);
+    walk180DegFrames->append(QList<int>() << 14-3 << 1);
+    walk180DegFrames->append(QList<int>() << 14-3 << 2);
+    walk180DegFrames->append(QList<int>() << 14-3 << 1);
 
     Animation *walk180Deg = new Animation(spriteSheetFlipped, 48,48, walk180DegFrames, 250, true);
 
