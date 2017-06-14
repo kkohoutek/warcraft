@@ -47,7 +47,7 @@ void Player::selectUnits(QList<Unit *> selected){
     if(selected.empty()) return;
     deselect();
     for(Unit *u : selected){
-        if(units.contains(u)){
+        if(units.contains(u) || workers.contains(static_cast<Worker *>(u))){
             selectedUnits.append(u);
             u->setHighlighted(true);
         }
