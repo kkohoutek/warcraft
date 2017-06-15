@@ -242,9 +242,9 @@ void Warcraft::paintEvent(QPaintEvent *event)
 {
     QGraphicsView::paintEvent(event);
     QPainter painter(viewport());
-    painter.setFont(QFont("sans-serif",12));
+    painter.setFont(QFont("sans-serif",10));
     painter.setPen(Qt::white);
-    painter.drawText(QPointF(750, 30), QString("GOLD: "+QString::number(player.getGold())+"   LUMBER: "+QString::number(player.getLumber())));
+    painter.drawText(QPointF(700, 20), QString("FOOD: "+QString::number(player.getFood())+"   GOLD: "+QString::number(player.getGold())+"   LUMBER: "+QString::number(player.getLumber())));
 
 }
 
