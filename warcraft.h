@@ -9,7 +9,7 @@
 #include <QGraphicsRectItem>
 #include "player.h"
 #include "entity/goldmine.h"
-
+#include <QGraphicsSimpleTextItem>
 
 class Warcraft : public QGraphicsView
 {
@@ -35,13 +35,14 @@ public:
 
     QList<Entity *> staticEntities();
     QList<Unit *> allUnits();
-
+    QGraphicsSimpleTextItem *goldText;
 
 private:
     Player player = Player(HUMAN);
     Player enemy = Player(ORC);
 
     QList<Goldmine *> *goldmines;
+    void paintEvent(QPaintEvent *event);
 
 };
 

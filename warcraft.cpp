@@ -5,7 +5,8 @@
 #include <QGraphicsScene>
 #include <QScrollBar>
 #include <QDebug>
-
+#include <QPainter>
+#include <QTextItem>
 #include "entity/building/humanfarm.h"
 #include "entity/building/humanblacksmith.h"
 #include "entity/building/humanchurch.h"
@@ -40,6 +41,8 @@ Warcraft::Warcraft()
     loadBuildings();
 
     startTimer(17);
+    goldText = new QGraphicsSimpleTextItem();
+
 }
 
 Warcraft::~Warcraft() {
@@ -232,6 +235,16 @@ QList<Unit *> Warcraft::allUnits(){
     allBuildings.append(player.getBuildings());
     allBuildings.append(enemy.getBuildings());
     return allUnits;
+
+}
+
+void Warcraft::paintEvent(QPaintEvent *event)
+{
+    QGraphicsView::paintEvent(event);
+    QPainter painter(viewport());
+    painter.setFont(QFont("sans-serif",12));
+    painter.setPen(Qt::white);
+    painter.drawText(QPointF(750, 30), QString("GOLD: "+QString::number(player.getGold())+"   LUMBER: "+QString::number(player.getLumber())));
 
 }
 
