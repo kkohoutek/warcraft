@@ -28,6 +28,7 @@ SOURCES += main.cpp\
     entity/building/humanchurch.cpp \
     entity/building/humantower.cpp \
     entity/unit/footman.cpp \
+    entity/unit/grunt.cpp \
     player.cpp \
     entity/goldmine.cpp \
     entity/unit/worker.cpp \
@@ -58,6 +59,7 @@ HEADERS  += mainwindow.h \
     entity/building/humantower.h \
     entity/unit/footman.h \
     entity/unit/peasant.h \
+    entity/unit/grunt.h \
     player.h \
     entity/goldmine.h \
     entity/unit/worker.h \
