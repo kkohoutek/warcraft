@@ -8,7 +8,7 @@ OrcTownHall::OrcTownHall(QPointF pos, bool finishedOnSpawn) :
 }
 QRectF OrcTownHall::boundingRect() const
 {
-    return QRectF(0,0,48,48);
+    return QRectF(0,0,96,96);
 }
 
 void OrcTownHall::update()

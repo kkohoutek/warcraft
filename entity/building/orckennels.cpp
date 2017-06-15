@@ -8,7 +8,7 @@ OrcKennels::OrcKennels(QPointF pos, bool finishedOnSpawn) :
 
 QRectF OrcKennels::boundingRect() const
 {
-    return QRectF(0,0,48,48);
+    return QRectF(0,0,98,98);
 }
 
 void OrcKennels::update()

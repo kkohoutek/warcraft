@@ -8,7 +8,7 @@ OrcTower::OrcTower(QPointF pos, bool finishedOnSpawn):
 
 QRectF OrcTower::boundingRect() const
 {
-    return QRectF(6,6,36,36);
+    return QRectF(6,6,84,84);
 }
 
 void OrcTower::update()

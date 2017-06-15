@@ -8,7 +8,7 @@ OrcBarracks::OrcBarracks(QPointF pos, bool finishedOnSpawn) :
 
 QRectF OrcBarracks::boundingRect() const
 {
-    return QRectF(0,0,48,48);
+    return QRectF(-2,-2,100,100);
 }
 
 void OrcBarracks::update()

@@ -8,7 +8,7 @@ OrcFarm::OrcFarm(QPointF pos, bool finishedOnSpawn) :
 
 QRectF OrcFarm::boundingRect() const
 {
-    return QRectF(6,6,36,36);
+    return QRectF(6,6,78,78);
 }
 
 void OrcFarm::update()

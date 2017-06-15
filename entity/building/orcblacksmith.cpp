@@ -8,7 +8,7 @@ OrcBlacksmith::OrcBlacksmith(QPointF pos, bool finishedOnSpawn) :
 
 QRectF OrcBlacksmith::boundingRect() const
 {
-    return QRectF(6,6,36,36);
+    return QRectF(4,4,82,82);
 }
 
 void OrcBlacksmith::update()
