@@ -7,5 +7,7 @@
         <file alias="MISC">res/MISC.png</file>
         <file alias="PEASANT">res/peasant.png</file>
         <file alias="PEASANT2">res/peasant-flipped.png</file>
+        <file alias="GRUNT">res/grunt.png</file>
+        <file alias="GRUNT2">res/grunt-flip.png</file>
     </qresource>
 </RCC>
