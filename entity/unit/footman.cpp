@@ -23,10 +23,10 @@ Footman::Footman(QPointF pos) : Unit(pos, 1, 1, 2, 0)
     movementAnims->append(walk0Deg);
 
     QList<QList<int>> *walk45DegFrames = new QList<QList<int>>();
-    walk45DegFrames->append(QList<int>() << 2 << 0);
-    walk45DegFrames->append(QList<int>() << 2 << 1);
-    walk45DegFrames->append(QList<int>() << 2 << 2);
-    walk45DegFrames->append(QList<int>() << 2 << 1);
+    walk45DegFrames->append(QList<int>() << 1 << 0);
+    walk45DegFrames->append(QList<int>() << 1 << 1);
+    walk45DegFrames->append(QList<int>() << 1 << 2);
+    walk45DegFrames->append(QList<int>() << 1 << 1);
 
     Animation *walk45Deg = new Animation(spriteSheet, 48,48, walk45DegFrames, 250, true);
 
@@ -43,20 +43,21 @@ Footman::Footman(QPointF pos) : Unit(pos, 1, 1, 2, 0)
     movementAnims->append(walk90Deg);
 
     QList<QList<int>> *walk135DegFrames = new QList<QList<int>>();
-    walk135DegFrames->append(QList<int>() << 14-2 << 0);
-    walk135DegFrames->append(QList<int>() << 14-2 << 1);
-    walk135DegFrames->append(QList<int>() << 14-2 << 2);
-    walk135DegFrames->append(QList<int>() << 14-2 << 1);
+    walk135DegFrames->append(QList<int>() << 13 << 0);
+    walk135DegFrames->append(QList<int>() << 13 << 1);
+    walk135DegFrames->append(QList<int>() << 13 << 2);
+    walk135DegFrames->append(QList<int>() << 13 << 1);
 
     Animation *walk135Deg = new Animation(spriteSheetFlipped, 48,48, walk135DegFrames, 250, true);
 
     movementAnims->append(walk135Deg);
 
     QList<QList<int>> *walk180DegFrames = new QList<QList<int>>();
-    walk180DegFrames->append(QList<int>() << 14-3 << 0);
-    walk180DegFrames->append(QList<int>() << 14-3 << 1);
-    walk180DegFrames->append(QList<int>() << 14-3 << 2);
-    walk180DegFrames->append(QList<int>() << 14-3 << 1);
+    walk180DegFrames->append(QList<int>() << 12 << 0);
+    walk180DegFrames->append(QList<int>() << 12 << 1);
+    walk180DegFrames->append(QList<int>() << 12 << 2);
+    walk180DegFrames->append(QList<int>() << 12 << 1);
+
 
     Animation *walk180Deg = new Animation(spriteSheetFlipped, 48,48, walk180DegFrames, 250, true);
 
