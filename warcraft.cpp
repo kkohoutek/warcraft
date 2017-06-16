@@ -16,6 +16,15 @@
 #include "entity/building/humanlumbermill.h"
 #include "entity/building/humantower.h"
 #include "entity/unit/footman.h"
+#include  "entity/building/orcbarracks.h"
+#include  "entity/building/orcblacksmith.h"
+#include  "entity/building/orcfarm.h"
+#include  "entity/building/orckennels.h"
+#include  "entity/building/orclumbermill.h"
+#include  "entity/building/orctemple.h"
+#include  "entity/building/orctower.h"
+#include  "entity/building/orctownhall.h"
+
 
 Warcraft::Warcraft()
 {
@@ -70,6 +79,10 @@ void Warcraft::loadBuildings() {
     Building *th = new HumanTownHall(QPointF(216,216), true);
     player.getBuildings().append(th);
     scene()->addItem(th);
+    Building *tho = new OrcTownHall(QPointF(600,216), true);
+    player.getBuildings().append(tho);
+    scene()->addItem(tho);
+
 
 }
 
