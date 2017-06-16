@@ -352,7 +352,8 @@ Worker::Worker(QPointF pos, Race race) : Unit(pos, 1, 0, 0, 0)
 
         woodCarryAnims->append(death);
 
-        setCurrentAnimation(walk270Deg);
+        setCurrentAnimation(walk90Deg);
+
 
         break;
     }
@@ -361,6 +362,9 @@ Worker::Worker(QPointF pos, Race race) : Unit(pos, 1, 0, 0, 0)
         //peon
         break;
     }
+
+
+
 }
 
 Worker::~Worker() {
@@ -386,29 +390,31 @@ QRectF Worker::boundingRect() const {
 }
 
 void Worker::gatherGold(Goldmine *source, Building *destination){
+    cancel();
     currentGoldmine = source;
     goldDestination = destination;
-    currentTree = NULL;
     setTarget(currentGoldmine->pos());
     move();
 }
 
 void Worker::gatherLumber(Tree *source, Building *destination){
+    cancel();
     currentTree = source;
     lumberDestination = destination;
-    currentGoldmine = NULL;
     setTarget(currentTree->pos());
     move();
 }
 
 void Worker::cancel(){
     Unit::cancel();
-    if(scene()->items().contains(currentBuilding)) {
+    if(currentBuilding != NULL && scene()->items().contains(currentBuilding)) {
         scene()->removeItem(currentBuilding);
     }
     currentGoldmine = NULL;
     currentTree = NULL;
     currentBuilding = NULL;
+    goldDestination = NULL;
+    lumberDestination = NULL;
 
 
 }
@@ -436,11 +442,27 @@ void Worker::update(){
             setPos(currentBuilding->pos()-QPointF(0,6));
             currentBuilding = NULL;
         }
+    } else if (isGatheringGold()){
+            qDebug() << "yeeeees";
+            if(collidesWithItem(currentGoldmine) && targetPoint != goldDestination->center()){
+                //stopMoving();
+                //setTarget(goldDestination->center());
+                //move();
+
+
+
+            } else if (collidesWithItem(goldDestination) && targetPoint != currentGoldmine->center()){
+                //stopMoving();
+                setTarget(currentGoldmine->center());
+                move();
+
+                currentAnimationSet = movementAnims;
+            }
     }
 }
 
 bool Worker::isGatheringGold(){
-    return !(currentGoldmine == NULL);
+    return currentGoldmine != NULL;
 }
 
 bool Worker::isGatheringLumber(){
