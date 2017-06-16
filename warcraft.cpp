@@ -6,8 +6,7 @@
 #include <QScrollBar>
 #include <QDebug>
 #include <QPainter>
-#include <QPaintEvent>
-
+#include <QTextItem>
 #include "entity/building/humanfarm.h"
 #include "entity/building/humanblacksmith.h"
 #include "entity/building/humanchurch.h"
@@ -17,7 +16,15 @@
 #include "entity/building/humanlumbermill.h"
 #include "entity/building/humantower.h"
 #include "entity/unit/footman.h"
-#include "entity/unit/grunt.h"
+#include  "entity/building/orcbarracks.h"
+#include  "entity/building/orcblacksmith.h"
+#include  "entity/building/orcfarm.h"
+#include  "entity/building/orckennels.h"
+#include  "entity/building/orclumbermill.h"
+#include  "entity/building/orctemple.h"
+#include  "entity/building/orctower.h"
+#include  "entity/building/orctownhall.h"
+
 
 Warcraft::Warcraft()
 {
@@ -43,6 +50,8 @@ Warcraft::Warcraft()
     loadBuildings();
 
     startTimer(17);
+    goldText = new QGraphicsSimpleTextItem();
+
 }
 
 Warcraft::~Warcraft() {
@@ -56,6 +65,7 @@ Warcraft::~Warcraft() {
 
 void Warcraft::loadBackground()
 {
+
     QRect rect(3*32, 0, 32, 32);
     QImage original(":graphics/WORLD");
     QImage cropped = original.copy(rect);
@@ -69,6 +79,11 @@ void Warcraft::loadBuildings() {
     Building *th = new HumanTownHall(QPointF(216,216), true);
     player.getBuildings().append(th);
     scene()->addItem(th);
+    Building *tho = new OrcTownHall(QPointF(600,216), true);
+    player.getBuildings().append(tho);
+    scene()->addItem(tho);
+
+
 }
 
 void Warcraft::loadUnits(){
@@ -130,7 +145,7 @@ void Warcraft::timerEvent(QTimerEvent *event) {
     }
     player.update();
 
-    //solveCollisions();
+    solveCollisions();
 
     viewport()->update();
 }
@@ -156,18 +171,14 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
         }
 
     } else if (event->button() == Qt::RightButton){
-        QList<Worker *> selectedWorkers = player.selectedWorkers();
-        if(!selectedWorkers.empty()){
-            for(Goldmine *g : *goldmines){
-                if(g->boundingRect().translated(g->pos()).contains(actualPos)){
-                    qDebug() << player.selectedWorkers().size();
-                    selectedWorkers.at(0)->gatherGold(g, player.getBuildings().at(0));
-                    qDebug() << selectedWorkers.at(0)->isGatheringGold();
-                }
-            }
+        int i = 0 ;
+        for(Unit *unit : player.getSelectedUnits()){
+            unit->cancel();
+            unit->setTarget(actualPos+QPoint(i,i));
+            unit->move();
+            i +=40;
         }
 
-        player.selectedMoveTo(actualPos);
     }
 }
 
@@ -177,15 +188,14 @@ void Warcraft::mouseReleaseEvent(QMouseEvent *releaseEvent)
 
         isPressedLeftButton = false;
 
-
         QList<Unit *> selected;
         for(Unit *unit : player.getUnits()){
-            if(rect->rect().contains(unit->center())){
+            if(rect->rect().contains(unit->boundingRect().translated(unit->pos()).center())){
                 selected.append(unit);
             }
         }
         for(Worker *worker : player.getWorkers()){
-            if(rect->rect().contains(worker->center())){
+            if(rect->rect().contains(worker->boundingRect().translated(worker->pos()).center())){
                 selected.append(worker);
             }
         }
@@ -234,6 +244,16 @@ QList<Unit *> Warcraft::allUnits(){
         allUnits.append(w);
     }
     return allUnits;
+
 }
 
+void Warcraft::paintEvent(QPaintEvent *event)
+{
+    QGraphicsView::paintEvent(event);
+    QPainter painter(viewport());
+    painter.setFont(QFont("sans-serif",10));
+    painter.setPen(Qt::white);
+    painter.drawText(QPointF(700, 20), QString("FOOD: "+QString::number(player.getFood())+"   GOLD: "+QString::number(player.getGold())+"   LUMBER: "+QString::number(player.getLumber())));
+
+}
 
