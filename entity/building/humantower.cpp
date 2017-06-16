@@ -6,5 +6,5 @@ HumanTower::HumanTower(QPointF pos, bool finishedOnSpawn) : Building(pos, finish
 }
 
 QRectF HumanTower::boundingRect() const {
-    return QRectF(6,6,36,36);
+    return QRectF(13,8,71,78);
 }

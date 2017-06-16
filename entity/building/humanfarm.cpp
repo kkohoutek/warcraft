@@ -6,6 +6,6 @@ HumanFarm::HumanFarm(QPointF pos, bool finishedOnSpawn) : Building(pos, finished
 
 QRectF HumanFarm::boundingRect() const
 {
-    return QRectF(6,6,36,36);
+    return QRectF(8,8,78,76);
 }
 
