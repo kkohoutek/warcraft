@@ -1,6 +1,7 @@
 <RCC>
     <qresource prefix="/graphics">
         <file alias="BUILDINGS_H">res/BUILDINGS_H_edit.png</file>
+        <file alias="BUILDINGS_O">res/BUILDINGS_O_edit.png</file>
         <file alias="WORLD">res/WORLD.png</file>
         <file alias="FOOTMAN">res/FOOTMAN.png</file>
         <file alias="FOOTMAN2">res/FOOTMAN_flip.png</file>
