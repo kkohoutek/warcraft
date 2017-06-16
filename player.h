@@ -25,11 +25,13 @@ public:
     void selectUnits(QList<Unit *> selected);   // hromadný select
     void selectBuilding(Building *building);
     void deselect();                            // zruš výběr jednotek
+    void selectedMoveTo(QPointF target);
 
     QList<Building *> &getBuildings();
     QList<Unit *> &getUnits();
     QList<Worker *> &getWorkers();
     QList<Unit *> &getSelectedUnits();
+    QList<Worker *> selectedWorkers();
     QList<Unit *> allUnits();                   // units + workers
 
     Race getRace();
@@ -37,6 +39,8 @@ public:
 
 
 protected:
+    static const int MAX_SELECTED_UNITS = 5;
+
     Race race;
 
     QList<Building *>   buildings;

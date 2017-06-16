@@ -1,5 +1,5 @@
 #include "player.h"
-
+#include <QDebug>
 Player::Player(Race race) {
     this->race = race;
 }
@@ -45,6 +45,11 @@ void Player::selectUnit(Unit *unit){
 
 void Player::selectUnits(QList<Unit *> selected){
     if(selected.empty()) return;
+
+    if(selected.size() > MAX_SELECTED_UNITS){
+        selected = selected.mid(0, MAX_SELECTED_UNITS);
+    }
+
     deselect();
     for(Unit *u : selected){
         if(units.contains(u) || workers.contains(static_cast<Worker *>(u))){
@@ -72,6 +77,17 @@ void Player::deselect() {
         selectedBuilding->setHighlighted(false);
         selectedBuilding = NULL;
     }
+}
+
+void Player::selectedMoveTo(QPointF target){
+    int i = 0 ;
+    for(Unit *unit : selectedUnits){
+        unit->cancel();
+        unit->setTarget(target+QPoint(i,i));
+        unit->move();
+        i +=28;
+    }
+
 }
 
 void Player::addGold(int amount) {
@@ -112,6 +128,17 @@ QList<Worker *> &Player::getWorkers(){
 
 QList<Unit *> &Player::getSelectedUnits(){
     return selectedUnits;
+}
+
+QList<Worker *> Player::selectedWorkers() {
+    QList<Worker *> selectedWorkers;
+    for(Unit *u : selectedUnits){
+        if(workers.contains(static_cast<Worker *>(u))){
+            selectedWorkers.append(static_cast<Worker *>(u));
+        }
+    }
+    return selectedWorkers;
+
 }
 
 QList<Unit *> Player::allUnits(){
