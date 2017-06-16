@@ -6,7 +6,7 @@
 #include <QScrollBar>
 #include <QDebug>
 #include <QPainter>
-#include <QTextItem>
+
 #include "entity/building/humanfarm.h"
 #include "entity/building/humanblacksmith.h"
 #include "entity/building/humanchurch.h"
@@ -24,6 +24,8 @@
 #include  "entity/building/orctemple.h"
 #include  "entity/building/orctower.h"
 #include  "entity/building/orctownhall.h"
+#include "entity/trees.h"
+#include "entity/unit/grunt.h"
 
 
 Warcraft::Warcraft()
@@ -39,9 +41,10 @@ Warcraft::Warcraft()
     rect = new QGraphicsRectItem();
     position = new QPoint();
 
-    player.addGold(10000);
-    player.addLumber(10000);
-    player.addFood(10000);
+    player = new Player(HUMAN);
+    player->addFood(4);
+
+    enemy = new Player(ORC);
 
 
     loadBackground();
@@ -50,7 +53,6 @@ Warcraft::Warcraft()
     loadBuildings();
 
     startTimer(17);
-    goldText = new QGraphicsSimpleTextItem();
 
 }
 
@@ -58,14 +60,19 @@ Warcraft::~Warcraft() {
     for(Goldmine *g : *goldmines){
         delete g;
     }
+    for(Trees *t : *trees){
+        delete t;
+    }
+    delete trees;
     delete goldmines;
     delete rect;
     delete position;
+    delete player;
+    delete enemy;
 }
 
 void Warcraft::loadBackground()
 {
-
     QRect rect(3*32, 0, 32, 32);
     QImage original(":graphics/WORLD");
     QImage cropped = original.copy(rect);
@@ -77,25 +84,32 @@ void Warcraft::loadBackground()
 
 void Warcraft::loadBuildings() {
     Building *th = new HumanTownHall(QPointF(216,216), true);
-    player.getBuildings().append(th);
+    player->getBuildings().append(th);
     scene()->addItem(th);
-    Building *tho = new OrcTownHall(QPointF(600,216), true);
-    player.getBuildings().append(tho);
-    scene()->addItem(tho);
 
+    th = new OrcTownHall(QPointF(2048-300,2048-300), true);
+    enemy->getBuildings().append(th);
+    scene()->addItem(th);
 
 }
 
 void Warcraft::loadUnits(){
     for(int i = 0; i < 4; i++){
-        Worker *w = new Worker(QPointF(128+i*28,128), player.getRace());
-        player.getWorkers().append(w);
+        Worker *w = new Worker(QPointF(128+i*28,128), player->getRace(), player->getGold(), player->getLumber());
+        player->getWorkers().append(w);
         scene()->addItem(w);
     }
 
     Footman *f = new Footman(QPointF(112,138));
     scene()->addItem(f);
-    player.getUnits().append(f);
+    player->getUnits().append(f);
+
+
+    for(int i = 0; i < 4; i++){
+        Grunt *g = new Grunt(QPointF(2048-420+i*40, 2048-286-i*40));
+        scene()->addItem(g);
+        enemy->getUnits().append(g);
+    }
 }
 
 void Warcraft::loadWorld() {
@@ -108,17 +122,50 @@ void Warcraft::loadWorld() {
     goldmines->append(a);
     goldmines->append(b);
 
+    /*
+    Trees *t = new Trees(QPointF(450, 0));
+    scene()->addItem(t);
+    t = new Trees(QPointF(450-96, 0));
+    scene()->addItem(t);
+    t = new Trees(QPointF(450-96*2, 0));
+    scene()->addItem(t);
+    t = new Trees(QPointF(450-96*3, 0));
+    scene()->addItem(t);
+    t = new Trees(QPointF(450-96*4, 0));
+    scene()->addItem(t);
+    */
+
 }
 
 void Warcraft::solveCollisions() {
-    for(Unit *u : allUnits()){
-        for(Entity *e : staticEntities()){
-            if(u->collidesWithItem(e)){
-                //u->setTarget(e->pos()-QPointF(5,5));
-                u->stopMoving();
-                break;
+
+    for(Entity *e : staticEntities()){
+
+        for(Worker *w : player->getWorkers()){
+            if(e->collidesWithItem(w) && !w->isGatheringGold()){
+                w->stopMoving();
+                w->moveBy(w->getSpeed() * -w->direction().x(), w->getSpeed() * -w->direction().y());
             }
         }
+        for(Unit *u : player->getUnits()){
+            if(e->collidesWithItem(u) && u->isMoving()){
+                u->stopMoving();
+                u->moveBy(u->getSpeed() * -u->direction().x(), u->getSpeed() * -u->direction().y());
+            }
+        }
+        for(Worker *w : enemy->getWorkers()){
+            if(e->collidesWithItem(w) && !w->isGatheringGold()){
+                w->stopMoving();
+                w->moveBy(w->getSpeed() * -w->direction().x(), w->getSpeed() * -w->direction().y());
+            }
+        }
+        for(Unit *u : enemy->getUnits()){
+            if(e->collidesWithItem(u) && u->isMoving()){
+                u->stopMoving();
+                u->moveBy(u->getSpeed() * -u->direction().x(), u->getSpeed() * -u->direction().y());
+            }
+        }
+
     }
 }
 
@@ -143,9 +190,11 @@ void Warcraft::timerEvent(QTimerEvent *event) {
         this->verticalScrollBar()->setValue(verticalScrollBar()->value()-20);
 
     }
-    player.update();
 
     solveCollisions();
+
+    player->update();
+    enemy->update();
 
     viewport()->update();
 }
@@ -159,20 +208,28 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
         position->setY(actualPos.y());
 
 
-        for(Unit *unit : player.getUnits()){
+        for(Unit *unit : player->allUnits()){
             if(unit->boundingRect().translated(unit->pos()).contains(actualPos)){
-                player.selectUnit(unit);
-            }
-        }
-        for(Worker *worker : player.getWorkers()){
-            if(worker->boundingRect().translated(worker->pos()).contains(actualPos)){
-                player.selectUnit(worker);
+                player->selectUnit(unit);
             }
         }
 
     } else if (event->button() == Qt::RightButton){
-        player.selectedMoveTo(actualPos);
+        player->selectedMoveTo(actualPos,40);
 
+        for(Goldmine *g : *goldmines){
+            if(g->boundingRect().translated(g->pos()).contains(actualPos)){
+                QList<Worker *> sw = player->selectedWorkers();
+                if(!sw.empty()){
+                    for(Worker *w : sw){
+                        //w->cancel();
+                        w->gatherGold(g, player->getBuildings().at(0));
+                        w->setTarget(g->center());
+                        w->move();
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -183,17 +240,12 @@ void Warcraft::mouseReleaseEvent(QMouseEvent *releaseEvent)
         isPressedLeftButton = false;
 
         QList<Unit *> selected;
-        for(Unit *unit : player.getUnits()){
+        for(Unit *unit : player->allUnits()){
             if(rect->rect().contains(unit->boundingRect().translated(unit->pos()).center())){
                 selected.append(unit);
             }
         }
-        for(Worker *worker : player.getWorkers()){
-            if(rect->rect().contains(worker->boundingRect().translated(worker->pos()).center())){
-                selected.append(worker);
-            }
-        }
-        player.selectUnits(selected);
+        player->selectUnits(selected);
 
         if(scene()->items().contains(rect)){
             scene()->removeItem(rect);
@@ -218,7 +270,7 @@ void Warcraft::mouseMoveEvent(QMouseEvent *event) {
 
 QList<Entity *> Warcraft::staticEntities(){
     QList<Entity *> list;
-    for(Building *b : player.getBuildings()){
+    for(Building *b : player->getBuildings()){
         list.append(b);
     }
     for(Goldmine *g : *goldmines){
@@ -229,17 +281,18 @@ QList<Entity *> Warcraft::staticEntities(){
 
 QList<Unit *> Warcraft::allUnits(){
     QList<Unit *> allUnits;
-    allUnits.append(player.getUnits());
-    allUnits.append(enemy.getUnits());
-    for(Worker *w : player.getWorkers()){
+    allUnits.append(player->getUnits());
+    allUnits.append(enemy->getUnits());
+    for(Worker *w : player->getWorkers()){
         allUnits.append(w);
     }
-    for(Worker *w : enemy.getWorkers()){
+    for(Worker *w : enemy->getWorkers()){
         allUnits.append(w);
     }
     return allUnits;
-
 }
+
+
 
 void Warcraft::paintEvent(QPaintEvent *event)
 {
@@ -247,7 +300,7 @@ void Warcraft::paintEvent(QPaintEvent *event)
     QPainter painter(viewport());
     painter.setFont(QFont("sans-serif",10));
     painter.setPen(Qt::white);
-    painter.drawText(QPointF(700, 20), QString("FOOD: "+QString::number(player.getFood())+"   GOLD: "+QString::number(player.getGold())+"   LUMBER: "+QString::number(player.getLumber())));
+    painter.drawText(QPointF(700, 20), QString("FOOD: "+QString::number(player->getFood())+"   GOLD: "+QString::number(player->getGold())+"   LUMBER: "+QString::number(player->getLumber())));
 
 }
 

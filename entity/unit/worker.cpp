@@ -2,8 +2,11 @@
 #include <QGraphicsScene>
 #include <QDebug>
 
-Worker::Worker(QPointF pos, Race race) : Unit(pos, 1, 0, 0, 0)
+Worker::Worker(QPointF pos, Race race, int &playerGold, int &playerLumber) : Unit(pos, 0.7F, 0, 0, 0)
 {
+    this->playerGold = &playerGold;
+    this->playerLumber = &playerLumber;
+
     setMaxHP(40);
     setHP(40);
 
@@ -393,16 +396,12 @@ void Worker::gatherGold(Goldmine *source, Building *destination){
     cancel();
     currentGoldmine = source;
     goldDestination = destination;
-    setTarget(currentGoldmine->pos());
-    move();
 }
 
-void Worker::gatherLumber(Tree *source, Building *destination){
+void Worker::gatherLumber(Trees *source, Building *destination){
     cancel();
-    currentTree = source;
+    currentTrees = source;
     lumberDestination = destination;
-    setTarget(currentTree->pos());
-    move();
 }
 
 void Worker::cancel(){
@@ -411,7 +410,7 @@ void Worker::cancel(){
         scene()->removeItem(currentBuilding);
     }
     currentGoldmine = NULL;
-    currentTree = NULL;
+    currentTrees = NULL;
     currentBuilding = NULL;
     goldDestination = NULL;
     lumberDestination = NULL;
@@ -443,16 +442,16 @@ void Worker::update(){
             currentBuilding = NULL;
         }
     } else if (isGatheringGold()){
-            qDebug() << "yeeeees";
+            qDebug() << targetPoint;
             if(collidesWithItem(currentGoldmine) && targetPoint != goldDestination->center()){
-                //stopMoving();
-                //setTarget(goldDestination->center());
-                //move();
+                stopMoving();
+                setTarget(goldDestination->center());
+                move();
 
-
-
+                currentAnimationSet = goldCarryAnims;
             } else if (collidesWithItem(goldDestination) && targetPoint != currentGoldmine->center()){
-                //stopMoving();
+                *playerGold += 2;
+                stopMoving();
                 setTarget(currentGoldmine->center());
                 move();
 
@@ -461,12 +460,22 @@ void Worker::update(){
     }
 }
 
+void Worker::updateAnimation() {
+    if(isGatheringGold() && targetPoint == goldDestination->center()){
+        currentAnimationSet = goldCarryAnims;
+    } else {
+        currentAnimationSet = movementAnims;
+    }
+    Unit::updateAnimation();
+
+}
+
 bool Worker::isGatheringGold(){
     return currentGoldmine != NULL;
 }
 
 bool Worker::isGatheringLumber(){
-    return !(currentTree == NULL);
+    return !(currentTrees == NULL);
 }
 
 Building *Worker::getCurrentBuilding(){

@@ -7,6 +7,9 @@ Goldmine::Goldmine(QPointF pos) : Entity(pos)
     QList<QList<int>> *basicAnimationFrames = new QList<QList<int>>();
     basicAnimationFrames->append(QList<int>() << 8 << 5);
     setCurrentAnimation(new Animation(new QPixmap(":graphics/MISC"), 55, 45, basicAnimationFrames, 0, false));
+
+    scaleX = 2;
+    scaleY = 2;
 }
 
 QRectF Goldmine::boundingRect() const

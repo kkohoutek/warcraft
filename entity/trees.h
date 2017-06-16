@@ -1,14 +1,14 @@
-#ifndef TREE_H
-#define TREE_H
+#ifndef TREES_H
+#define TREES_H
 
 #include "entity.h"
 
 
 
-class Tree : public Entity
+class Trees : public Entity
 {
 public:
-    Tree(QPointF pos);
+    Trees(QPointF pos);
 
     // QGraphicsItem interface
     QRectF boundingRect() const;
@@ -19,4 +19,4 @@ public:
 
 };
 
-#endif // TREE_H
+#endif // TREES_H

@@ -3,19 +3,19 @@
 
 #include "unit.h"
 #include "entity/goldmine.h"
-#include "entity/tree.h"
+#include "entity/trees.h"
 #include "entity/building/building.h"
 
 class Worker : public Unit
 {
 public:
-    Worker(QPointF pos, Race race);
+    Worker(QPointF pos, Race race, int &playerGold, int &playerLumber);
     ~Worker();
 
     QRectF boundingRect() const override;
 
     void gatherGold(Goldmine *source, Building *destination);
-    void gatherLumber(Tree *source, Building *destination);
+    void gatherLumber(Trees *source, Building *destination);
     void stopWorking();
     void goBuild(Building *building);
     void update() override;
@@ -28,15 +28,20 @@ public:
 
 protected:
     Goldmine *currentGoldmine = NULL;
-    Tree     *currentTree = NULL;
+    Trees     *currentTrees = NULL;
     Building *lumberDestination = NULL;
     Building *goldDestination = NULL;
     Building *currentBuilding = NULL;
+
+    void updateAnimation() override;
 
 private:
     QList<Animation *> *miningAnims;
     QList<Animation *> *goldCarryAnims;
     QList<Animation *> *woodCarryAnims;
+
+    int *playerGold;    // pointer na hráčovo zlato
+    int *playerLumber;  // pointer na hráčovo dřevo
 
 };
 

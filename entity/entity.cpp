@@ -3,6 +3,8 @@
 
 Entity::Entity(QPointF pos) {
     this->setPos(pos);
+    scaleX = 1;
+    scaleY = 1;
 }
 
 Entity::~Entity() {
@@ -11,17 +13,16 @@ Entity::~Entity() {
 
 void Entity::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
 
-    painter->scale(2,2);
+    painter->scale(scaleX,scaleY);
     if(currentAnimation != NULL){
         currentAnimation->draw(painter);
     }
-    painter->scale(0.5f,0.5f);
+    painter->scale(1/scaleX,1/scaleY);
     if(highlighted){
         painter->setPen(QPen(Qt::green));
         painter->drawRect(boundingRect());
     }
-    if(SHOW_HP_BARS){
-
+    if(SHOW_HP_BARS && maxHP > 0){
         painter->setBrush(QBrush(Qt::green));
         painter->setPen(QPen(Qt::green));
         painter->drawRect(boundingRect().topLeft().x(),boundingRect().topLeft().y()-5, hp*boundingRect().width()/maxHP, 1.25f); // health bar

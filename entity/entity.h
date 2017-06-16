@@ -9,6 +9,8 @@
 class Entity : public QGraphicsItem
 {
 public:
+    static const bool SHOW_HP_BARS = true;
+
     Entity(QPointF pos);
     virtual ~Entity();
 
@@ -30,6 +32,10 @@ public:
     qreal distanceFrom(Entity *entity);
     qreal distanceFrom(QPointF point);
     QPointF center();
+
+protected:
+    float scaleX;
+    float scaleY;
 
 
  private:

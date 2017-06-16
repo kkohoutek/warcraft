@@ -38,6 +38,9 @@ Building::Building(QPointF pos, bool finishedOnSpawn, Race race, QList<int> preF
         buildTimer->setInterval(buildTime/maxHP);
         connect(buildTimer, &QTimer::timeout, this, &constructionUpdate);
     }
+
+    scaleX = 2;
+    scaleY = 2;
 }
 
 Building::~Building()

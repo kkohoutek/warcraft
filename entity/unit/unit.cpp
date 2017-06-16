@@ -1,6 +1,5 @@
 #include "unit.h"
 #include <QDebug>
-#include <QVector2D>
 #include <QtMath>
 
 Unit::Unit(QPointF pos, float speed, int damage, int armor, int range):Entity(pos)
@@ -10,9 +9,10 @@ Unit::Unit(QPointF pos, float speed, int damage, int armor, int range):Entity(po
     this->range = range;
     this->armor = armor;
 
+    scaleX = 2;
+    scaleY = 2;
 
     currentAnimationSet = movementAnims;
-
 }
 
 Unit::~Unit() {
@@ -41,36 +41,31 @@ void Unit::moveToTarget()
         return;
     }*/
 
-    QVector2D dir(targetPoint - center());
-    dir.normalize();
-    moveBy(speed * dir.x(), speed * dir.y());
+
+    moveBy(speed * direction().x(), speed * direction().y());
 
 }
 
 void Unit::updateAnimation(){
     qreal angle = QLineF(center(), targetPoint).angle();
 
-    int index;
+    int index = 0;
     if(currentAnimationSet->size() == 8){
-        if(angle >= 0 && angle < 45){
-            index = 0;
-        } else if (angle >= 45 && angle < 90){
+        if(angle >= 30 && angle <= 60){
             index = 1;
-        } else if (angle >= 90 && angle < 135){
+        } else if (angle > 60 && angle < 120){
             index = 2;
-        } else if (angle >= 135 && angle < 180){
+        } else if (angle >= 120 && angle <= 150){
             index = 3;
-        } else if (angle >= 180 && angle < 225){
+        } else if (angle > 150 && angle < 210){
             index = 4;
-        } else if (angle >= 225 && angle < 270){
+        } else if (angle >= 210 && angle <= 240){
             index = 5;
-        } else if (angle >= 270 && angle < 315){
+        } else if (angle > 240 && angle < 300){
             index = 6;
-        } else if(angle >= 315){
+        } else if (angle >= 300 && angle <= 330){
             index = 7;
         }
-    } else {
-        index = 0;
     }
 
     //setCurrentAnimation(currentAnimationSet->at(qFloor(angle/45)));
@@ -80,6 +75,7 @@ void Unit::updateAnimation(){
 }
 
 void Unit::update(){
+
     if(moving){
         moveToTarget();
     }
@@ -89,10 +85,22 @@ void Unit::update(){
     }
 }
 
+void Unit::attack(Entity *victim) {
+    targetEntity = victim;
+    setTarget(victim->center());
+    move();
+
+}
+
+
 void Unit::setTarget(QPointF target){
     targetPoint = target;
     currentAnimationSet = movementAnims;
     updateAnimation();
+}
+
+QVector2D Unit::direction(){
+    return QVector2D(targetPoint - center()).normalized();
 }
 
 void Unit::cancel(){
@@ -111,6 +119,11 @@ void Unit::stopMoving(){
 
 bool Unit::isMoving(){
     return moving;
+
+}
+
+QPointF Unit::getTarget(){
+    return targetPoint;
 
 }
 

@@ -35,13 +35,14 @@ public:
 
     QList<Entity *> staticEntities();
     QList<Unit *> allUnits();
-    QGraphicsSimpleTextItem *goldText;
+
 
 private:
-    Player player = Player(HUMAN);
-    Player enemy = Player(ORC);
+    Player *player;
+    Player *enemy;
 
-    QList<Goldmine *> *goldmines;
+    QList<Goldmine *>   *goldmines;
+    QList<Trees *>      *trees;
     void paintEvent(QPaintEvent *event);
 
 };

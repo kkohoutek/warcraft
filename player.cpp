@@ -1,7 +1,21 @@
 #include "player.h"
 #include <QDebug>
+
+
 Player::Player(Race race) {
     this->race = race;
+
+    /*
+    goldIncreaseTimer = new QTimer();
+    goldIncreaseTimer->start(4000);
+
+    connect(goldIncreaseTimer, &QTimer::timeout, this, &increaseGold);*/
+
+
+}
+
+Player::~Player(){
+    delete goldIncreaseTimer;
 }
 
 void Player::update(){
@@ -79,16 +93,17 @@ void Player::deselect() {
     }
 }
 
-void Player::selectedMoveTo(QPointF target){
+void Player::selectedMoveTo(QPointF target, int gap){
     int i = 0 ;
     for(Unit *unit : selectedUnits){
         unit->cancel();
-        unit->setTarget(target+QPoint(i,i));
+        unit->setTarget(target+QPoint(0,i));
         unit->move();
-        i +=28;
+        i +=gap;
     }
 
 }
+
 
 void Player::addGold(int amount) {
     gold += amount;
@@ -98,19 +113,32 @@ void Player::addLumber(int amount) {
     lumber += amount;
 }
 
+void Player::increaseGold()
+{
+    int coef = 0;
+
+    for(Worker *w : workers){
+        if(w->isGatheringGold()){
+            coef++;
+        }
+    }
+
+    addGold(coef*2);
+}
+
 void Player::addFood(int amount) {
     food += amount;
 }
 
-int Player::getGold(){
+int &Player::getGold(){
     return gold;
 }
 
-int Player::getLumber(){
+int &Player::getLumber(){
     return lumber;
 }
 
-int Player::getFood(){
+int &Player::getFood(){
     return food;
 }
 

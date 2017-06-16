@@ -2,6 +2,7 @@
 #define UNIT_H
 
 #include "entity/entity.h"
+#include <QVector2D>
 
 
 
@@ -14,6 +15,8 @@ public:
 
     void setTarget(QPointF target);
 
+    virtual void attack(Entity *victim);
+
     /* Aktualizace dosavadní animace na základě úhlu pohybu */
     virtual void updateAnimation();
 
@@ -23,6 +26,9 @@ public:
     /* Začni se hýbat, setTarget musí být voláno před použitím */
     void move();
 
+    QVector2D direction();
+
+    QPointF getTarget();
     float getSpeed();
     void setSpeed(float speed);
     void stopMoving();
