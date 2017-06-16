@@ -171,13 +171,7 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
         }
 
     } else if (event->button() == Qt::RightButton){
-        int i = 0 ;
-        for(Unit *unit : player.getSelectedUnits()){
-            unit->cancel();
-            unit->setTarget(actualPos+QPoint(i,i));
-            unit->move();
-            i +=40;
-        }
+        player.selectedMoveTo(actualPos);
 
     }
 }
