@@ -4,18 +4,9 @@
 
 Player::Player(Race race) {
     this->race = race;
-
-    /*
-    goldIncreaseTimer = new QTimer();
-    goldIncreaseTimer->start(4000);
-
-    connect(goldIncreaseTimer, &QTimer::timeout, this, &increaseGold);*/
-
-
 }
 
 Player::~Player(){
-    delete goldIncreaseTimer;
 }
 
 void Player::update(){
@@ -111,19 +102,6 @@ void Player::addGold(int amount) {
 
 void Player::addLumber(int amount) {
     lumber += amount;
-}
-
-void Player::increaseGold()
-{
-    int coef = 0;
-
-    for(Worker *w : workers){
-        if(w->isGatheringGold()){
-            coef++;
-        }
-    }
-
-    addGold(coef*2);
 }
 
 void Player::addFood(int amount) {
