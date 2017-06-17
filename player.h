@@ -58,9 +58,6 @@ protected:
     int lumber = 0;
     int food = 0;
 
-private:
-    QTimer *goldIncreaseTimer = NULL;
-
 };
 
 #endif // PLAYER_H
