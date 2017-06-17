@@ -61,9 +61,6 @@ protected:
 private:
     QTimer *goldIncreaseTimer = NULL;
 
-private slots:
-    void increaseGold();
-
 };
 
 #endif // PLAYER_H
