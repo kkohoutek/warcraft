@@ -20,6 +20,8 @@ public:
     void setCurrentAnimation(Animation *anim);
     Animation *getCurrentAnimation();
 
+    void damage(int amount);
+
     void setHP(int hp);
     int getHP();
 

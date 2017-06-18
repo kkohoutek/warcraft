@@ -18,8 +18,6 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    static const int WIDTH = 960;
-    static const int HEIGHT = 720;
 
 private:
     Ui::MainWindow *ui;

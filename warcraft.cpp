@@ -267,6 +267,11 @@ void Warcraft::mouseMoveEvent(QMouseEvent *event) {
     }
 }
 
+void Warcraft::keyPressEvent(QKeyEvent *event){
+
+
+}
+
 
 QList<Entity *> Warcraft::staticEntities(){
     QList<Entity *> list;
@@ -290,6 +295,17 @@ QList<Unit *> Warcraft::allUnits(){
         allUnits.append(w);
     }
     return allUnits;
+}
+
+QList<Entity *> Warcraft::allEntities(){
+    QList<Entity *> allEntities;
+    allEntities.append(staticEntities());
+
+    for(Unit *u : allUnits()){
+        allEntities.append(u);
+    }
+
+    return allEntities;
 }
 
 

@@ -17,33 +17,34 @@ public:
     Warcraft();
     ~Warcraft();
 
+protected:
+    Player *player;
+    Player *enemy;
+
+    QList<Goldmine *>   *goldmines;
+    QList<Trees *>      *trees;
+
+    bool isPressedLeftButton = false;
+    QPoint *position;
+    QGraphicsRectItem *rect; // selection rect
+
     void loadBackground();
     void loadBuildings();
     void loadUnits();
     void loadWorld();
     void solveCollisions();
 
+    void paintEvent(QPaintEvent *event);
     void timerEvent(QTimerEvent *event);
-
-    bool isPressedLeftButton = false;
-    QPoint *position;
-    QGraphicsRectItem *rect; // selection rect
-
     void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *releaseEvent);
     void mouseMoveEvent(QMouseEvent *event);
+    void keyPressEvent(QKeyEvent *event);
 
     QList<Entity *> staticEntities();
     QList<Unit *> allUnits();
+    QList<Entity *> allEntities();
 
-
-private:
-    Player *player;
-    Player *enemy;
-
-    QList<Goldmine *>   *goldmines;
-    QList<Trees *>      *trees;
-    void paintEvent(QPaintEvent *event);
 
 };
 

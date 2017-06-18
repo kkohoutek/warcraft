@@ -46,6 +46,11 @@ Animation *Entity::getCurrentAnimation() {
     return currentAnimation;
 }
 
+void Entity::damage(int amount){
+    hp -= amount;
+    if(hp < 0) hp = 0;
+}
+
 void Entity::setHP(int hp) {
     this->hp = hp;
 }

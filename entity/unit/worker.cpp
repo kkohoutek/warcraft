@@ -442,19 +442,18 @@ void Worker::update(){
             currentBuilding = NULL;
         }
     } else if (isGatheringGold()){
-            qDebug() << targetPoint;
-            if(collidesWithItem(currentGoldmine) && targetPoint != goldDestination->center()){
+            if(collidesWithItem(currentGoldmine)){
+                currentGoldmine->damage(2);
                 stopMoving();
                 setTarget(goldDestination->center());
                 move();
-
                 currentAnimationSet = goldCarryAnims;
-            } else if (collidesWithItem(goldDestination) && targetPoint != currentGoldmine->center()){
+
+            } else if (collidesWithItem(goldDestination)){
                 *playerGold += 2;
                 stopMoving();
                 setTarget(currentGoldmine->center());
                 move();
-
                 currentAnimationSet = movementAnims;
             }
     }
