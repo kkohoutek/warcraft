@@ -60,9 +60,10 @@ Warcraft::~Warcraft() {
     for(Goldmine *g : *goldmines){
         delete g;
     }
+    /*
     for(Trees *t : *trees){
         delete t;
-    }
+    }*/
     delete trees;
     delete goldmines;
     delete rect;
@@ -268,7 +269,11 @@ void Warcraft::mouseMoveEvent(QMouseEvent *event) {
 }
 
 void Warcraft::keyPressEvent(QKeyEvent *event){
-
+    switch(event->key()){
+    case Qt::Key_Escape:
+        window()->close();
+        break;
+    }
 
 }
 
