@@ -21,12 +21,14 @@ public:
     void update() override;
     void cancel() override;
 
-    bool isGatheringGold();
-    bool isGatheringLumber();
+    bool isGatheringGold() const;
+    bool isGatheringLumber() const;
 
-    Building *getCurrentBuilding();
+    Building *getCurrentBuilding() const;
 
 protected:
+    static const int GOLD_PER_TRIP = 10;
+
     Goldmine *currentGoldmine = NULL;
     Trees     *currentTrees = NULL;
     Building *lumberDestination = NULL;

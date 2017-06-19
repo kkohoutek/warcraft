@@ -29,8 +29,8 @@ private:
 
     QTimer              *animationTimer;
 
-    int currentPositionX();
-    int currentPositionY();
+    int currentPositionX() const;
+    int currentPositionY() const;
 
 private slots:
     void nextFrame();

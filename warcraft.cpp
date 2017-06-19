@@ -1,12 +1,12 @@
 #include "warcraft.h"
-#include "entity/entity.h"
-#include "animation.h"
 
 #include <QGraphicsScene>
 #include <QScrollBar>
 #include <QDebug>
 #include <QPainter>
+#include <QOpenGLWidget>
 
+#include "entity/entity.h"
 #include "entity/building/humanfarm.h"
 #include "entity/building/humanblacksmith.h"
 #include "entity/building/humanchurch.h"
@@ -30,8 +30,9 @@
 
 Warcraft::Warcraft()
 {
-    this->verticalScrollBar()->hide();
-    this->horizontalScrollBar()->hide();
+    //setViewport(new QOpenGLWidget(this)); // paintEvent = blackscreen
+    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setMouseTracking(true);
 
     QGraphicsScene *scene = new QGraphicsScene();
@@ -123,19 +124,6 @@ void Warcraft::loadWorld() {
     goldmines->append(a);
     goldmines->append(b);
 
-    /*
-    Trees *t = new Trees(QPointF(450, 0));
-    scene()->addItem(t);
-    t = new Trees(QPointF(450-96, 0));
-    scene()->addItem(t);
-    t = new Trees(QPointF(450-96*2, 0));
-    scene()->addItem(t);
-    t = new Trees(QPointF(450-96*3, 0));
-    scene()->addItem(t);
-    t = new Trees(QPointF(450-96*4, 0));
-    scene()->addItem(t);
-    */
-
 }
 
 void Warcraft::solveCollisions() {
@@ -198,6 +186,8 @@ void Warcraft::timerEvent(QTimerEvent *event) {
     enemy->update();
 
     viewport()->update();
+
+    Q_UNUSED(event);
 }
 
 void Warcraft::mousePressEvent(QMouseEvent *event){
@@ -266,6 +256,8 @@ void Warcraft::mouseMoveEvent(QMouseEvent *event) {
 
         scene()->addItem(rect);
     }
+
+    Q_UNUSED(event);
 }
 
 void Warcraft::keyPressEvent(QKeyEvent *event){
@@ -278,7 +270,7 @@ void Warcraft::keyPressEvent(QKeyEvent *event){
 }
 
 
-QList<Entity *> Warcraft::staticEntities(){
+QList<Entity *> Warcraft::staticEntities() const {
     QList<Entity *> list;
     for(Building *b : player->getBuildings()){
         list.append(b);
@@ -289,7 +281,7 @@ QList<Entity *> Warcraft::staticEntities(){
     return list;
 }
 
-QList<Unit *> Warcraft::allUnits(){
+QList<Unit *> Warcraft::allUnits() const {
     QList<Unit *> allUnits;
     allUnits.append(player->getUnits());
     allUnits.append(enemy->getUnits());
@@ -302,7 +294,7 @@ QList<Unit *> Warcraft::allUnits(){
     return allUnits;
 }
 
-QList<Entity *> Warcraft::allEntities(){
+QList<Entity *> Warcraft::allEntities() const {
     QList<Entity *> allEntities;
     allEntities.append(staticEntities());
 
@@ -317,6 +309,7 @@ QList<Entity *> Warcraft::allEntities(){
 
 void Warcraft::paintEvent(QPaintEvent *event)
 {
+
     QGraphicsView::paintEvent(event);
     QPainter painter(viewport());
     painter.setFont(QFont("sans-serif",10));

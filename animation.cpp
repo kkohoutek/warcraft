@@ -47,11 +47,11 @@ void Animation::stop(){
     animationTimer->stop();
 }
 
-int Animation::currentPositionX() {
+int Animation::currentPositionX() const {
     return frames->at(currentFrameIndex).at(0) * subImageWidth;
 }
 
-int Animation::currentPositionY() {
+int Animation::currentPositionY() const {
     return frames->at(currentFrameIndex).at(1) * subImageHeight;
 }
 

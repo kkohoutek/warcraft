@@ -59,7 +59,7 @@ void Building::beginConstruction(){
     buildAnimation->start();
 }
 
-bool Building::isBuildingFinished(){
+bool Building::isBuildingFinished() const {
     return finished;
 }
 

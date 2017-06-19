@@ -18,22 +18,22 @@ public:
 
     virtual void update() = 0;
     void setCurrentAnimation(Animation *anim);
-    Animation *getCurrentAnimation();
+    Animation *getCurrentAnimation() const;
 
     void damage(int amount);
 
     void setHP(int hp);
-    int getHP();
+    int getHP() const;
 
     void setMaxHP(int hp);
-    int getMaxHP();
+    int getMaxHP() const;
 
 
     void setHighlighted(bool h);
 
-    qreal distanceFrom(Entity *entity);
-    qreal distanceFrom(QPointF point);
-    QPointF center();
+    qreal distanceFrom(Entity *entity) const;
+    qreal distanceFrom(QPointF point) const;
+    QPointF center() const;
 
 protected:
     float scaleX;

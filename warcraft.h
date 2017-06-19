@@ -41,9 +41,9 @@ protected:
     void mouseMoveEvent(QMouseEvent *event);
     void keyPressEvent(QKeyEvent *event);
 
-    QList<Entity *> staticEntities();
-    QList<Unit *> allUnits();
-    QList<Entity *> allEntities();
+    QList<Entity *> staticEntities() const;
+    QList<Unit *> allUnits() const;
+    QList<Entity *> allEntities() const;
 
 
 };

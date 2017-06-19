@@ -35,10 +35,10 @@ public:
     QList<Unit *> &getUnits();
     QList<Worker *> &getWorkers();
     QList<Unit *> &getSelectedUnits();
-    QList<Worker *> selectedWorkers();
-    QList<Unit *> allUnits();                   // units + workers
+    QList<Worker *> selectedWorkers() const;
+    QList<Unit *> allUnits() const;              // units + workers
 
-    Race getRace();
+    Race getRace() const;
 
 
 protected:

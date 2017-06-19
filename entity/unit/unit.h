@@ -26,13 +26,13 @@ public:
     /* Začni se hýbat, setTarget musí být voláno před použitím */
     void move();
 
-    QVector2D direction();
+    QVector2D direction() const;
 
-    QPointF getTarget();
-    float getSpeed();
+    QPointF getTarget() const;
+    float getSpeed() const;
     void setSpeed(float speed);
     void stopMoving();
-    bool isMoving();
+    bool isMoving() const;
 
 protected:
     float speed;

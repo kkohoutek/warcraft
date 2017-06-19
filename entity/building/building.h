@@ -21,7 +21,7 @@ public:
 
     void beginConstruction();
 
-    bool isBuildingFinished();
+    bool isBuildingFinished() const;
 
 private:
     int buildTime;

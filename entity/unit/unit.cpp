@@ -99,7 +99,7 @@ void Unit::setTarget(QPointF target){
     updateAnimation();
 }
 
-QVector2D Unit::direction(){
+QVector2D Unit::direction() const {
     return QVector2D(targetPoint - center()).normalized();
 }
 
@@ -117,12 +117,12 @@ void Unit::stopMoving(){
     getCurrentAnimation()->stop();
 }
 
-bool Unit::isMoving(){
+bool Unit::isMoving() const {
     return moving;
 
 }
 
-QPointF Unit::getTarget(){
+QPointF Unit::getTarget() const {
     return targetPoint;
 
 }
@@ -131,7 +131,7 @@ void Unit::setSpeed(float speed){
     this->speed = speed;
 }
 
-float Unit::getSpeed(){
+float Unit::getSpeed() const {
     return speed;
 }
 

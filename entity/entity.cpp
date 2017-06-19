@@ -42,7 +42,7 @@ void Entity::setCurrentAnimation(Animation *anim) {
     //currentAnimation->start();
 }
 
-Animation *Entity::getCurrentAnimation() {
+Animation *Entity::getCurrentAnimation() const {
     return currentAnimation;
 }
 
@@ -55,7 +55,7 @@ void Entity::setHP(int hp) {
     this->hp = hp;
 }
 
-int Entity::getHP(){
+int Entity::getHP() const {
     return hp;
 }
 
@@ -63,7 +63,7 @@ void Entity::setMaxHP(int hp) {
     maxHP = hp;
 }
 
-int Entity::getMaxHP() {
+int Entity::getMaxHP() const {
     return maxHP;
 }
 
@@ -72,16 +72,16 @@ void Entity::setHighlighted(bool h) {
 }
 
 
-qreal Entity::distanceFrom(Entity *entity){
+qreal Entity::distanceFrom(Entity *entity) const {
     return QLineF(boundingRect().translated(pos()).center(), entity->boundingRect().translated(entity->pos()).center()).length();
 
 }
 
-qreal Entity::distanceFrom(QPointF point){
+qreal Entity::distanceFrom(QPointF point) const {
     return QLineF(boundingRect().translated(pos()).center(), point).length();
 }
 
-QPointF Entity::center() {
+QPointF Entity::center() const {
     return boundingRect().translated(pos()).center();
 
 }

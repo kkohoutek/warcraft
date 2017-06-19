@@ -108,15 +108,15 @@ void Player::addFood(int amount) {
     food += amount;
 }
 
-int &Player::getGold(){
+int &Player::getGold() {
     return gold;
 }
 
-int &Player::getLumber(){
+int &Player::getLumber() {
     return lumber;
 }
 
-int &Player::getFood(){
+int &Player::getFood() {
     return food;
 }
 
@@ -124,19 +124,19 @@ QList<Building *> &Player::getBuildings() {
     return buildings;
 }
 
-QList<Unit *> &Player::getUnits() {
+QList<Unit *> &Player::getUnits(){
     return units;
 }
 
-QList<Worker *> &Player::getWorkers(){
+QList<Worker *> &Player::getWorkers() {
     return workers;
 }
 
-QList<Unit *> &Player::getSelectedUnits(){
+QList<Unit *> &Player::getSelectedUnits() {
     return selectedUnits;
 }
 
-QList<Worker *> Player::selectedWorkers() {
+QList<Worker *> Player::selectedWorkers() const {
     QList<Worker *> selectedWorkers;
     for(Unit *u : selectedUnits){
         if(workers.contains(static_cast<Worker *>(u))){
@@ -147,7 +147,7 @@ QList<Worker *> Player::selectedWorkers() {
 
 }
 
-QList<Unit *> Player::allUnits(){
+QList<Unit *> Player::allUnits() const {
     QList<Unit *> all;
     all.append(units);
     for(Worker *w : workers){
@@ -157,7 +157,7 @@ QList<Unit *> Player::allUnits(){
 
 }
 
-Race Player::getRace() {
+Race Player::getRace() const {
     return race;
 
 }

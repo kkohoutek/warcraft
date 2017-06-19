@@ -443,14 +443,14 @@ void Worker::update(){
         }
     } else if (isGatheringGold()){
             if(collidesWithItem(currentGoldmine)){
-                currentGoldmine->damage(2);
+                currentGoldmine->damage(GOLD_PER_TRIP);
                 stopMoving();
                 setTarget(goldDestination->center());
                 move();
                 currentAnimationSet = goldCarryAnims;
 
             } else if (collidesWithItem(goldDestination)){
-                *playerGold += 2;
+                *playerGold += GOLD_PER_TRIP;
                 stopMoving();
                 setTarget(currentGoldmine->center());
                 move();
@@ -469,14 +469,14 @@ void Worker::updateAnimation() {
 
 }
 
-bool Worker::isGatheringGold(){
+bool Worker::isGatheringGold() const {
     return currentGoldmine != NULL;
 }
 
-bool Worker::isGatheringLumber(){
-    return !(currentTrees == NULL);
+bool Worker::isGatheringLumber() const {
+    return currentTrees != NULL;
 }
 
-Building *Worker::getCurrentBuilding(){
+Building *Worker::getCurrentBuilding() const {
     return currentBuilding;
 }
