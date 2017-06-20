@@ -40,7 +40,7 @@ Warcraft::Warcraft()
     setScene(scene);
 
     rect = new QGraphicsRectItem();
-    this->centerOn(rect);
+    this->centerOn(0,0);
     position = new QPoint();
 
     player = new Player(HUMAN);
@@ -158,6 +158,7 @@ void Warcraft::solveCollisions() {
 
     }
 }
+
 
 void Warcraft::timerEvent(QTimerEvent *event) {
     QPoint p = mapFromGlobal(QCursor::pos());
