@@ -40,6 +40,7 @@ Warcraft::Warcraft()
     setScene(scene);
 
     rect = new QGraphicsRectItem();
+    this->centerOn(rect);
     position = new QPoint();
 
     player = new Player(HUMAN);
