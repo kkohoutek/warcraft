@@ -10,5 +10,7 @@
         <file alias="PEASANT2">res/peasant-flipped.png</file>
         <file alias="GRUNT">res/grunt.png</file>
         <file alias="GRUNT2">res/grunt-flip.png</file>
+        <file alias="DAEMON">res/daemon.png</file>
+        <file alias="DAEMON2">res/daemon-flip.png</file>
     </qresource>
 </RCC>

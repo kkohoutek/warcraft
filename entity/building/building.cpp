@@ -6,13 +6,13 @@ Building::Building(QPointF pos, bool finishedOnSpawn, Race race, QList<int> preF
     setMaxHP(maxHP);
     this->buildTime = buildTime;
 
-    QPixmap *spriteSheet;
+    QPixmap spriteSheet;
     switch(race){
     case HUMAN:
-        spriteSheet = new QPixmap(":/graphics/BUILDINGS_H");
+        spriteSheet = QPixmap(":/graphics/BUILDINGS_H");
         break;
     case ORC:
-        spriteSheet = new QPixmap(":/graphics/BUILDINGS_O");
+        spriteSheet = QPixmap(":/graphics/BUILDINGS_O");
         break;
     }
 

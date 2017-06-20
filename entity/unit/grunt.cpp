@@ -4,8 +4,8 @@ Grunt::Grunt(QPointF pos) : Unit(pos,1,1,2,0)
 {
     setMaxHP(60);
     setHP(60);
-    QPixmap *spriteSheet = new QPixmap(":graphics/GRUNT");
-    QPixmap *spriteSheetFlipped = new QPixmap(":graphics/GRUNT2");
+    QPixmap spriteSheet(":graphics/GRUNT");
+    QPixmap spriteSheetFlipped(":graphics/GRUNT2");
 
     movementAnims = new QList<Animation *>();
 

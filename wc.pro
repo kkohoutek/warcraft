@@ -40,7 +40,10 @@ SOURCES += main.cpp\
     entity/building/orctower.cpp \
     entity/building/orctownhall.cpp \
     entity/building/orcblacksmith.cpp \
-    entity/trees.cpp
+    entity/trees.cpp \
+    entity/unit/daemon.cpp \
+    astar/astar.cpp
+
 
 HEADERS  += mainwindow.h \
     entity/entity.h \
@@ -72,8 +75,21 @@ HEADERS  += mainwindow.h \
     entity/building/orctower.h \
     entity/building/orctownhall.h \
     entity/building/orcblacksmith.h \
+    entity/unit/daemon.h \
+    astar/astar.h
 
 FORMS    += mainwindow.ui
 
 RESOURCES += \
     gameresources.qrc
+
+DISTFILES += \
+    _config.yml \
+    res/BUILDINGS_H.png \
+    res/BUILDINGS_O.png \
+    res/WORLD_bad.png \
+    preview_040617.PNG \
+    res/BUILDINGS_H.xcf \
+    res/BUILDINGS_O.xcf \
+    res/WORLD.xcf \
+    README.md

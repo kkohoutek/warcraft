@@ -6,7 +6,7 @@ Trees::Trees(QPointF pos) : Entity(pos){
 
     QList<QList<int>> *frame = new QList<QList<int>>();
     frame->append(QList<int>() << 0 << 0);
-    Animation *tree = new Animation(new QPixmap(":graphics/WORLD"), 96, 96, frame, 0, false);
+    Animation *tree = new Animation(QPixmap(":graphics/WORLD"), 96, 96, frame, 0, false);
     setCurrentAnimation(tree);
 }
 
