@@ -1,18 +1,17 @@
 #include "building.h"
-#include <qdebug>
 
 Building::Building(QPointF pos, bool finishedOnSpawn, Race race, QList<int> preFrame, QList<int> endFrame, int buildTime, int maxHP) : Entity(pos)
 {
     setMaxHP(maxHP);
     this->buildTime = buildTime;
 
-    QPixmap spriteSheet;
+    QPixmap *spriteSheet;
     switch(race){
     case HUMAN:
-        spriteSheet = QPixmap(":/graphics/BUILDINGS_H");
+        spriteSheet = new QPixmap(":/graphics/BUILDINGS_H");
         break;
     case ORC:
-        spriteSheet = QPixmap(":/graphics/BUILDINGS_O");
+        spriteSheet = new QPixmap(":/graphics/BUILDINGS_O");
         break;
     }
 

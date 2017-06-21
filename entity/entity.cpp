@@ -1,14 +1,21 @@
 #include "entity.h"
 #include "common.h"
+#include <QGraphicsScene>
 
 Entity::Entity(QPointF pos) {
     this->setPos(pos);
     scaleX = 1;
     scaleY = 1;
+
+    deleteTimer = new QTimer();
+    deleteTimer->setInterval(CORPSE_STAY_TIME);
+    deleteTimer->setSingleShot(true);
+    connect(deleteTimer, &QTimer::timeout, this, &cleanUp);
 }
 
 Entity::~Entity() {
     delete currentAnimation;
+    delete deleteTimer;
 }
 
 void Entity::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
@@ -22,7 +29,7 @@ void Entity::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
         painter->setPen(QPen(Qt::green));
         painter->drawRect(boundingRect());
     }
-    if(SHOW_HP_BARS && maxHP > 0){
+    if(SHOW_HP_BARS && hp > 0){
         painter->setBrush(QBrush(Qt::green));
         painter->setPen(QPen(Qt::green));
         painter->drawRect(boundingRect().topLeft().x(),boundingRect().topLeft().y()-5, hp*boundingRect().width()/maxHP, 1.25f); // health bar
@@ -30,6 +37,11 @@ void Entity::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
 
     Q_UNUSED(option);
     Q_UNUSED(widget);
+}
+
+void Entity::die() {
+    hp = 0;
+    deleteTimer->start();
 }
 
 
@@ -84,4 +96,9 @@ qreal Entity::distanceFrom(QPointF point) const {
 QPointF Entity::center() const {
     return boundingRect().translated(pos()).center();
 
+}
+
+void Entity::cleanUp(){
+    scene()->removeItem(this);
+    delete this;
 }

@@ -15,8 +15,8 @@ Worker::Worker(QPointF pos, Race race, int &playerGold, int &playerLumber) : Uni
     {
 
         /* ****** PEASANT ****** */
-        QPixmap spriteSheet(":graphics/PEASANT");
-        QPixmap spriteSheetFlipped(":graphics/PEASANT2");
+        QPixmap *spriteSheet = new QPixmap(":graphics/PEASANT");
+        QPixmap *spriteSheetFlipped = new QPixmap(":graphics/PEASANT2");
 
         movementAnims = new QList<Animation *>();
 

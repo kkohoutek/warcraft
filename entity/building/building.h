@@ -5,12 +5,11 @@
 #include "common.h"
 #include "animation.h"
 #include <QPixmap>
-#include <QObject>
 /*
 
 */
 
-class Building : public Entity, public QObject
+class Building : public Entity
 {
 public:
     // preFrame - předposlední snímek animace, endFrame - poslední snímek

@@ -16,6 +16,7 @@ public:
     void setTarget(QPointF target);
 
     virtual void attack(Entity *victim);
+    virtual void die() override;
 
     /* Aktualizace dosavadní animace na základě úhlu pohybu */
     virtual void updateAnimation();
@@ -49,7 +50,7 @@ protected:
     QPointF targetPoint;
     Entity *targetEntity = NULL;
 
-    void moveToTarget();
+    void approachTarget();
     bool moving = false;    // viditelný rect
 
 

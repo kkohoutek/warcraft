@@ -32,18 +32,8 @@ Unit::~Unit() {
 
 }
 
-void Unit::moveToTarget()
-{
-    //currentAnimationSet = movementAnims;
-    /*
-    if(pos() == targetPoint || contains(targetPoint)){
-        //getCurrentAnimation()->setCurrentFrame(0);
-        return;
-    }*/
-
-
+void Unit::approachTarget() {
     moveBy(speed * direction().x(), speed * direction().y());
-
 }
 
 void Unit::updateAnimation(){
@@ -77,10 +67,10 @@ void Unit::updateAnimation(){
 void Unit::update(){
 
     if(moving){
-        moveToTarget();
+        approachTarget();
     }
 
-    if(distanceFrom(targetPoint) < 2){
+    if(distanceFrom(targetPoint) < 1){
         stopMoving();
     }
 }
@@ -90,6 +80,13 @@ void Unit::attack(Entity *victim) {
     setTarget(victim->center());
     move();
 
+}
+
+void Unit::die() {
+    stopMoving();
+    setCurrentAnimation(deathAnims->at(0));
+    getCurrentAnimation()->start();
+    Entity::die();
 }
 
 

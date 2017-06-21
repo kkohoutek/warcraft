@@ -107,6 +107,9 @@ void Warcraft::loadUnits(){
     scene()->addItem(f);
     player->getUnits().append(f);
 
+    f->die();
+    player->getUnits().removeOne(f);
+
 
     for(int i = 0; i < 4; i++){
         Grunt *g = new Grunt(QPointF(2048-420+i*40, 2048-286-i*40));

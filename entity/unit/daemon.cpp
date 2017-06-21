@@ -4,8 +4,8 @@ Daemon::Daemon(QPointF pos) : Unit(pos, 1,65,0,0)
 {
     setMaxHP(300);
     setHP(300);
-    QPixmap spriteSheet(":graphics/DAEMON");
-    QPixmap spriteSheetFlipped(":graphics/DAEMON2");
+    QPixmap *spriteSheet = new QPixmap(":graphics/DAEMON");
+    QPixmap *spriteSheetFlipped = new QPixmap(":graphics/DAEMON2");
 
     movementAnims = new QList<Animation *>();
 

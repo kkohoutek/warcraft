@@ -6,10 +6,13 @@
 #include <QObject>
 #include "animation.h"
 
-class Entity : public QGraphicsItem
+class Entity : public QObject, public QGraphicsItem
 {
+    Q_OBJECT
+    Q_INTERFACES(QGraphicsItem)
 public:
     static const bool SHOW_HP_BARS = true;
+    static const int CORPSE_STAY_TIME = 5000;
 
     Entity(QPointF pos);
     virtual ~Entity();
@@ -17,6 +20,7 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
     virtual void update() = 0;
+    virtual void die();
     void setCurrentAnimation(Animation *anim);
     Animation *getCurrentAnimation() const;
 
@@ -46,6 +50,11 @@ protected:
     Animation *currentAnimation = NULL;
 
     bool highlighted = false;
+
+    QTimer *deleteTimer;
+
+private slots:
+    void cleanUp();
 
 };
 

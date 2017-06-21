@@ -1,6 +1,6 @@
 #include "animation.h"
 
-Animation::Animation(QPixmap spriteSheet, int subImageWidth, int subImageHeight, QList<QList<int>> *frames, int duration, bool looping) {
+Animation::Animation(QPixmap *spriteSheet, int subImageWidth, int subImageHeight, QList<QList<int>> *frames, int duration, bool looping) {
     this->spriteSheet = spriteSheet;
     this->subImageWidth = subImageWidth;
     this->subImageHeight = subImageHeight;
@@ -17,6 +17,7 @@ Animation::Animation(QPixmap spriteSheet, int subImageWidth, int subImageHeight,
 Animation::~Animation() {
     delete frames;
     delete animationTimer;
+    delete spriteSheet;
 }
 
 void Animation::nextFrame() {
@@ -31,7 +32,7 @@ void Animation::nextFrame() {
 }
 
 void Animation::draw(QPainter *painter){
-    painter->drawPixmap(0,0,spriteSheet,currentPositionX(),currentPositionY(),subImageWidth,subImageHeight);
+    painter->drawPixmap(0,0,*spriteSheet,currentPositionX(),currentPositionY(),subImageWidth,subImageHeight);
 }
 
 void Animation::setCurrentFrame(int index) {
