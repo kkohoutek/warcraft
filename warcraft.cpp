@@ -48,6 +48,9 @@ Warcraft::Warcraft()
 
     enemy = new Player(ORC);
 
+    player_gc = new GarbageCollector(player, 15000);
+    //enemy_gc = new GarbageCollector(enemy, 2000);
+
 
     loadBackground();
     loadWorld();
@@ -72,6 +75,8 @@ Warcraft::~Warcraft() {
     delete position;
     delete player;
     delete enemy;
+    delete player_gc;
+
 }
 
 void Warcraft::loadBackground()
@@ -108,7 +113,6 @@ void Warcraft::loadUnits(){
     player->getUnits().append(f);
 
     f->die();
-    player->getUnits().removeOne(f);
 
 
     for(int i = 0; i < 4; i++){
@@ -141,7 +145,7 @@ void Warcraft::solveCollisions() {
             }
         }
         for(Unit *u : player->getUnits()){
-            if(e->collidesWithItem(u) && u->isMoving()){
+            if(e->collidesWithItem(u)){
                 u->stopMoving();
                 u->moveBy(u->getSpeed() * -u->direction().x(), u->getSpeed() * -u->direction().y());
             }
@@ -153,7 +157,7 @@ void Warcraft::solveCollisions() {
             }
         }
         for(Unit *u : enemy->getUnits()){
-            if(e->collidesWithItem(u) && u->isMoving()){
+            if(e->collidesWithItem(u)){
                 u->stopMoving();
                 u->moveBy(u->getSpeed() * -u->direction().x(), u->getSpeed() * -u->direction().y());
             }
@@ -205,7 +209,7 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
 
 
         for(Unit *unit : player->allUnits()){
-            if(unit->boundingRect().translated(unit->pos()).contains(actualPos)){
+            if(unit->boundingRect().translated(unit->pos()).contains(actualPos) && unit->getHP() > 0){
                 player->selectUnit(unit);
             }
         }

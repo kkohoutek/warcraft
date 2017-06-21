@@ -7,15 +7,11 @@ Entity::Entity(QPointF pos) {
     scaleX = 1;
     scaleY = 1;
 
-    deleteTimer = new QTimer();
-    deleteTimer->setInterval(CORPSE_STAY_TIME);
-    deleteTimer->setSingleShot(true);
-    connect(deleteTimer, &QTimer::timeout, this, &cleanUp);
 }
 
 Entity::~Entity() {
     delete currentAnimation;
-    delete deleteTimer;
+    currentAnimation = NULL;
 }
 
 void Entity::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
@@ -39,9 +35,9 @@ void Entity::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
     Q_UNUSED(widget);
 }
 
+
 void Entity::die() {
     hp = 0;
-    deleteTimer->start();
 }
 
 
@@ -96,9 +92,4 @@ qreal Entity::distanceFrom(QPointF point) const {
 QPointF Entity::center() const {
     return boundingRect().translated(pos()).center();
 
-}
-
-void Entity::cleanUp(){
-    scene()->removeItem(this);
-    delete this;
 }

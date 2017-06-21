@@ -3,13 +3,11 @@
 
 #include <QGraphicsItem>
 #include <QPixmap>
-#include <QObject>
 #include "animation.h"
 
-class Entity : public QObject, public QGraphicsItem
+class Entity : public QGraphicsItem
 {
-    Q_OBJECT
-    Q_INTERFACES(QGraphicsItem)
+
 public:
     static const bool SHOW_HP_BARS = true;
     static const int CORPSE_STAY_TIME = 5000;
@@ -39,6 +37,7 @@ public:
     qreal distanceFrom(QPointF point) const;
     QPointF center() const;
 
+
 protected:
     float scaleX;
     float scaleY;
@@ -50,11 +49,6 @@ protected:
     Animation *currentAnimation = NULL;
 
     bool highlighted = false;
-
-    QTimer *deleteTimer;
-
-private slots:
-    void cleanUp();
 
 };
 

@@ -10,20 +10,16 @@ Player::~Player(){
 }
 
 void Player::update(){
-
     for(Worker *worker : workers){
         worker->update();
     }
     for(Unit *unit : units){
         unit->update();
     }
-
     for(Building *building : buildings){
         building->update();
     }
-
 }
-
 
 void Player::newBuilding(Building *building, Worker *worker, int costGold, int costLumber) {
     if(!workers.contains(worker)) return;

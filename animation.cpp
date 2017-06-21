@@ -17,7 +17,7 @@ Animation::Animation(QPixmap *spriteSheet, int subImageWidth, int subImageHeight
 Animation::~Animation() {
     delete frames;
     delete animationTimer;
-    delete spriteSheet;
+    //delete spriteSheet; <-- musí být smazán manuálně
 }
 
 void Animation::nextFrame() {
@@ -53,5 +53,9 @@ int Animation::currentPositionX() const {
 
 int Animation::currentPositionY() const {
     return frames->at(currentFrameIndex).at(1) * subImageHeight;
+}
+
+QPixmap *Animation::getSpriteSheet(){
+    return spriteSheet;
 }
 

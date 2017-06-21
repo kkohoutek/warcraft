@@ -18,6 +18,8 @@ public:
     void start();
     void setCurrentFrame(int index);
 
+    QPixmap *getSpriteSheet();
+
 
 private:
     QPixmap             *spriteSheet;

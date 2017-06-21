@@ -16,19 +16,28 @@ Unit::Unit(QPointF pos, float speed, int damage, int armor, int range):Entity(po
 }
 
 Unit::~Unit() {
-    for(Animation *a : *movementAnims){
+    QList<QPixmap *> spriteSheets;
+    QList<Animation *> anims;
+    anims.append(*movementAnims);
+    anims.append(*attackAnims);
+    anims.append(*deathAnims);
+
+    for(Animation *a : anims){
+        if(!spriteSheets.contains(a->getSpriteSheet())){
+            spriteSheets.append(a->getSpriteSheet());
+        }
         delete a;
     }
-    for(Animation *a : *deathAnims){
-        delete a;
-    }
-    for(Animation *a : *attackAnims){
-        delete a;
+
+    for(QPixmap *s : spriteSheets){
+        delete s;
     }
 
     delete movementAnims;
     delete attackAnims;
     delete deathAnims;
+
+    setCurrentAnimation(NULL);
 
 }
 

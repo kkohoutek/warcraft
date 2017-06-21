@@ -9,7 +9,7 @@
 #include <QGraphicsRectItem>
 #include "player.h"
 #include "entity/goldmine.h"
-#include <QGraphicsSimpleTextItem>
+#include "garbagecollector.h"
 
 class Warcraft : public QGraphicsView
 {
@@ -20,6 +20,9 @@ public:
 protected:
     Player *player;
     Player *enemy;
+
+    GarbageCollector *player_gc;
+    GarbageCollector *enemy_gc;
 
     QList<Goldmine *>   *goldmines;
     QList<Trees *>      *trees;
