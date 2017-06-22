@@ -1,5 +1,6 @@
 #include "player.h"
 #include <QDebug>
+#include <QGraphicsScene>
 
 
 Player::Player(Race race) {
@@ -21,15 +22,20 @@ void Player::update(){
     }
 }
 
-void Player::newBuilding(Building *building, Worker *worker, int costGold, int costLumber) {
+void Player::newBuilding(Building *building, Worker *worker, int costGold, int costLumber, QList<Entity *> allEntities) {
     if(!workers.contains(worker)) return;
 
-    if(gold > costGold && lumber > costLumber){
+    if(gold >= costGold && lumber >= costLumber){
+        for(Entity *e : allEntities){
+            if(e->collidesWithItem(building)){
+                delete building;
+                return;
+            }
+        }
         gold-=costGold;
         lumber-=costLumber;
         worker->goBuild(building);
         buildings.append(building);
-
         deselect();
     }
 

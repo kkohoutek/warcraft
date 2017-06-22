@@ -16,6 +16,7 @@ Unit::Unit(QPointF pos, float speed, int damage, int armor, int range):Entity(po
 }
 
 Unit::~Unit() {
+    // unikátní spritesheety k vymazání, animace mohou používat stejný spritesheet, ale musí se mazat jen jednou
     QList<QPixmap *> spriteSheets;
     QList<Animation *> anims;
     anims.append(*movementAnims);
@@ -23,8 +24,9 @@ Unit::~Unit() {
     anims.append(*deathAnims);
 
     for(Animation *a : anims){
-        if(!spriteSheets.contains(a->getSpriteSheet())){
-            spriteSheets.append(a->getSpriteSheet());
+        QPixmap *s = a->getSpriteSheet();
+        if(!spriteSheets.contains(s)){
+            spriteSheets.append(s);
         }
         delete a;
     }

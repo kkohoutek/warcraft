@@ -1,4 +1,5 @@
 #include "building.h"
+#include <QDebug>
 
 Building::Building(QPointF pos, bool finishedOnSpawn, Race race, QList<int> preFrame, QList<int> endFrame, int buildTime, int maxHP) : Entity(pos)
 {
@@ -32,6 +33,7 @@ Building::Building(QPointF pos, bool finishedOnSpawn, Race race, QList<int> preF
         buildAnimation->setCurrentFrame(3);
         buildAnimation->stop();
     } else {
+        setHP(0);
         finished = false;
         buildTimer = new QTimer();
         buildTimer->setInterval(buildTime/maxHP);
@@ -40,12 +42,14 @@ Building::Building(QPointF pos, bool finishedOnSpawn, Race race, QList<int> preF
 
     scaleX = 2;
     scaleY = 2;
+
+    qDebug() << getMaxHP() << getHP() << finishedOnSpawn;
 }
 
 Building::~Building()
 {
     delete buildTimer;
-    delete buildAnimation;
+    delete buildAnimation->getSpriteSheet();
 }
 
 void Building::update(){

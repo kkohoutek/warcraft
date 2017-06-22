@@ -20,7 +20,7 @@ void GarbageCollector::update(){
     QMutableListIterator<Unit *> a(monitoredPlayer->getUnits());
     while(a.hasNext()){
         Unit *unit = a.next();
-        if(unit->getHP() == 0){
+        if(!unit->isAlive()){
             a.remove();
             unit->scene()->removeItem(unit);
             delete unit;
@@ -30,7 +30,7 @@ void GarbageCollector::update(){
     QMutableListIterator<Worker *> b(monitoredPlayer->getWorkers());
     while(b.hasNext()){
         Worker *worker = b.next();
-        if(worker->getHP() == 0){
+        if(!worker->isAlive()){
             b.remove();
             worker->scene()->removeItem(worker);
             delete worker;
@@ -40,7 +40,7 @@ void GarbageCollector::update(){
     QMutableListIterator<Building *> c(monitoredPlayer->getBuildings());
     while(c.hasNext()){
         Building *building = c.next();
-        if(building->getHP() == 0){
+        if(!building->isAlive()){
             c.remove();
             building->scene()->removeItem(building);
             delete building;

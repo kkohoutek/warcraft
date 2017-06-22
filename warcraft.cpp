@@ -16,14 +16,14 @@
 #include "entity/building/humanlumbermill.h"
 #include "entity/building/humantower.h"
 #include "entity/unit/footman.h"
-#include  "entity/building/orcbarracks.h"
-#include  "entity/building/orcblacksmith.h"
-#include  "entity/building/orcfarm.h"
-#include  "entity/building/orckennels.h"
-#include  "entity/building/orclumbermill.h"
-#include  "entity/building/orctemple.h"
-#include  "entity/building/orctower.h"
-#include  "entity/building/orctownhall.h"
+#include "entity/building/orcbarracks.h"
+#include "entity/building/orcblacksmith.h"
+#include "entity/building/orcfarm.h"
+#include "entity/building/orckennels.h"
+#include "entity/building/orclumbermill.h"
+#include "entity/building/orctemple.h"
+#include "entity/building/orctower.h"
+#include "entity/building/orctownhall.h"
 #include "entity/trees.h"
 #include "entity/unit/grunt.h"
 
@@ -40,11 +40,12 @@ Warcraft::Warcraft()
     setScene(scene);
 
     rect = new QGraphicsRectItem();
-    this->centerOn(0,0);
+    centerOn(0,0);
     position = new QPoint();
 
     player = new Player(HUMAN);
-    player->addFood(4);
+    player->addFood(8);
+    player->addLumber(10000);
 
     enemy = new Player(ORC);
 
@@ -62,6 +63,7 @@ Warcraft::Warcraft()
 }
 
 Warcraft::~Warcraft() {
+
     for(Goldmine *g : *goldmines){
         delete g;
     }
@@ -69,7 +71,7 @@ Warcraft::~Warcraft() {
     for(Trees *t : *trees){
         delete t;
     }*/
-    delete trees;
+    //delete trees;
     delete goldmines;
     delete rect;
     delete position;
@@ -137,27 +139,14 @@ void Warcraft::loadWorld() {
 void Warcraft::solveCollisions() {
 
     for(Entity *e : staticEntities()){
-
-        for(Worker *w : player->getWorkers()){
-            if(e->collidesWithItem(w) && !w->isGatheringGold()){
-                w->stopMoving();
-                w->moveBy(w->getSpeed() * -w->direction().x(), w->getSpeed() * -w->direction().y());
-            }
-        }
-        for(Unit *u : player->getUnits()){
-            if(e->collidesWithItem(u)){
+        for(Unit *u : player->allUnits()){
+            if(e->collidesWithItem(u) && !static_cast<Worker *>(u)->isGatheringGold()){
                 u->stopMoving();
                 u->moveBy(u->getSpeed() * -u->direction().x(), u->getSpeed() * -u->direction().y());
             }
         }
-        for(Worker *w : enemy->getWorkers()){
-            if(e->collidesWithItem(w) && !w->isGatheringGold()){
-                w->stopMoving();
-                w->moveBy(w->getSpeed() * -w->direction().x(), w->getSpeed() * -w->direction().y());
-            }
-        }
-        for(Unit *u : enemy->getUnits()){
-            if(e->collidesWithItem(u)){
+        for(Unit *u : enemy->allUnits()){
+            if(e->collidesWithItem(u) && !static_cast<Worker *>(u)->isGatheringGold()){
                 u->stopMoving();
                 u->moveBy(u->getSpeed() * -u->direction().x(), u->getSpeed() * -u->direction().y());
             }
@@ -169,24 +158,23 @@ void Warcraft::solveCollisions() {
 
 void Warcraft::timerEvent(QTimerEvent *event) {
     QPoint p = mapFromGlobal(QCursor::pos());
-    if(p.x() >= this->window()->width() - 50 && p.x() <= this->window()->width() && p.y() >= 0 && p.y() <= this->window()->height() ){
-        this->horizontalScrollBar()->setValue(horizontalScrollBar()->value()+20);
+    if(p.x() >=  window()->width() - 50 && p.x() <= window()->width() && p.y() >= 0 && p.y() <= window()->height() ){
+        horizontalScrollBar()->setValue(horizontalScrollBar()->value()+20);
 
 
     }
-    else if(p.x() <= 50 && p.x() >= 0 && p.y() <= this->window()->height() && p.y() >= 0){
-        this->horizontalScrollBar()->setValue(horizontalScrollBar()->value()-20);
+    else if(p.x() <= 50 && p.x() >= 0 && p.y() <= window()->height() && p.y() >= 0){
+        horizontalScrollBar()->setValue(horizontalScrollBar()->value()-20);
 
     }
 
-    if(p.y() >= this->window()->height() - 50 && p.y() <= this->window()->height() && p.x() >= 0 && p.x() <= this->window()->width() ){
-        this->verticalScrollBar()->setValue(verticalScrollBar()->value()+20);
+    if(p.y() >=  window()->height() - 50 && p.y() <= window()->height() && p.x() >= 0 && p.x() <= window()->width() ){
+        verticalScrollBar()->setValue(verticalScrollBar()->value()+20);
 
     }
 
-    else if(p.y() <= 50 && p.y() >= 0 && p.x() <= this->window()->width() && p.x() >= 0){
-        this->verticalScrollBar()->setValue(verticalScrollBar()->value()-20);
-
+    else if(p.y() <= 50 && p.y() >= 0 && p.x() <= window()->width() && p.x() >= 0){
+         verticalScrollBar()->setValue(verticalScrollBar()->value()-20);
     }
 
     solveCollisions();
@@ -203,13 +191,18 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
 
     QPointF actualPos = mapToScene(mapFromGlobal(QCursor::pos()));
     if(event->button() == Qt::LeftButton){
+        if(build && !player->selectedWorkers().empty())
+        player->newBuilding(new HumanFarm(actualPos, false, player->getFood()), player->selectedWorkers().at(0), HumanFarm::COST_GOLD, HumanFarm::COST_LUMBER, allEntities());
+
+
+
         isPressedLeftButton = true;
         position->setX(actualPos.x());
         position->setY(actualPos.y());
 
 
         for(Unit *unit : player->allUnits()){
-            if(unit->boundingRect().translated(unit->pos()).contains(actualPos) && unit->getHP() > 0){
+            if(unit->boundingRect().translated(unit->pos()).contains(actualPos) && unit->isAlive()){
                 player->selectUnit(unit);
             }
         }
@@ -241,7 +234,7 @@ void Warcraft::mouseReleaseEvent(QMouseEvent *releaseEvent)
 
         QList<Unit *> selected;
         for(Unit *unit : player->allUnits()){
-            if(rect->rect().contains(unit->boundingRect().translated(unit->pos()).center())){
+            if(rect->rect().contains(unit->boundingRect().translated(unit->pos()).center()) && unit->isAlive()){
                 selected.append(unit);
             }
         }
@@ -270,14 +263,20 @@ void Warcraft::mouseMoveEvent(QMouseEvent *event) {
 }
 
 void Warcraft::keyPressEvent(QKeyEvent *event){
+    QList<Worker *> sw = player->selectedWorkers();
     switch(event->key()){
     case Qt::Key_Escape:
         window()->close();
         break;
+    case Qt::Key_B:
+        if(!sw.empty()){
+            //player->newBuilding(new HumanFarm(sw.at(0)->center()+QPointF(50,0), false, player->getFood()), sw.at(0), HumanFarm::COST_GOLD, HumanFarm::COST_LUMBER, allEntities());
+            build = true;
+        }
+        break;
     }
 
 }
-
 
 QList<Entity *> Warcraft::staticEntities() const {
     QList<Entity *> list;

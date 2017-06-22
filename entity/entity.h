@@ -30,7 +30,7 @@ public:
     void setMaxHP(int hp);
     int getMaxHP() const;
 
-
+    bool isAlive() const;
     void setHighlighted(bool h);
 
     qreal distanceFrom(Entity *entity) const;

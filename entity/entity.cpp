@@ -38,6 +38,7 @@ void Entity::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
 
 void Entity::die() {
     hp = 0;
+    setZValue(-1);
 }
 
 
@@ -73,6 +74,10 @@ void Entity::setMaxHP(int hp) {
 
 int Entity::getMaxHP() const {
     return maxHP;
+}
+
+bool Entity::isAlive() const {
+    return hp > 0;
 }
 
 void Entity::setHighlighted(bool h) {

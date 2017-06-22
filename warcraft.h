@@ -49,6 +49,8 @@ protected:
     QList<Unit *> allUnits() const;
     QList<Entity *> allEntities() const;
 
+    bool build = false;
+
 
 };
 

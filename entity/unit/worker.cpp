@@ -421,8 +421,11 @@ void Worker::cancel(){
 void Worker::goBuild(Building *building){
     if(currentBuilding == NULL){
         currentBuilding = building;
-        setTarget(currentBuilding->pos());
-        move();
+
+        if(!collidesWithItem(currentBuilding)){
+            setTarget(currentBuilding->center());
+            move();
+        }
     }
 }
 
@@ -431,10 +434,10 @@ void Worker::update(){
     if(currentBuilding != NULL){
         if(!currentBuilding->isBuildingFinished()){
             if(collidesWithItem(currentBuilding)){
+                stopMoving();
                 currentBuilding->beginConstruction();
                 scene()->addItem(currentBuilding);
                 hide();
-                stopMoving();
             }
         } else {
             show();

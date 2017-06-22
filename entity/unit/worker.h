@@ -27,7 +27,7 @@ public:
     Building *getCurrentBuilding() const;
 
 protected:
-    static const int GOLD_PER_TRIP = 10;
+    static const int GOLD_PER_TRIP = 100;
 
     Goldmine *currentGoldmine = NULL;
     Trees     *currentTrees = NULL;
@@ -44,6 +44,8 @@ private:
 
     int *playerGold;    // pointer na hráčovo zlato
     int *playerLumber;  // pointer na hráčovo dřevo
+
+
 
 };
 

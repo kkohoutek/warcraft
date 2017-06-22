@@ -26,11 +26,10 @@ public:
 
 private:
     int buildTime;
-    Animation *buildAnimation;
-    QTimer *buildTimer;
+    Animation *buildAnimation = NULL;
+    QTimer *buildTimer = NULL;
 
     bool finished;
-
 private slots:
     void constructionUpdate();
 

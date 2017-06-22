@@ -15,7 +15,7 @@ public:
 
     void update();
 
-    void newBuilding(Building *building, Worker *worker, int costGold, int costLumber);
+    void newBuilding(Building *building, Worker *worker, int costGold, int costLumber, QList<Entity *> allEntities);
 
     void addFood(int amount);
     void addGold(int amount);
