@@ -5,6 +5,9 @@
 
 Player::Player(Race race) {
     this->race = race;
+
+    goldDestinationIndex = 0;
+    lumberDestinationIndex = 0;
 }
 
 Player::~Player(){
@@ -162,4 +165,12 @@ QList<Unit *> Player::allUnits() const {
 Race Player::getRace() const {
     return race;
 
+}
+
+Building *Player::goldDestination() const {
+    return buildings.at(goldDestinationIndex);
+}
+
+Building *Player::lumberDestination() const {
+    return buildings.at(lumberDestinationIndex);
 }

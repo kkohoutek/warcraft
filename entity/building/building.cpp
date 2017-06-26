@@ -43,7 +43,6 @@ Building::Building(QPointF pos, bool finishedOnSpawn, Race race, QList<int> preF
     scaleX = 2;
     scaleY = 2;
 
-    qDebug() << getMaxHP() << getHP() << finishedOnSpawn;
 }
 
 Building::~Building()

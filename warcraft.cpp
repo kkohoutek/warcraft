@@ -27,6 +27,8 @@
 #include "entity/trees.h"
 #include "entity/unit/grunt.h"
 
+#include "pathfinding/bfs.h"
+
 
 Warcraft::Warcraft()
 {
@@ -59,6 +61,10 @@ Warcraft::Warcraft()
     loadBuildings();
 
     startTimer(17);
+
+
+    // test pathfinding
+
 
 }
 
@@ -114,7 +120,7 @@ void Warcraft::loadUnits(){
     scene()->addItem(f);
     player->getUnits().append(f);
 
-    f->die();
+    //f->die();
 
 
     for(int i = 0; i < 4; i++){
@@ -122,6 +128,59 @@ void Warcraft::loadUnits(){
         scene()->addItem(g);
         enemy->getUnits().append(g);
     }
+
+
+
+    Graph *graph = new Graph();
+    /*
+    for(int i = 128; i < 320; i+=64){
+        for(int j = 128; j < 320; j+=64){
+            graph->addNode(new Node(j, i, NULL));
+        }
+    }*/
+
+    Node *n = new Node(128,128,NULL);
+    graph->addNode(n);
+    n = new Node(128+64, 128, NULL);
+    graph->addNode(n);
+    n = new Node(128+64+64, 128, NULL);
+    graph->addNode(n);
+    n = new Node(128, 128+64, NULL);
+    graph->addNode(n);
+    n = new Node(128+64,128+64,NULL);
+    graph->addNode(n);
+    n = new Node(128+64+64,128+64,NULL);
+    graph->addNode(n);
+
+    QList<Node *> nodes = graph->getNodes();
+    nodes.at(0)->addNeighbor(nodes.at(1));
+    nodes.at(0)->addNeighbor(nodes.at(3));
+
+    nodes.at(1)->addNeighbor(nodes.at(0));
+    nodes.at(1)->addNeighbor(nodes.at(2));
+    nodes.at(1)->addNeighbor(nodes.at(4));
+
+    nodes.at(2)->addNeighbor(nodes.at(1));
+    nodes.at(2)->addNeighbor(nodes.at(5));
+
+    nodes.at(3)->addNeighbor(nodes.at(0));
+    nodes.at(3)->addNeighbor(nodes.at(4));
+
+    nodes.at(4)->addNeighbor(nodes.at(3));
+    nodes.at(4)->addNeighbor(nodes.at(5));
+    nodes.at(4)->addNeighbor(nodes.at(1));
+
+    nodes.at(5)->addNeighbor(nodes.at(4));
+    nodes.at(5)->addNeighbor(nodes.at(2));
+
+
+    BFS bfs(graph, nodes.at(0), nodes.at(5));
+    QList<QPointF> path = bfs.shortestPath();
+    for(QPointF p : path){
+        qDebug() << p;
+    }
+
+    delete graph;
 }
 
 void Warcraft::loadWorld() {
@@ -191,15 +250,9 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
 
     QPointF actualPos = mapToScene(mapFromGlobal(QCursor::pos()));
     if(event->button() == Qt::LeftButton){
-        if(build && !player->selectedWorkers().empty())
-        player->newBuilding(new HumanFarm(actualPos, false, player->getFood()), player->selectedWorkers().at(0), HumanFarm::COST_GOLD, HumanFarm::COST_LUMBER, allEntities());
-
-
-
         isPressedLeftButton = true;
         position->setX(actualPos.x());
         position->setY(actualPos.y());
-
 
         for(Unit *unit : player->allUnits()){
             if(unit->boundingRect().translated(unit->pos()).contains(actualPos) && unit->isAlive()){
@@ -216,8 +269,8 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
                 if(!sw.empty()){
                     for(Worker *w : sw){
                         //w->cancel();
-                        w->gatherGold(g, player->getBuildings().at(0));
-                        w->setTarget(g->center());
+                        w->gatherGold(g, player->goldDestination());
+                        w->setTarget(g);
                         w->move();
                     }
                 }
@@ -234,7 +287,7 @@ void Warcraft::mouseReleaseEvent(QMouseEvent *releaseEvent)
 
         QList<Unit *> selected;
         for(Unit *unit : player->allUnits()){
-            if(rect->rect().contains(unit->boundingRect().translated(unit->pos()).center()) && unit->isAlive()){
+            if(rect->rect().contains(unit->boundingRect().translated(unit->pos()).center()) && unit->isAlive() && unit->isVisible()){
                 selected.append(unit);
             }
         }
@@ -269,10 +322,7 @@ void Warcraft::keyPressEvent(QKeyEvent *event){
         window()->close();
         break;
     case Qt::Key_B:
-        if(!sw.empty()){
-            //player->newBuilding(new HumanFarm(sw.at(0)->center()+QPointF(50,0), false, player->getFood()), sw.at(0), HumanFarm::COST_GOLD, HumanFarm::COST_LUMBER, allEntities());
-            build = true;
-        }
+
         break;
     }
 
@@ -314,11 +364,10 @@ QList<Entity *> Warcraft::allEntities() const {
 }
 
 
-
 void Warcraft::paintEvent(QPaintEvent *event)
 {
 
-    QGraphicsView::paintEvent(event);
+    QGraphicsView::paintEvent(event); 
     QPainter painter(viewport());
     painter.setFont(QFont("sans-serif",10));
     painter.setPen(Qt::white);

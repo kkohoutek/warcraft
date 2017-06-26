@@ -42,8 +42,10 @@ SOURCES += main.cpp\
     entity/building/orcblacksmith.cpp \
     entity/trees.cpp \
     entity/unit/daemon.cpp \
-    astar/astar.cpp \
-    garbagecollector.cpp
+    garbagecollector.cpp \
+    pathfinding/bfs.cpp \
+    pathfinding/node.cpp \
+    pathfinding/graph.cpp
 
 
 HEADERS  += mainwindow.h \
@@ -77,8 +79,11 @@ HEADERS  += mainwindow.h \
     entity/building/orctownhall.h \
     entity/building/orcblacksmith.h \
     entity/unit/daemon.h \
-    astar/astar.h \
-    garbagecollector.h
+    garbagecollector.h \
+    pathfinding/bfs.h \
+    pathfinding/node.h \
+    pathfinding/graph.h
+
 
 FORMS    += mainwindow.ui
 

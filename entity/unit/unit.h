@@ -2,6 +2,7 @@
 #define UNIT_H
 
 #include "entity/entity.h"
+#include "pathfinding/node.h"
 #include <QVector2D>
 
 
@@ -14,6 +15,7 @@ public:
     virtual ~Unit();
 
     void setTarget(QPointF target);
+    void setTarget(Entity *target);
 
     virtual void attack(Entity *victim);
     virtual void die() override;
@@ -26,6 +28,8 @@ public:
 
     /* Začni se hýbat, setTarget musí být voláno před použitím */
     void move();
+
+    void setPath(QList<QPointF> pathPoints);
 
     QVector2D direction() const;
 
@@ -48,6 +52,7 @@ protected:
     QList<Animation *> *currentAnimationSet;
 
     QPointF targetPoint;
+    QList<QPointF> *path = NULL;
     Entity *targetEntity = NULL;
 
     void approachTarget();

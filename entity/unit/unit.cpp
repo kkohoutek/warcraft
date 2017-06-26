@@ -82,7 +82,13 @@ void Unit::update(){
     }
 
     if(distanceFrom(targetPoint) < 1){
-        stopMoving();
+        if(path != NULL && path->last() != targetPoint){
+            setTarget(path->at(path->indexOf(targetPoint)+1));
+        } else {
+            stopMoving();
+        }
+
+
     }
 }
 
@@ -107,6 +113,10 @@ void Unit::setTarget(QPointF target){
     updateAnimation();
 }
 
+void Unit::setTarget(Entity *target) {
+    setTarget(target->center());
+}
+
 QVector2D Unit::direction() const {
     return QVector2D(targetPoint - center()).normalized();
 }
@@ -119,8 +129,16 @@ void Unit::move() {
     moving = true;
 }
 
+void Unit::setPath(QList<QPointF> pathPoints) {
+    delete path;
+    path = new QList<QPointF>(pathPoints);
+
+}
+
 void Unit::stopMoving(){
     moving = false;
+    delete path;
+    path = NULL;
     getCurrentAnimation()->setCurrentFrame(0);
     getCurrentAnimation()->stop();
 }

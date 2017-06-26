@@ -40,6 +40,9 @@ public:
 
     Race getRace() const;
 
+    Building *goldDestination() const;
+    Building *lumberDestination() const;
+
 
 protected:
     static const int MAX_SELECTED_UNITS = 5;
@@ -58,6 +61,8 @@ protected:
     int lumber = 0;
     int food = 0;
 
+    int goldDestinationIndex;
+    int lumberDestinationIndex;
 };
 
 #endif // PLAYER_H
