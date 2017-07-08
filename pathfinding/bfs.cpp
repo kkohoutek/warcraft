@@ -14,10 +14,6 @@ BFS::BFS() {
     goal = NULL;
 }
 
-BFS::~BFS() {
-    //delete graph;
-}
-
 void BFS::setGraph(Graph *graph){
     this->graph = graph;
 }
@@ -34,31 +30,35 @@ void BFS::setGoal(Node *node) {
 
 QList<QPointF> BFS::shortestPath() {
     // breadth-first search
-    QList<Node *> nodes = graph->getNodes();
 
-    QQueue<int> queue;
-    queue.enqueue(nodes.indexOf(start));
+    QQueue<Node *> queue;
+    queue.enqueue(start);
 
-    int nodeIndex;
+    Node *node = NULL;
     while(!queue.empty()){
-        nodeIndex = queue.dequeue();
-        for(Node *neighbor : nodes.at(nodeIndex)->getNeighbors()){
+        node = queue.dequeue();
+        if(node == goal) break; // ???
+
+        for(Node *neighbor : node->getNeighbors()){
             if(!neighbor->visited){
-                queue.enqueue(nodes.indexOf(neighbor));
+                queue.enqueue(neighbor);
                 neighbor->visited = true;
-                neighbor->setParent(nodes.at(nodeIndex));
+                neighbor->setParent(node);
+
             }
         }
     }
 
+    // retrace
     QList<QPointF> path;
-    Node *node = nodes.at(nodeIndex);
     while(node != start){
-        path.append(*(node->pos));
+        path.append(node->pos);
         node = node->getParent();
 
     }
+    path.append(start->pos);
 
-    for(int k = 0; k < (path.size()/2); k++) path.swap(k,path.size()-(1+k));
+
+    for(int k = 0; k < (path.size()/2); k++) path.swap(k,path.size()-(1+k)); // reverse list
     return path;
 }

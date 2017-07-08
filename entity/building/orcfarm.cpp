@@ -1,7 +1,7 @@
 #include "orcfarm.h"
 
-OrcFarm::OrcFarm(QPointF pos, bool finishedOnSpawn) :
-    Building(pos, finishedOnSpawn,ORC, QList<int>() << 0 << 1, QList<int>() << 4 << 0, BUILD_TIME, HP)
+OrcFarm::OrcFarm(QPointF pos, bool finishedOnSpawn, Resources &res) :
+    Building(pos, finishedOnSpawn,ORC, QList<int>() << 0 << 1, QList<int>() << 4 << 0, BUILD_TIME, HP, res)
 {
 
 }

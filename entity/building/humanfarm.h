@@ -13,7 +13,7 @@ public:
     static const int HP = 800;
     static const int BUILD_TIME = (1000*1000)/TIME_DIVISOR;
 
-    HumanFarm(QPointF pos, bool finishedOnSpawn, int &playerFood);
+    HumanFarm(QPointF pos, bool finishedOnSpawn, Resources &res, int &playerFood);
 
     // QGraphicsItem interface
     QRectF boundingRect() const override;

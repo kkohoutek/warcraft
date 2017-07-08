@@ -8,9 +8,8 @@ Player::Player(Race race) {
 
     goldDestinationIndex = 0;
     lumberDestinationIndex = 0;
-}
 
-Player::~Player(){
+    selectedUnits.reserve(MAX_SELECTED_UNITS);
 }
 
 void Player::update(){

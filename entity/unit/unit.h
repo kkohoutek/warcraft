@@ -46,13 +46,13 @@ protected:
     int range;
 
     // animation sets
-    QList<Animation *> *movementAnims;
-    QList<Animation *> *attackAnims;
-    QList<Animation *> *deathAnims;
+    QList<Animation *> movementAnims;
+    QList<Animation *> attackAnims;
+    QList<Animation *> deathAnims;
     QList<Animation *> *currentAnimationSet;
 
     QPointF targetPoint;
-    QList<QPointF> *path = NULL;
+    QList<QPointF> path;
     Entity *targetEntity = NULL;
 
     void approachTarget();

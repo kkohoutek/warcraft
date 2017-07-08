@@ -1,7 +1,7 @@
 #include "orckennels.h"
 
-OrcKennels::OrcKennels(QPointF pos, bool finishedOnSpawn) :
-    Building(pos,finishedOnSpawn, ORC,QList<int>() << 2 << 3, QList<int>() << 1 << 3, BUILD_TIME, HP)
+OrcKennels::OrcKennels(QPointF pos, bool finishedOnSpawn, Resources &res) :
+    Building(pos,finishedOnSpawn, ORC,QList<int>() << 2 << 3, QList<int>() << 1 << 3, BUILD_TIME, HP, res)
 {
 
 }

@@ -1,19 +1,16 @@
 #include "node.h"
 
-Node::Node(int x, int y, Node *parent) {
-    pos = new QPointF(x,y);
-    neighbors = new QList<Node *>();
-    this->parent = parent;
-}
-
-Node::~Node(){
-    //delete neighbors;
-    //delete pos;
+Node::Node(int x, int y) {
+    pos.setX(x);
+    pos.setY(y);
+    parent = NULL;
 }
 
 
 void Node::addNeighbor(Node *n){
-    neighbors->append(n);
+    if(!neighbors.contains(n)){
+        neighbors.append(n);
+    }
 }
 
 void Node::setParent(Node *n){
@@ -25,6 +22,6 @@ Node *Node::getParent() {
 }
 
 QList<Node *> Node::getNeighbors(){
-    return *neighbors;
+    return neighbors;
 }
 

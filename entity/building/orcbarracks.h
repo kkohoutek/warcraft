@@ -11,7 +11,7 @@ public:
     static const int HP = 800;
     static const int BUILD_TIME = (1500*1000)/TIME_DIVISOR;
 
-    OrcBarracks(QPointF pos, bool finishedOnSpawn);
+    OrcBarracks(QPointF pos, bool finishedOnSpawn, Resources &res);
 
     // QGraphicsItem interface
 

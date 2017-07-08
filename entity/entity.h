@@ -46,9 +46,9 @@ protected:
  private:
     int hp;
     int maxHP;
-    Animation *currentAnimation = NULL;
+    Animation *currentAnimation;
 
-    bool highlighted = false;
+    bool highlighted;
 
 };
 

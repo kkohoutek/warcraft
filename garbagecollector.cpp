@@ -5,14 +5,9 @@
 GarbageCollector::GarbageCollector(Player *monitoredPlayer, const int interval) : QObject(NULL) {
     this->monitoredPlayer = monitoredPlayer;
 
-    updateTimer = new QTimer();
-    updateTimer->setInterval(interval);
-    connect(updateTimer, &QTimer::timeout, this, &update);
-    updateTimer->start();
-}
-
-GarbageCollector::~GarbageCollector(){
-    delete updateTimer;
+    updateTimer.setInterval(interval);
+    connect(&updateTimer, &QTimer::timeout, this, &update);
+    updateTimer.start();
 }
 
 void GarbageCollector::update(){

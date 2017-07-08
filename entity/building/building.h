@@ -4,18 +4,17 @@
 #include "entity/entity.h"
 #include "common.h"
 #include "animation.h"
+#include "resources.h"
 #include <QPixmap>
 #include <QObject>
-/*
 
-*/
 
 class Building : public QObject, public Entity
 {
     Q_OBJECT
 public:
     // preFrame - předposlední snímek animace, endFrame - poslední snímek
-    Building(QPointF pos, bool finishedOnSpawn, Race race, QList<int> preFrame, QList<int> endFrame, int buildTime, int maxHP);
+    Building(QPointF pos, bool finishedOnSpawn, Race race, QList<int> preFrame, QList<int> endFrame, int buildTime, int maxHP, Resources &res);
     virtual ~Building();
 
     virtual void update() override;
@@ -26,7 +25,7 @@ public:
 
 private:
     int buildTime;
-    Animation *buildAnimation = NULL;
+    Animation *buildAnimation;
     QTimer *buildTimer = NULL;
 
     bool finished;

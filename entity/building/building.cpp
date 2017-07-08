@@ -1,7 +1,6 @@
 #include "building.h"
-#include <QDebug>
 
-Building::Building(QPointF pos, bool finishedOnSpawn, Race race, QList<int> preFrame, QList<int> endFrame, int buildTime, int maxHP) : Entity(pos)
+Building::Building(QPointF pos, bool finishedOnSpawn, Race race, QList<int> preFrame, QList<int> endFrame, int buildTime, int maxHP, Resources &res) : Entity(pos)
 {
     setMaxHP(maxHP);
     this->buildTime = buildTime;
@@ -9,20 +8,20 @@ Building::Building(QPointF pos, bool finishedOnSpawn, Race race, QList<int> preF
     QPixmap *spriteSheet;
     switch(race){
     case HUMAN:
-        spriteSheet = new QPixmap(":/graphics/BUILDINGS_H");
+        spriteSheet = &res.humanBuildings;
         break;
     case ORC:
-        spriteSheet = new QPixmap(":/graphics/BUILDINGS_O");
+        spriteSheet = &res.orcBuildings;
         break;
     }
 
-    QList<QList<int>> *frames = new QList<QList<int>>();
-    frames->append(QList<int>() << 0 << 0);
-    frames->append(QList<int>() << 1 << 0);
-    frames->append(preFrame);
-    frames->append(endFrame);
+    QList<QList<int>> frames;
+    frames.append(QList<int>() << 0 << 0);
+    frames.append(QList<int>() << 1 << 0);
+    frames.append(preFrame);
+    frames.append(endFrame);
 
-    buildAnimation = new Animation(spriteSheet, 48, 48, frames, buildTime/frames->size(), false);
+    buildAnimation = new Animation(spriteSheet, 48, 48, frames, buildTime/frames.size(), false);
     setCurrentAnimation(buildAnimation);
     buildAnimation->stop();
 
@@ -72,6 +71,8 @@ void Building::constructionUpdate()
         setHP(getHP()+1);
     } else {
         buildTimer->stop();
+        delete buildTimer;
+        buildTimer = NULL;
         finished = true;
     }
 }

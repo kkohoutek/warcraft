@@ -10,6 +10,7 @@
 #include "player.h"
 #include "entity/goldmine.h"
 #include "garbagecollector.h"
+#include "pathfinding/graph.h"
 
 class Warcraft : public QGraphicsView
 {
@@ -18,17 +19,19 @@ public:
     ~Warcraft();
 
 protected:
+    Resources res;
+
     Player *player;
     Player *enemy;
 
     GarbageCollector *player_gc;
     GarbageCollector *enemy_gc;
 
-    QList<Goldmine *>   *goldmines;
-    QList<Trees *>      *trees;
+    QList<Goldmine *>   goldmines;
+    QList<Trees *>      trees;
 
     bool isPressedLeftButton = false;
-    QPoint *position;
+    QPoint position;
     QGraphicsRectItem *rect; // selection rect
 
     void loadBackground();
@@ -48,6 +51,8 @@ protected:
     QList<Entity *> staticEntities() const;
     QList<Unit *> allUnits() const;
     QList<Entity *> allEntities() const;
+
+    Graph *generateGraphForPathfinding() const;
 
 
 };

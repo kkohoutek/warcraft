@@ -45,7 +45,8 @@ SOURCES += main.cpp\
     garbagecollector.cpp \
     pathfinding/bfs.cpp \
     pathfinding/node.cpp \
-    pathfinding/graph.cpp
+    pathfinding/graph.cpp \
+    resources.cpp
 
 
 HEADERS  += mainwindow.h \
@@ -64,7 +65,6 @@ HEADERS  += mainwindow.h \
     entity/building/humanchurch.h \
     entity/building/humantower.h \
     entity/unit/footman.h \
-    entity/unit/peasant.h \
     entity/unit/grunt.h \
     player.h \
     entity/goldmine.h \
@@ -82,7 +82,8 @@ HEADERS  += mainwindow.h \
     garbagecollector.h \
     pathfinding/bfs.h \
     pathfinding/node.h \
-    pathfinding/graph.h
+    pathfinding/graph.h \
+    resources.h
 
 
 FORMS    += mainwindow.ui

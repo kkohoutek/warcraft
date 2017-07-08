@@ -14,10 +14,9 @@ class GarbageCollector : public QObject
     Q_OBJECT
 public:
     GarbageCollector(Player *monitoredPlayer, const int interval);
-    ~GarbageCollector();
 
 private:
-    QTimer *updateTimer;
+    QTimer updateTimer;
     Player *monitoredPlayer;
 
 public slots:

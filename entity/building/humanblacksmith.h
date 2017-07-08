@@ -13,7 +13,7 @@ public:
     static const int HP = 800;
     static const int BUILD_TIME = (1500*1000)/TIME_DIVISOR;
 
-    HumanBlacksmith(QPointF pos, bool finishedOnSpawn);
+    HumanBlacksmith(QPointF pos, bool finishedOnSpawn, Resources &res);
 
     // QGraphicsItem interface
     QRectF boundingRect() const override;

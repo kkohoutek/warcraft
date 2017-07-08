@@ -5,6 +5,7 @@
 #include <QDebug>
 #include <QPainter>
 #include <QOpenGLWidget>
+#include <QGraphicsSimpleTextItem>
 
 #include "entity/entity.h"
 #include "entity/building/humanfarm.h"
@@ -43,7 +44,6 @@ Warcraft::Warcraft()
 
     rect = new QGraphicsRectItem();
     centerOn(0,0);
-    position = new QPoint();
 
     player = new Player(HUMAN);
     player->addFood(8);
@@ -70,17 +70,15 @@ Warcraft::Warcraft()
 
 Warcraft::~Warcraft() {
 
-    for(Goldmine *g : *goldmines){
+    for(Goldmine *g : goldmines){
         delete g;
     }
     /*
-    for(Trees *t : *trees){
+    for(Trees *t : trees){
         delete t;
     }*/
-    //delete trees;
-    delete goldmines;
+
     delete rect;
-    delete position;
     delete player;
     delete enemy;
     delete player_gc;
@@ -99,11 +97,11 @@ void Warcraft::loadBackground()
 }
 
 void Warcraft::loadBuildings() {
-    Building *th = new HumanTownHall(QPointF(216,216), true);
+    Building *th = new HumanTownHall(QPointF(216,216), true, res);
     player->getBuildings().append(th);
     scene()->addItem(th);
 
-    th = new OrcTownHall(QPointF(2048-300,2048-300), true);
+    th = new OrcTownHall(QPointF(2048-300,2048-300), true, res);
     enemy->getBuildings().append(th);
     scene()->addItem(th);
 
@@ -111,12 +109,12 @@ void Warcraft::loadBuildings() {
 
 void Warcraft::loadUnits(){
     for(int i = 0; i < 4; i++){
-        Worker *w = new Worker(QPointF(128+i*28,128), player->getRace(), player->getGold(), player->getLumber());
+        Worker *w = new Worker(QPointF(128+i*28,128), player->getRace(), player->getGold(), player->getLumber(), res);
         player->getWorkers().append(w);
         scene()->addItem(w);
     }
 
-    Footman *f = new Footman(QPointF(112,138));
+    Footman *f = new Footman(QPointF(192,144), res);
     scene()->addItem(f);
     player->getUnits().append(f);
 
@@ -124,74 +122,21 @@ void Warcraft::loadUnits(){
 
 
     for(int i = 0; i < 4; i++){
-        Grunt *g = new Grunt(QPointF(2048-420+i*40, 2048-286-i*40));
+        Grunt *g = new Grunt(QPointF(2048-420+i*40, 2048-286-i*40), res);
         scene()->addItem(g);
         enemy->getUnits().append(g);
     }
 
-
-
-    Graph *graph = new Graph();
-    /*
-    for(int i = 128; i < 320; i+=64){
-        for(int j = 128; j < 320; j+=64){
-            graph->addNode(new Node(j, i, NULL));
-        }
-    }*/
-
-    Node *n = new Node(128,128,NULL);
-    graph->addNode(n);
-    n = new Node(128+64, 128, NULL);
-    graph->addNode(n);
-    n = new Node(128+64+64, 128, NULL);
-    graph->addNode(n);
-    n = new Node(128, 128+64, NULL);
-    graph->addNode(n);
-    n = new Node(128+64,128+64,NULL);
-    graph->addNode(n);
-    n = new Node(128+64+64,128+64,NULL);
-    graph->addNode(n);
-
-    QList<Node *> nodes = graph->getNodes();
-    nodes.at(0)->addNeighbor(nodes.at(1));
-    nodes.at(0)->addNeighbor(nodes.at(3));
-
-    nodes.at(1)->addNeighbor(nodes.at(0));
-    nodes.at(1)->addNeighbor(nodes.at(2));
-    nodes.at(1)->addNeighbor(nodes.at(4));
-
-    nodes.at(2)->addNeighbor(nodes.at(1));
-    nodes.at(2)->addNeighbor(nodes.at(5));
-
-    nodes.at(3)->addNeighbor(nodes.at(0));
-    nodes.at(3)->addNeighbor(nodes.at(4));
-
-    nodes.at(4)->addNeighbor(nodes.at(3));
-    nodes.at(4)->addNeighbor(nodes.at(5));
-    nodes.at(4)->addNeighbor(nodes.at(1));
-
-    nodes.at(5)->addNeighbor(nodes.at(4));
-    nodes.at(5)->addNeighbor(nodes.at(2));
-
-
-    BFS bfs(graph, nodes.at(0), nodes.at(5));
-    QList<QPointF> path = bfs.shortestPath();
-    for(QPointF p : path){
-        qDebug() << p;
-    }
-
-    delete graph;
 }
 
 void Warcraft::loadWorld() {
-    goldmines = new QList<Goldmine *>();
-    Goldmine *a = new Goldmine(QPointF(64,64));
-    Goldmine *b = new Goldmine(QPointF(2048-128, 2048-128));
+    Goldmine *a = new Goldmine(QPointF(64,64), res);
+    Goldmine *b = new Goldmine(QPointF(2048-128, 2048-128), res);
     scene()->addItem(a);
     scene()->addItem(b);
 
-    goldmines->append(a);
-    goldmines->append(b);
+    goldmines.append(a);
+    goldmines.append(b);
 
 }
 
@@ -236,7 +181,7 @@ void Warcraft::timerEvent(QTimerEvent *event) {
          verticalScrollBar()->setValue(verticalScrollBar()->value()-20);
     }
 
-    solveCollisions();
+    //solveCollisions();
 
     player->update();
     enemy->update();
@@ -251,8 +196,8 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
     QPointF actualPos = mapToScene(mapFromGlobal(QCursor::pos()));
     if(event->button() == Qt::LeftButton){
         isPressedLeftButton = true;
-        position->setX(actualPos.x());
-        position->setY(actualPos.y());
+        position.setX(actualPos.x());
+        position.setY(actualPos.y());
 
         for(Unit *unit : player->allUnits()){
             if(unit->boundingRect().translated(unit->pos()).contains(actualPos) && unit->isAlive()){
@@ -261,9 +206,19 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
         }
 
     } else if (event->button() == Qt::RightButton){
-        player->selectedMoveTo(actualPos,40);
+        Unit *u = player->getSelectedUnits().at(0);
+        Graph *graph = generateGraphForPathfinding();
+        BFS *bfs = new BFS(graph, graph->getNodeByPos(48,48), graph->getNodeByPos(48*6,48*12));
+        QList<QPointF> path = bfs->shortestPath();
 
-        for(Goldmine *g : *goldmines){
+        u->setPath(path);
+        u->move();
+
+        //delete bfs;
+        //delete graph;
+        //player->selectedMoveTo(actualPos,40);
+
+        for(Goldmine *g : goldmines){
             if(g->boundingRect().translated(g->pos()).contains(actualPos)){
                 QList<Worker *> sw = player->selectedWorkers();
                 if(!sw.empty()){
@@ -307,7 +262,7 @@ void Warcraft::mouseMoveEvent(QMouseEvent *event) {
         }
         QPointF actualPos = mapToScene(mapFromGlobal(QCursor::pos()));
         rect->setPen(QPen(Qt::green));
-        rect->setRect(position->x(), position->y(),actualPos.x() -position->x() , actualPos.y()-position->y());
+        rect->setRect(position.x(), position.y(),actualPos.x() -position.x() , actualPos.y()-position.y());
 
         scene()->addItem(rect);
     }
@@ -333,7 +288,10 @@ QList<Entity *> Warcraft::staticEntities() const {
     for(Building *b : player->getBuildings()){
         list.append(b);
     }
-    for(Goldmine *g : *goldmines){
+    for(Building *b : enemy->getBuildings()){
+        list.append(b);
+    }
+    for(Goldmine *g : goldmines){
         list.append(g);
     }
     return list;
@@ -363,10 +321,62 @@ QList<Entity *> Warcraft::allEntities() const {
     return allEntities;
 }
 
+Graph *Warcraft::generateGraphForPathfinding() const {
+    // not optimized
 
-void Warcraft::paintEvent(QPaintEvent *event)
-{
+    Graph *graph = new Graph();
 
+    qreal width = scene()->sceneRect().width();
+    qreal height = scene()->sceneRect().height();
+    int gap = 48;
+
+
+    for(int i = 0; i < height; i+=gap){
+        for(int j = 0; j < width; j+=gap){
+            for(Entity *entity : staticEntities()){
+                if(!entity->boundingRect().translated(entity->pos()).contains(j,i)){
+                    graph->addNode(j, i);
+                    qDebug() << graph->getNodes().size();
+
+                }
+            }
+
+        }
+    }
+
+    for(Node *a : graph->getNodes()){
+        for(Node *b : graph->getNodes()){
+            if(QLineF(a->pos,b->pos).length() == gap){
+               // qDebug() << *a->pos << *b->pos;
+                if(a->getNeighbors().size() == 4){
+                    break;
+                } else {
+                    a->addNeighbor(b);
+                    b->addNeighbor(a);
+                }
+
+            }
+        }
+    }
+
+    for(Node *n : graph->getNodes()){
+
+    //qDebug() << *n->pos;
+    /*
+        QGraphicsSimpleTextItem *l = new QGraphicsSimpleTextItem(QString::number(n->pos->x()) + ", " + QString::number(n->pos->y()));
+        l->setPos(n->pos->x(),n->pos->y());
+        l->setScale(0.85);
+        scene()->addItem(l);*/
+    }
+
+
+    return graph;
+
+
+}
+
+
+void Warcraft::paintEvent(QPaintEvent *event) {
     QGraphicsView::paintEvent(event); 
     QPainter painter(viewport());
     painter.setFont(QFont("sans-serif",10));

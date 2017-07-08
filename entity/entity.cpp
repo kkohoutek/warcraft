@@ -7,6 +7,9 @@ Entity::Entity(QPointF pos) {
     scaleX = 1;
     scaleY = 1;
 
+    highlighted = true;
+    currentAnimation = NULL;
+
 }
 
 Entity::~Entity() {

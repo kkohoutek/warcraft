@@ -12,16 +12,16 @@ Unit::Unit(QPointF pos, float speed, int damage, int armor, int range):Entity(po
     scaleX = 2;
     scaleY = 2;
 
-    currentAnimationSet = movementAnims;
+    currentAnimationSet = &movementAnims;
 }
 
 Unit::~Unit() {
-    // unikátní spritesheety k vymazání, animace mohou používat stejný spritesheet, ale musí se mazat jen jednou
+    // unikátní spritesheety k vymazání, animace přeci mohou používat stejný spritesheet, ale musí se mazat jen jednou
     QList<QPixmap *> spriteSheets;
     QList<Animation *> anims;
-    anims.append(*movementAnims);
-    anims.append(*attackAnims);
-    anims.append(*deathAnims);
+    anims.append(movementAnims);
+    anims.append(attackAnims);
+    anims.append(deathAnims);
 
     for(Animation *a : anims){
         QPixmap *s = a->getSpriteSheet();
@@ -34,13 +34,7 @@ Unit::~Unit() {
     for(QPixmap *s : spriteSheets){
         delete s;
     }
-
-    delete movementAnims;
-    delete attackAnims;
-    delete deathAnims;
-
     setCurrentAnimation(NULL);
-
 }
 
 void Unit::approachTarget() {
@@ -76,19 +70,15 @@ void Unit::updateAnimation(){
 }
 
 void Unit::update(){
-
     if(moving){
         approachTarget();
     }
-
     if(distanceFrom(targetPoint) < 1){
-        if(path != NULL && path->last() != targetPoint){
-            setTarget(path->at(path->indexOf(targetPoint)+1));
+        if(path.last() != targetPoint){
+            setTarget(path.at(path.indexOf(targetPoint)+1));
         } else {
             stopMoving();
         }
-
-
     }
 }
 
@@ -101,7 +91,7 @@ void Unit::attack(Entity *victim) {
 
 void Unit::die() {
     stopMoving();
-    setCurrentAnimation(deathAnims->at(0));
+    setCurrentAnimation(deathAnims.at(0));
     getCurrentAnimation()->start();
     Entity::die();
 }
@@ -109,7 +99,7 @@ void Unit::die() {
 
 void Unit::setTarget(QPointF target){
     targetPoint = target;
-    currentAnimationSet = movementAnims;
+    currentAnimationSet = &movementAnims;
     updateAnimation();
 }
 
@@ -130,27 +120,25 @@ void Unit::move() {
 }
 
 void Unit::setPath(QList<QPointF> pathPoints) {
-    delete path;
-    path = new QList<QPointF>(pathPoints);
+    path.clear();
+    path.append(pathPoints);
+    setTarget(path.at(0));
 
 }
 
 void Unit::stopMoving(){
     moving = false;
-    delete path;
-    path = NULL;
+    path.clear();
     getCurrentAnimation()->setCurrentFrame(0);
     getCurrentAnimation()->stop();
 }
 
 bool Unit::isMoving() const {
     return moving;
-
 }
 
 QPointF Unit::getTarget() const {
     return targetPoint;
-
 }
 
 void Unit::setSpeed(float speed){

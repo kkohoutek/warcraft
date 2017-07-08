@@ -10,8 +10,7 @@
 class Animation : public QObject
 {
 public:
-    Animation(QPixmap *spriteSheet, int subImageWidth, int subImageHeight, QList<QList<int>> *frames, int duration, bool looping);
-    ~Animation();
+    Animation(QPixmap *spriteSheet, int frameWidth, int frameHeight, QList<QList<int>> frames, int duration, bool looping);
 
     void draw(QPainter *painter);
     void stop();
@@ -20,16 +19,15 @@ public:
 
     QPixmap *getSpriteSheet();
 
-
 private:
     QPixmap             *spriteSheet;
-    QList<QList<int>>   *frames;        // list s souřadnicemi snímků animace v spriteSheetu
-    int                 subImageWidth;  // šířka snímku
-    int                 subImageHeight; // výška snímku
+    QList<QList<int>>   frames;        // list s souřadnicemi snímků animace v spriteSheetu
+    int                 frameWidth;    // šířka snímku
+    int                 frameHeight;   // výška snímku
     int                 currentFrameIndex = 0;
     bool                looping;
 
-    QTimer              *animationTimer;
+    QTimer              animationTimer;
 
     int currentPositionX() const;
     int currentPositionY() const;

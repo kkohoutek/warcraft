@@ -7,22 +7,19 @@
 class Node
 {
 public:
-    Node(int x, int y, Node *parent);
-    ~Node();
+    Node(int x, int y);
 
-    Node *parent = NULL;   // ze které node jsme přišli
-    bool visited;
-    QPointF *pos = NULL;
+    bool                visited;
+    QPointF             pos;
 
+    void                addNeighbor(Node *n);
+    void                setParent(Node *n);
+    QList<Node *>       getNeighbors();
+    Node                *getParent();
 
-    void addNeighbor(Node *n);
-    void setParent(Node *n);
-    Node *getParent();
-
-    QList<Node *> getNeighbors();
-
-protected:
-    QList<Node *> *neighbors;
+private:
+    QList<Node *>       neighbors;
+    Node                *parent;   // ze které node jsme přišli
 };
 
 #endif // NODE_H

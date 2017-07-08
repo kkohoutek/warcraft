@@ -1,7 +1,7 @@
 #include "orcblacksmith.h"
 
-OrcBlacksmith::OrcBlacksmith(QPointF pos, bool finishedOnSpawn) :
-    Building(pos, finishedOnSpawn,ORC, QList<int>() << 3 << 0, QList<int>() << 2 << 0, BUILD_TIME, HP)
+OrcBlacksmith::OrcBlacksmith(QPointF pos, bool finishedOnSpawn, Resources &res) :
+    Building(pos, finishedOnSpawn,ORC, QList<int>() << 3 << 0, QList<int>() << 2 << 0, BUILD_TIME, HP, res)
 {
 
 }

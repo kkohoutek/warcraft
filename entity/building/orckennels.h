@@ -11,7 +11,7 @@ public:
     static const int HP = 500;
     static const int BUILD_TIME = (1500*1000)/TIME_DIVISOR;
 
-    OrcKennels(QPointF pos, bool finishedOnSpawn);
+    OrcKennels(QPointF pos, bool finishedOnSpawn, Resources &res);
 
     // QGraphicsItem interface
 

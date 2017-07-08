@@ -1,27 +1,23 @@
 #include "graph.h"
+#include <QLineF>
+#include <QDebug>
 
-Graph::Graph() {
-    nodes = new QList<Node *>();
-}
+
+Graph::Graph(){}
 
 Graph::~Graph() {
-    /*
-    for(Node *n : *nodes){
+    for(Node *n : nodes){
         delete n;
     }
-    delete nodes;*/
 }
 
-void Graph::addNode(Node *node) {
-    nodes->append(node);
+void Graph::addNode(qreal x, qreal y) {
+    nodes.append(new Node(x,y));
 }
 
-Node *Graph::getNodeByPos(int x, int y)
-{
-    QPointF pos(x,y);
-
-    for(Node *node : *nodes){
-        if(*node->pos == pos){
+Node *Graph::getNodeByPos(qreal x, qreal y){
+    for(Node *node : nodes){
+        if(x == node->pos.x() && y == node->pos.y()){
             return node;
         }
     }
@@ -29,7 +25,16 @@ Node *Graph::getNodeByPos(int x, int y)
     return NULL;
 }
 
-QList<Node *> Graph::getNodes(){
-    return *nodes;
+Node *Graph::getClosestNode(qreal x, qreal y){
+    for(Node *node : nodes){
+        qDebug() << node->pos;
+        if(QLineF(QPointF(x,y),node->pos).length() == 48){
+            return node;
+        }
+    }
+    return NULL;
+}
 
+QList<Node *> &Graph::getNodes(){
+    return nodes;
 }

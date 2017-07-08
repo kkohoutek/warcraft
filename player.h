@@ -11,7 +11,6 @@ class Player : public QObject
 
 public:
     Player(Race race);
-    ~Player();
 
     void update();
 
@@ -61,8 +60,8 @@ protected:
     int lumber = 0;
     int food = 0;
 
-    int goldDestinationIndex;
-    int lumberDestinationIndex;
+    int goldDestinationIndex;   // index v buildings
+    int lumberDestinationIndex; // index v buildings
 };
 
 #endif // PLAYER_H

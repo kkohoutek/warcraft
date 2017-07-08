@@ -10,7 +10,7 @@ public:
     static const int HP = 500;
     static const int BUILD_TIME = (1500*1000)/TIME_DIVISOR;
 
-    HumanStables(QPointF pos, bool finishedOnSpawn);
+    HumanStables(QPointF pos, bool finishedOnSpawn, Resources &res);
     QRectF boundingRect() const override;
 
 };

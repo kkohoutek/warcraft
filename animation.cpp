@@ -1,27 +1,21 @@
 #include "animation.h"
 
-Animation::Animation(QPixmap *spriteSheet, int subImageWidth, int subImageHeight, QList<QList<int>> *frames, int duration, bool looping) {
+Animation::Animation(QPixmap *spriteSheet, int frameWidth, int frameHeight, QList<QList<int>> frames, int duration, bool looping) {
     this->spriteSheet = spriteSheet;
-    this->subImageWidth = subImageWidth;
-    this->subImageHeight = subImageHeight;
+    this->frameWidth = frameWidth;
+    this->frameHeight = frameHeight;
     this->frames = frames;
     this->looping = looping;
 
-    animationTimer = new QTimer();
-    animationTimer->setInterval(duration);
-    //animationTimer->start();
-    connect(animationTimer, &QTimer::timeout, this, &nextFrame);
 
-}
+    animationTimer.setInterval(duration);
+    //animationTimer.start();
+    connect(&animationTimer, &QTimer::timeout, this, &nextFrame);
 
-Animation::~Animation() {
-    delete frames;
-    delete animationTimer;
-    //delete spriteSheet; <-- musí být smazán manuálně
 }
 
 void Animation::nextFrame() {
-    if(currentFrameIndex < frames->size()-1){
+    if(currentFrameIndex < frames.size()-1){
         currentFrameIndex++;
     } else if (looping){
         currentFrameIndex = 0;
@@ -32,7 +26,7 @@ void Animation::nextFrame() {
 }
 
 void Animation::draw(QPainter *painter){
-    painter->drawPixmap(0,0,*spriteSheet,currentPositionX(),currentPositionY(),subImageWidth,subImageHeight);
+    painter->drawPixmap(0,0,*spriteSheet,currentPositionX(),currentPositionY(),frameWidth,frameHeight);
 }
 
 void Animation::setCurrentFrame(int index) {
@@ -40,19 +34,19 @@ void Animation::setCurrentFrame(int index) {
 }
 
 void Animation::start(){
-    animationTimer->start();
+    animationTimer.start();
 }
 
 void Animation::stop(){
-    animationTimer->stop();
+    animationTimer.stop();
 }
 
 int Animation::currentPositionX() const {
-    return frames->at(currentFrameIndex).at(0) * subImageWidth;
+    return frames.at(currentFrameIndex).at(0) * frameWidth;
 }
 
 int Animation::currentPositionY() const {
-    return frames->at(currentFrameIndex).at(1) * subImageHeight;
+    return frames.at(currentFrameIndex).at(1) * frameHeight;
 }
 
 QPixmap *Animation::getSpriteSheet(){

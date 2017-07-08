@@ -10,12 +10,13 @@ public:
     Graph();
     ~Graph();
 
-    void addNode(Node *node);
-    Node *getNodeByPos(int x, int y);
-    QList<Node *> getNodes();
+    void                addNode(qreal x, qreal y);
+    Node                *getNodeByPos(qreal x, qreal y);
+    Node                *getClosestNode(qreal x, qreal y);
+    QList<Node *>       &getNodes();
 
 protected:
-    QList<Node *> *nodes;
+    QList<Node *>       nodes;
 
 
 };
