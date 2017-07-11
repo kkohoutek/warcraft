@@ -2,14 +2,14 @@
 #define GRUNT_H
 
 #include "unit.h"
-#include "resources.h"
+#include "resourcemanager.h"
 
 
 
 class Grunt : public Unit
 {
 public:
-    Grunt(QPointF pos, Resources &res);
+    Grunt(QPointF pos, ResourceManager *rm);
 
     // QGraphicsItem interface
     QRectF boundingRect() const override;

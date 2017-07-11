@@ -11,7 +11,7 @@ public:
     static const int HP = 600;
     static const int BUILD_TIME = (1500*1000)/TIME_DIVISOR;
 
-    OrcLumberMill(QPointF pos, bool finishedOnSpawn, Resources &res);
+    OrcLumberMill(QPointF pos, bool finishedOnSpawn, ResourceManager *rm);
 
     // QGraphicsItem interface
     QRectF boundingRect() const override;

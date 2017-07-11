@@ -2,14 +2,14 @@
 #define FOOTMAN_H
 
 #include "unit.h"
-#include "resources.h"
+#include "resourcemanager.h"
 
 
 
 class Footman : public Unit
 {
 public:
-    Footman(QPointF pos, Resources &res);
+    Footman(QPointF pos, ResourceManager *rm);
 
     // QGraphicsItem interface
     QRectF boundingRect() const override;

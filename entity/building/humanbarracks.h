@@ -11,7 +11,7 @@ public:
     static const int HP = 2500;
     static const int BUILD_TIME = (1500*1000)/TIME_DIVISOR;
 
-    HumanBarracks(QPointF pos, bool finishedOnSpawn, Resources &res);
+    HumanBarracks(QPointF pos, bool finishedOnSpawn, ResourceManager *rm);
     QRectF boundingRect() const override;
 };
 

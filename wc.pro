@@ -46,7 +46,7 @@ SOURCES += main.cpp\
     pathfinding/bfs.cpp \
     pathfinding/node.cpp \
     pathfinding/graph.cpp \
-    resources.cpp
+    resourcemanager.cpp
 
 
 HEADERS  += mainwindow.h \
@@ -83,7 +83,7 @@ HEADERS  += mainwindow.h \
     pathfinding/bfs.h \
     pathfinding/node.h \
     pathfinding/graph.h \
-    resources.h
+    resourcemanager.h
 
 
 FORMS    += mainwindow.ui

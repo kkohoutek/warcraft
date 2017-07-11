@@ -11,6 +11,7 @@
 #include "entity/goldmine.h"
 #include "garbagecollector.h"
 #include "pathfinding/graph.h"
+#include "resourcemanager.h"
 
 class Warcraft : public QGraphicsView
 {
@@ -19,7 +20,7 @@ public:
     ~Warcraft();
 
 protected:
-    Resources res;
+    ResourceManager* rm;
 
     Player *player;
     Player *enemy;
@@ -34,6 +35,7 @@ protected:
     QPoint position;
     QGraphicsRectItem *rect; // selection rect
 
+    void initResources();
     void loadBackground();
     void loadBuildings();
     void loadUnits();

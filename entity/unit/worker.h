@@ -5,12 +5,12 @@
 #include "entity/goldmine.h"
 #include "entity/trees.h"
 #include "entity/building/building.h"
-#include "resources.h"
+#include "resourcemanager.h"
 
 class Worker : public Unit
 {
 public:
-    Worker(QPointF pos, Race race, int &playerGold, int &playerLumber, Resources &res);
+    Worker(QPointF pos, Race race, int &playerGold, int &playerLumber, ResourceManager *rm);
     ~Worker();
 
     QRectF boundingRect() const override;

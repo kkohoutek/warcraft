@@ -11,7 +11,7 @@ public:
     static const int HP = 2500;
     static const int BUILD_TIME = (1000*1000)/TIME_DIVISOR;
 
-    OrcTownHall(QPointF pos, bool finishedOnSpawn, Resources &res);
+    OrcTownHall(QPointF pos, bool finishedOnSpawn, ResourceManager *rm);
 
     // QGraphicsItem interface
     QRectF boundingRect() const override;

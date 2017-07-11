@@ -1,6 +1,6 @@
 #include "building.h"
 
-Building::Building(QPointF pos, bool finishedOnSpawn, Race race, QList<int> preFrame, QList<int> endFrame, int buildTime, int maxHP, Resources &res) : Entity(pos)
+Building::Building(QPointF pos, bool finishedOnSpawn, Race race, QList<int> preFrame, QList<int> endFrame, int buildTime, int maxHP, ResourceManager *rm) : Entity(pos)
 {
     setMaxHP(maxHP);
     this->buildTime = buildTime;
@@ -8,10 +8,10 @@ Building::Building(QPointF pos, bool finishedOnSpawn, Race race, QList<int> preF
     QPixmap *spriteSheet;
     switch(race){
     case HUMAN:
-        spriteSheet = &res.humanBuildings;
+        spriteSheet = rm->getSprite("BUILDINGS_H");
         break;
     case ORC:
-        spriteSheet = &res.orcBuildings;
+        spriteSheet = rm->getSprite("BUILDINGS_O");
         break;
     }
 
@@ -44,10 +44,8 @@ Building::Building(QPointF pos, bool finishedOnSpawn, Race race, QList<int> preF
 
 }
 
-Building::~Building()
-{
+Building::~Building() {
     delete buildTimer;
-    delete buildAnimation->getSpriteSheet();
 }
 
 void Building::update(){

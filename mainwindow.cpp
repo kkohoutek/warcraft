@@ -9,7 +9,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    this->setCentralWidget(&warcraft);
+    warcraft = new Warcraft();
+    this->setCentralWidget(warcraft);
 
 }
 

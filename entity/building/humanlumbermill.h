@@ -9,7 +9,7 @@ public:
     static const int COST_LUMBER = 500;
     static const int HP = 600;
     static const int BUILD_TIME = (1500*1000)/TIME_DIVISOR;
-    HumanLumberMill(QPointF pos, bool finishedOnSpawn, Resources &res);
+    HumanLumberMill(QPointF pos, bool finishedOnSpawn, ResourceManager *rm);
 
     QRectF boundingRect() const override;
 

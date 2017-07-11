@@ -1,6 +1,6 @@
 #include "humanblacksmith.h"
 
-HumanBlacksmith::HumanBlacksmith(QPointF pos, bool finishedOnSpawn, Resources &res) : Building(pos, finishedOnSpawn, HUMAN, QList<int>() << 3 << 0, QList<int>() << 2 << 0, BUILD_TIME, HP, res)
+HumanBlacksmith::HumanBlacksmith(QPointF pos, bool finishedOnSpawn, ResourceManager *rm) : Building(pos, finishedOnSpawn, HUMAN, QList<int>() << 3 << 0, QList<int>() << 2 << 0, BUILD_TIME, HP, rm)
 {
 
 }

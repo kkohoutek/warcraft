@@ -11,7 +11,7 @@ public:
     static const int HP = 400;
     static const int BUILD_TIME = (1000*1000)/TIME_DIVISOR;
 
-    OrcFarm(QPointF pos, bool finishedOnSpawn, Resources &res);
+    OrcFarm(QPointF pos, bool finishedOnSpawn, ResourceManager *rm);
 
     // QGraphicsItem interface
     QRectF boundingRect() const override;

@@ -10,7 +10,7 @@ public:
     static const int HP = 900;
     static const int BUILD_TIME = (2000*1000)/TIME_DIVISOR;
 
-    HumanTower(QPointF pos, bool finishedOnSpawn, Resources &res);
+    HumanTower(QPointF pos, bool finishedOnSpawn, ResourceManager *rm);
     QRectF boundingRect() const override;
 };
 

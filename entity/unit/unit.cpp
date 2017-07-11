@@ -16,24 +16,6 @@ Unit::Unit(QPointF pos, float speed, int damage, int armor, int range):Entity(po
 }
 
 Unit::~Unit() {
-    // unikátní spritesheety k vymazání, animace přeci mohou používat stejný spritesheet, ale musí se mazat jen jednou
-    QList<QPixmap *> spriteSheets;
-    QList<Animation *> anims;
-    anims.append(movementAnims);
-    anims.append(attackAnims);
-    anims.append(deathAnims);
-
-    for(Animation *a : anims){
-        QPixmap *s = a->getSpriteSheet();
-        if(!spriteSheets.contains(s)){
-            spriteSheets.append(s);
-        }
-        delete a;
-    }
-
-    for(QPixmap *s : spriteSheets){
-        delete s;
-    }
     setCurrentAnimation(NULL);
 }
 
@@ -70,21 +52,41 @@ void Unit::updateAnimation(){
 }
 
 void Unit::update(){
+    if(!isAlive()) {
+        die();
+        return;
+    }
+
+    if(targetEntity != NULL && targetEntity->isAlive()){
+        if(distanceFrom(targetEntity) <= range + 1){
+            moving = false;
+            if(currentAnimationSet != &attackAnims){
+                currentAnimationSet = &attackAnims;
+                updateAnimation();
+            }
+            targetEntity->damage(damage);
+        }
+    }
+
     if(moving){
         approachTarget();
     }
     if(distanceFrom(targetPoint) < 1){
-        if(path.last() != targetPoint){
-            setTarget(path.at(path.indexOf(targetPoint)+1));
-        } else {
-            stopMoving();
+        if(!path.isEmpty()){
+            if(path.last() != targetPoint){
+                setTarget(path.at(path.indexOf(targetPoint)+1));
+            } else {
+                stopMoving();
+            }
         }
+        moving = false;
     }
+
 }
 
 void Unit::attack(Entity *victim) {
-    targetEntity = victim;
     setTarget(victim->center());
+    targetEntity = victim;
     move();
 
 }
@@ -98,6 +100,7 @@ void Unit::die() {
 
 
 void Unit::setTarget(QPointF target){
+    cancel();
     targetPoint = target;
     currentAnimationSet = &movementAnims;
     updateAnimation();

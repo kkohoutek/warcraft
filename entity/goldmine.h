@@ -2,13 +2,13 @@
 #define GOLDMINE_H
 
 #include "entity.h"
-#include "resources.h"
+#include "resourcemanager.h"
 
 
 class Goldmine : public Entity
 {
 public:
-    Goldmine(QPointF pos, Resources &res);
+    Goldmine(QPointF pos, ResourceManager *rm);
     void update();
 
     // QGraphicsItem interface

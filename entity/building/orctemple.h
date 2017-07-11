@@ -11,7 +11,7 @@ public:
     static const int HP = 700;
     static const int BUILD_TIME = (2000*1000)/TIME_DIVISOR;
 
-    OrcTemple(QPointF pos, bool finishedOnSpawn, Resources &res);
+    OrcTemple(QPointF pos, bool finishedOnSpawn, ResourceManager *rm);
 
     // QGraphicsItem interface
 

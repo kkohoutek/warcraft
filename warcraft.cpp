@@ -33,6 +33,8 @@
 
 Warcraft::Warcraft()
 {
+    initResources();
+
     //setViewport(new QOpenGLWidget(this)); // paintEvent = blackscreen
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -41,19 +43,16 @@ Warcraft::Warcraft()
     QGraphicsScene *scene = new QGraphicsScene();
     scene->setSceneRect(0,0,2048,2048);
     setScene(scene);
+    centerOn(0,0);
 
     rect = new QGraphicsRectItem();
-    centerOn(0,0);
 
     player = new Player(HUMAN);
     player->addFood(8);
     player->addLumber(10000);
+    player_gc = new GarbageCollector(player, 15000);
 
     enemy = new Player(ORC);
-
-    player_gc = new GarbageCollector(player, 15000);
-    //enemy_gc = new GarbageCollector(enemy, 2000);
-
 
     loadBackground();
     loadWorld();
@@ -61,18 +60,11 @@ Warcraft::Warcraft()
     loadBuildings();
 
     startTimer(17);
-
-
-    // test pathfinding
-
-
 }
 
 Warcraft::~Warcraft() {
 
-    for(Goldmine *g : goldmines){
-        delete g;
-    }
+    qDeleteAll(goldmines);
     /*
     for(Trees *t : trees){
         delete t;
@@ -82,14 +74,14 @@ Warcraft::~Warcraft() {
     delete player;
     delete enemy;
     delete player_gc;
+    delete rm;
 
 }
 
 void Warcraft::loadBackground()
 {
     QRect rect(3*32, 0, 32, 32);
-    QImage original(":graphics/WORLD");
-    QImage cropped = original.copy(rect);
+    QPixmap cropped = rm->getSprite("WORLD")->copy(rect);
     QBrush brush(cropped);
     brush.setStyle(Qt::TexturePattern);
     scene()->setBackgroundBrush(brush);
@@ -97,11 +89,11 @@ void Warcraft::loadBackground()
 }
 
 void Warcraft::loadBuildings() {
-    Building *th = new HumanTownHall(QPointF(216,216), true, res);
+    Building *th = new HumanTownHall(QPointF(216,216), true, rm);
     player->getBuildings().append(th);
     scene()->addItem(th);
 
-    th = new OrcTownHall(QPointF(2048-300,2048-300), true, res);
+    th = new OrcTownHall(QPointF(2048-300,2048-300), true, rm);
     enemy->getBuildings().append(th);
     scene()->addItem(th);
 
@@ -109,29 +101,31 @@ void Warcraft::loadBuildings() {
 
 void Warcraft::loadUnits(){
     for(int i = 0; i < 4; i++){
-        Worker *w = new Worker(QPointF(128+i*28,128), player->getRace(), player->getGold(), player->getLumber(), res);
+        Worker *w = new Worker(QPointF(128+i*28,128), player->getRace(), player->getGold(), player->getLumber(), rm);
         player->getWorkers().append(w);
         scene()->addItem(w);
     }
 
-    Footman *f = new Footman(QPointF(192,144), res);
+    Footman *f = new Footman(QPointF(192,144), rm);
     scene()->addItem(f);
     player->getUnits().append(f);
 
-    //f->die();
+
 
 
     for(int i = 0; i < 4; i++){
-        Grunt *g = new Grunt(QPointF(2048-420+i*40, 2048-286-i*40), res);
+        Grunt *g = new Grunt(QPointF(2048-420+i*40, 2048-286-i*40), rm);
         scene()->addItem(g);
         enemy->getUnits().append(g);
     }
 
+        f->attack(enemy->getUnits().at(0));
+
 }
 
 void Warcraft::loadWorld() {
-    Goldmine *a = new Goldmine(QPointF(64,64), res);
-    Goldmine *b = new Goldmine(QPointF(2048-128, 2048-128), res);
+    Goldmine *a = new Goldmine(QPointF(64,64), rm);
+    Goldmine *b = new Goldmine(QPointF(2048-128, 2048-128), rm);
     scene()->addItem(a);
     scene()->addItem(b);
 
@@ -206,17 +200,18 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
         }
 
     } else if (event->button() == Qt::RightButton){
+        /*
         Unit *u = player->getSelectedUnits().at(0);
         Graph *graph = generateGraphForPathfinding();
         BFS *bfs = new BFS(graph, graph->getNodeByPos(48,48), graph->getNodeByPos(48*6,48*12));
         QList<QPointF> path = bfs->shortestPath();
 
         u->setPath(path);
-        u->move();
+        u->move();*/
 
         //delete bfs;
         //delete graph;
-        //player->selectedMoveTo(actualPos,40);
+        player->selectedMoveTo(actualPos,40);
 
         for(Goldmine *g : goldmines){
             if(g->boundingRect().translated(g->pos()).contains(actualPos)){
@@ -384,4 +379,22 @@ void Warcraft::paintEvent(QPaintEvent *event) {
     painter.drawText(QPointF(700, 20), QString("FOOD: "+QString::number(player->getFood())+"   GOLD: "+QString::number(player->getGold())+"   LUMBER: "+QString::number(player->getLumber())));
 
 }
+
+void Warcraft::initResources() {
+    rm = new ResourceManager();
+    rm->addSprite("BUILDINGS_H", new QPixmap(":graphics/BUILDINGS_H"));
+    rm->addSprite("BUILDINGS_O", new QPixmap(":graphics/BUILDINGS_O"));
+    rm->addSprite("FOOTMAN", new QPixmap(":graphics/FOOTMAN"));
+    rm->addSprite("GRUNT", new QPixmap(":graphics/GRUNT"));
+    rm->addSprite("DAEMON", new QPixmap(":graphics/DAEMON"));
+    rm->addSprite("PEASANT", new QPixmap(":graphics/PEASANT"));
+    rm->addSprite("MISC", new QPixmap(":graphics/MISC"));
+    rm->addSprite("WORLD", new QPixmap(":graphics/WORLD"));
+    rm->copySprite("PEASANT", "PEASANT_flipped", true, false);
+    rm->copySprite("FOOTMAN", "FOOTMAN_flipped", true, false);
+    rm->copySprite("GRUNT", "GRUNT_flipped", true, false);
+    rm->copySprite("DAEMON", "DAEMON_flipped", true, false);
+
+}
+
 

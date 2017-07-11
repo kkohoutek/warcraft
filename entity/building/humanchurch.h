@@ -9,7 +9,7 @@ public:
     static const int COST_LUMBER = 500;
     static const int HP = 700;
     static const int BUILD_TIME = (2000*1000)/TIME_DIVISOR;
-    HumanChurch(QPointF pos, bool finishedOnSpawn, Resources &res);
+    HumanChurch(QPointF pos, bool finishedOnSpawn, ResourceManager *rm);
 
     QRectF boundingRect() const override;
 };

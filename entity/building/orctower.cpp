@@ -1,7 +1,7 @@
 #include "orctower.h"
 
-OrcTower::OrcTower(QPointF pos, bool finishedOnSpawn, Resources &res):
-    Building(pos,finishedOnSpawn, ORC, QList<int>() << 2 << 1, QList<int>() << 1 << 1,BUILD_TIME, HP, res)
+OrcTower::OrcTower(QPointF pos, bool finishedOnSpawn, ResourceManager*rm):
+    Building(pos,finishedOnSpawn, ORC, QList<int>() << 2 << 1, QList<int>() << 1 << 1,BUILD_TIME, HP, rm)
 {
 
 }

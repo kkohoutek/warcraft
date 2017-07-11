@@ -21,7 +21,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    Warcraft warcraft;
+    Warcraft *warcraft;
 
 
 };

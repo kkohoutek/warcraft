@@ -2,7 +2,7 @@
 #include <QGraphicsScene>
 #include <QDebug>
 
-Worker::Worker(QPointF pos, Race race, int &playerGold, int &playerLumber, Resources &res) : Unit(pos, 0.7F, 0, 0, 0)
+Worker::Worker(QPointF pos, Race race, int &playerGold, int &playerLumber, ResourceManager *rm) : Unit(pos, 0.7F, 0, 0, 0)
 {
     this->playerGold = &playerGold;
     this->playerLumber = &playerLumber;
@@ -10,13 +10,14 @@ Worker::Worker(QPointF pos, Race race, int &playerGold, int &playerLumber, Resou
     setMaxHP(40);
     setHP(40);
 
+
     switch(race){
         case HUMAN:
     {
 
         /* ****** PEASANT ****** */
-        QPixmap *spriteSheet = &res.peasant;
-        QPixmap *spriteSheetFlipped = &res.peasantFlipped;
+        QPixmap *spriteSheet = rm->getSprite("PEASANT");
+        QPixmap *spriteSheetFlipped = rm->getSprite("PEASANT_flipped");
 
         QList<QList<int>> walk0DegFrames;
         walk0DegFrames.append(QList<int>() << 1 << 3);
@@ -356,15 +357,6 @@ Worker::Worker(QPointF pos, Race race, int &playerGold, int &playerLumber, Resou
 }
 
 Worker::~Worker() {
-    for(Animation *a : goldCarryAnims){
-        delete a;
-    }
-    for(Animation *a : woodCarryAnims){
-        delete a;
-    }
-    for(Animation *a : woodCarryAnims){
-        delete a;
-    }
 }
 
 QRectF Worker::boundingRect() const {
