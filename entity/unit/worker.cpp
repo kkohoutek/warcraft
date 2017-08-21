@@ -4,7 +4,7 @@
 
 Worker::Worker(QPointF pos, Race race, int &playerGold, int &playerLumber, ResourceManager *rm) : Unit(pos, 0.7F, 0, 0, 0)
 {
-    this->playerGold = &playerGold;
+    this->playerGold   = &playerGold;
     this->playerLumber = &playerLumber;
 
     setMaxHP(40);
@@ -386,8 +386,6 @@ void Worker::cancel(){
     currentBuilding = NULL;
     goldDestination = NULL;
     lumberDestination = NULL;
-
-
 }
 
 void Worker::goBuild(Building *building){

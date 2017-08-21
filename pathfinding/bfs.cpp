@@ -28,7 +28,7 @@ void BFS::setGoal(Node *node) {
 
 }
 
-QList<QPointF> BFS::shortestPath() {
+QList<Node *> BFS::shortestPath() {
     // breadth-first search
 
     QQueue<Node *> queue;
@@ -50,13 +50,13 @@ QList<QPointF> BFS::shortestPath() {
     }
 
     // retrace
-    QList<QPointF> path;
+    QList<Node *> path;
     while(node != start){
-        path.append(node->pos);
+        path.append(node);
         node = node->getParent();
 
     }
-    path.append(start->pos);
+    path.append(start);
 
 
     for(int k = 0; k < (path.size()/2); k++) path.swap(k,path.size()-(1+k)); // reverse list

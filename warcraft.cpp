@@ -4,10 +4,7 @@
 #include <QScrollBar>
 #include <QDebug>
 #include <QPainter>
-#include <QOpenGLWidget>
-#include <QGraphicsSimpleTextItem>
 
-#include "entity/entity.h"
 #include "entity/building/humanfarm.h"
 #include "entity/building/humanblacksmith.h"
 #include "entity/building/humanchurch.h"
@@ -27,12 +24,10 @@
 #include "entity/building/orctownhall.h"
 #include "entity/trees.h"
 #include "entity/unit/grunt.h"
-
 #include "pathfinding/bfs.h"
 
 
-Warcraft::Warcraft()
-{
+Warcraft::Warcraft() {
     initResources();
 
     //setViewport(new QOpenGLWidget(this)); // paintEvent = blackscreen
@@ -63,13 +58,7 @@ Warcraft::Warcraft()
 }
 
 Warcraft::~Warcraft() {
-
     qDeleteAll(goldmines);
-    /*
-    for(Trees *t : trees){
-        delete t;
-    }*/
-
     delete rect;
     delete player;
     delete enemy;
@@ -78,8 +67,7 @@ Warcraft::~Warcraft() {
 
 }
 
-void Warcraft::loadBackground()
-{
+void Warcraft::loadBackground() {
     QRect rect(3*32, 0, 32, 32);
     QPixmap cropped = rm->getSprite("WORLD")->copy(rect);
     QBrush brush(cropped);
@@ -106,11 +94,9 @@ void Warcraft::loadUnits(){
         scene()->addItem(w);
     }
 
-    Footman *f = new Footman(QPointF(192,144), rm);
+    Footman *f = new Footman(QPointF(1700,1700), rm);
     scene()->addItem(f);
     player->getUnits().append(f);
-
-
 
 
     for(int i = 0; i < 4; i++){
@@ -119,7 +105,7 @@ void Warcraft::loadUnits(){
         enemy->getUnits().append(g);
     }
 
-        f->attack(enemy->getUnits().at(0));
+    f->attack(enemy->getUnits().at(0));
 
 }
 
@@ -158,19 +144,14 @@ void Warcraft::timerEvent(QTimerEvent *event) {
     QPoint p = mapFromGlobal(QCursor::pos());
     if(p.x() >=  window()->width() - 50 && p.x() <= window()->width() && p.y() >= 0 && p.y() <= window()->height() ){
         horizontalScrollBar()->setValue(horizontalScrollBar()->value()+20);
-
-
     }
     else if(p.x() <= 50 && p.x() >= 0 && p.y() <= window()->height() && p.y() >= 0){
         horizontalScrollBar()->setValue(horizontalScrollBar()->value()-20);
-
     }
 
     if(p.y() >=  window()->height() - 50 && p.y() <= window()->height() && p.x() >= 0 && p.x() <= window()->width() ){
         verticalScrollBar()->setValue(verticalScrollBar()->value()+20);
-
     }
-
     else if(p.y() <= 50 && p.y() >= 0 && p.x() <= window()->width() && p.x() >= 0){
          verticalScrollBar()->setValue(verticalScrollBar()->value()-20);
     }
@@ -200,17 +181,8 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
         }
 
     } else if (event->button() == Qt::RightButton){
-        /*
-        Unit *u = player->getSelectedUnits().at(0);
-        Graph *graph = generateGraphForPathfinding();
-        BFS *bfs = new BFS(graph, graph->getNodeByPos(48,48), graph->getNodeByPos(48*6,48*12));
-        QList<QPointF> path = bfs->shortestPath();
 
-        u->setPath(path);
-        u->move();*/
 
-        //delete bfs;
-        //delete graph;
         player->selectedMoveTo(actualPos,40);
 
         for(Goldmine *g : goldmines){
@@ -218,9 +190,8 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
                 QList<Worker *> sw = player->selectedWorkers();
                 if(!sw.empty()){
                     for(Worker *w : sw){
-                        //w->cancel();
                         w->gatherGold(g, player->goldDestination());
-                        w->setTarget(g);
+                        w->setTarget(g->center());
                         w->move();
                     }
                 }
@@ -229,8 +200,7 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
     }
 }
 
-void Warcraft::mouseReleaseEvent(QMouseEvent *releaseEvent)
-{
+void Warcraft::mouseReleaseEvent(QMouseEvent *releaseEvent) {
     if(releaseEvent->button() == Qt::LeftButton){
 
         isPressedLeftButton = false;
@@ -247,7 +217,6 @@ void Warcraft::mouseReleaseEvent(QMouseEvent *releaseEvent)
             scene()->removeItem(rect);
         }
     }
-
 }
 
 void Warcraft::mouseMoveEvent(QMouseEvent *event) {
@@ -331,8 +300,7 @@ Graph *Warcraft::generateGraphForPathfinding() const {
             for(Entity *entity : staticEntities()){
                 if(!entity->boundingRect().translated(entity->pos()).contains(j,i)){
                     graph->addNode(j, i);
-                    qDebug() << graph->getNodes().size();
-
+                    //qDebug() << graph->getNodes().size();
                 }
             }
 
@@ -342,32 +310,15 @@ Graph *Warcraft::generateGraphForPathfinding() const {
     for(Node *a : graph->getNodes()){
         for(Node *b : graph->getNodes()){
             if(QLineF(a->pos,b->pos).length() == gap){
-               // qDebug() << *a->pos << *b->pos;
-                if(a->getNeighbors().size() == 4){
-                    break;
-                } else {
+                if(a->getNeighbors().size() < 4){
                     a->addNeighbor(b);
                     b->addNeighbor(a);
                 }
-
             }
         }
     }
 
-    for(Node *n : graph->getNodes()){
-
-    //qDebug() << *n->pos;
-    /*
-        QGraphicsSimpleTextItem *l = new QGraphicsSimpleTextItem(QString::number(n->pos->x()) + ", " + QString::number(n->pos->y()));
-        l->setPos(n->pos->x(),n->pos->y());
-        l->setScale(0.85);
-        scene()->addItem(l);*/
-    }
-
-
     return graph;
-
-
 }
 
 

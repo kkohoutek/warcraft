@@ -23,7 +23,7 @@ Animation::Animation(QString defFilePath, ResourceManager *rm) {
         auto line = file.readLine();
         if(line.startsWith("image=")){
             QString image(line.mid(5).data());
-            if(rm == nullptr) {
+            if(!rm) {
                 //pokud nebyl předán resourcemanager, alokuj nový qpixmap
                 //nezapomenout na delete!
                 spriteSheet = new QPixmap(image);
@@ -48,7 +48,7 @@ Animation::Animation(QString defFilePath, ResourceManager *rm) {
 }
 
 void Animation::nextFrame() {
-    if(currentFrameIndex < frames.size()-1){
+    if(currentFrameIndex < frames.size() - 1){
         currentFrameIndex++;
     } else if (looping){
         currentFrameIndex = 0;
@@ -67,7 +67,9 @@ void Animation::setCurrentFrame(int index) {
 }
 
 void Animation::start(){
-    animationTimer.start();
+    if(!animationTimer.isActive()) {
+        animationTimer.start();
+    }
 }
 
 void Animation::stop(){

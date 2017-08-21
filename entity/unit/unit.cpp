@@ -2,7 +2,7 @@
 #include <QDebug>
 #include <QtMath>
 
-Unit::Unit(QPointF pos, float speed, int damage, int armor, int range):Entity(pos)
+Unit::Unit(QPointF pos, float speed, int damage, int armor, int range) : Entity(pos)
 {
     this->speed = speed;
     this->damage = damage;
@@ -45,41 +45,41 @@ void Unit::updateAnimation(){
         }
     }
 
-    //setCurrentAnimation(currentAnimationSet->at(qFloor(angle/45)));
     setCurrentAnimation(currentAnimationSet->at(index));
     getCurrentAnimation()->start();
-
 }
 
 void Unit::update(){
     if(!isAlive()) {
+
         die();
         return;
     }
 
-    if(targetEntity != NULL && targetEntity->isAlive()){
-        if(distanceFrom(targetEntity) <= range + 1){
-            moving = false;
-            if(currentAnimationSet != &attackAnims){
-                currentAnimationSet = &attackAnims;
-                updateAnimation();
+    if(targetEntity != NULL) {
+        if(targetEntity->isAlive()){
+            if(distanceFrom(targetEntity) <= range + 8){
+                moving = false;
+                if(currentAnimationSet != &attackAnims){
+                    currentAnimationSet = &attackAnims;
+                    updateAnimation();
+                }
+                targetEntity->damage(damage);
             }
-            targetEntity->damage(damage);
+        } else {
+            cancel();
+            currentAnimationSet = &movementAnims;
+            updateAnimation();
+            stopMoving();
         }
     }
 
     if(moving){
         approachTarget();
     }
+
     if(distanceFrom(targetPoint) < 1){
-        if(!path.isEmpty()){
-            if(path.last() != targetPoint){
-                setTarget(path.at(path.indexOf(targetPoint)+1));
-            } else {
-                stopMoving();
-            }
-        }
-        moving = false;
+        stopMoving();
     }
 
 }
@@ -93,21 +93,25 @@ void Unit::attack(Entity *victim) {
 
 void Unit::die() {
     stopMoving();
-    setCurrentAnimation(deathAnims.at(0));
-    getCurrentAnimation()->start();
+    if(getCurrentAnimation() != deathAnims.at(0)){
+        setCurrentAnimation(deathAnims.at(0));
+        getCurrentAnimation()->start();
+    }
     Entity::die();
+}
+
+void Unit::stopMoving(){
+    moving = false;
+    if(currentAnimationSet == &movementAnims){
+        getCurrentAnimation()->setCurrentFrame(0);
+        getCurrentAnimation()->stop();
+    }
 }
 
 
 void Unit::setTarget(QPointF target){
-    cancel();
     targetPoint = target;
-    currentAnimationSet = &movementAnims;
     updateAnimation();
-}
-
-void Unit::setTarget(Entity *target) {
-    setTarget(target->center());
 }
 
 QVector2D Unit::direction() const {
@@ -120,21 +124,9 @@ void Unit::cancel(){
 
 void Unit::move() {
     moving = true;
+    currentAnimationSet = &movementAnims;
 }
 
-void Unit::setPath(QList<QPointF> pathPoints) {
-    path.clear();
-    path.append(pathPoints);
-    setTarget(path.at(0));
-
-}
-
-void Unit::stopMoving(){
-    moving = false;
-    path.clear();
-    getCurrentAnimation()->setCurrentFrame(0);
-    getCurrentAnimation()->stop();
-}
 
 bool Unit::isMoving() const {
     return moving;

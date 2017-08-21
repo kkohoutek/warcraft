@@ -158,7 +158,6 @@ QList<Unit *> Player::allUnits() const {
         all.append(w);
     }
     return all;
-
 }
 
 Race Player::getRace() const {

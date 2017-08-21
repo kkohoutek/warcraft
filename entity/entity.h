@@ -1,6 +1,8 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
+#define SHOW_HP_BARS 1
+
 #include <QGraphicsItem>
 #include <QPixmap>
 #include "animation.h"
@@ -9,8 +11,6 @@ class Entity : public QGraphicsItem
 {
 
 public:
-    static const bool SHOW_HP_BARS = true;
-    static const int CORPSE_STAY_TIME = 5000;
 
     Entity(QPointF pos);
     virtual ~Entity();
@@ -19,6 +19,7 @@ public:
 
     virtual void update() = 0;
     virtual void die();
+
     void setCurrentAnimation(Animation *anim);
     Animation *getCurrentAnimation() const;
 
@@ -35,6 +36,8 @@ public:
 
     qreal distanceFrom(Entity *entity) const;
     qreal distanceFrom(QPointF point) const;
+
+    /* absolutní pozice středu entity */
     QPointF center() const;
 
 

@@ -18,7 +18,7 @@ int ResourceManager::loadFromQrc() {
 }
 
 QPixmap* ResourceManager::getSprite(QString id) const {
-    return static_cast<QPixmap*>(sprites.value(id, nullptr));
+    return sprites.value(id, NULL);
 }
 
 
@@ -32,9 +32,9 @@ void ResourceManager::deleteSprite(QString id) {
     sprites.remove(id);
 }
 
-void ResourceManager::copySprite(QString keySrc, QString keyNew, bool horizontalMirror, bool verticalMirror) {
-    QPixmap* copy = new QPixmap(QPixmap::fromImage(getSprite(keySrc)->toImage().mirrored(horizontalMirror,verticalMirror)));
-    sprites.insert(keyNew, copy);
+void ResourceManager::copySprite(QString idSrc, QString idNew, bool horizontalMirror, bool verticalMirror) {
+    QPixmap* copy = new QPixmap(QPixmap::fromImage(getSprite(idSrc)->toImage().mirrored(horizontalMirror,verticalMirror)));
+    sprites.insert(idNew, copy);
 }
 
 

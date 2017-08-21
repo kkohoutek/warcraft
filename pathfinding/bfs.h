@@ -14,7 +14,7 @@ public:
     void                setGoal(Node *node);
     void                setGraph(Graph *graph);
 
-    QList<QPointF>      shortestPath();
+    QList<Node *>      shortestPath();
 
 
 private:

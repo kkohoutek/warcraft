@@ -7,7 +7,7 @@ Entity::Entity(QPointF pos) {
     scaleX = 1;
     scaleY = 1;
 
-    highlighted = true;
+    highlighted = false;
     currentAnimation = NULL;
 
 }
@@ -86,7 +86,6 @@ bool Entity::isAlive() const {
 void Entity::setHighlighted(bool h) {
     highlighted = h;
 }
-
 
 qreal Entity::distanceFrom(Entity *entity) const {
     return QLineF(boundingRect().translated(pos()).center(), entity->boundingRect().translated(entity->pos()).center()).length();

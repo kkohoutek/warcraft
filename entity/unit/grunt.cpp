@@ -181,7 +181,7 @@ Grunt::Grunt(QPointF pos, ResourceManager *rm) : Unit(pos,1,1,2,0)
 
        deathAnims.append(death);
 
-   setCurrentAnimation(walk135Deg);
+        setCurrentAnimation(walk135Deg);
 
 
 }
