@@ -8,18 +8,19 @@ class Node
 {
 public:
     Node(int x, int y);
+    Node();
 
     bool                visited;
     QPointF             pos;
 
+    QList<Node *>       getNeighbors();
     void                addNeighbor(Node *n);
     void                setParent(Node *n);
-    QList<Node *>       getNeighbors();
     Node                *getParent();
 
 private:
-    QList<Node *>       neighbors;
     Node                *parent;   // ze které node jsme přišli
+    QList<Node *>       neighbors;
 };
 
 #endif // NODE_H

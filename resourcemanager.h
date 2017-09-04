@@ -10,8 +10,6 @@ public:
     ResourceManager();
     ~ResourceManager();
 
-    int loadFromQrc();
-
     QPixmap*    getSprite(QString id) const;
     void        addSprite(QString id, QPixmap* sprite);
     void        deleteSprite(QString id);

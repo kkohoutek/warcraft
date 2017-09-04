@@ -27,6 +27,7 @@
 #include "pathfinding/bfs.h"
 
 
+
 Warcraft::Warcraft() {
     initResources();
 
@@ -53,6 +54,7 @@ Warcraft::Warcraft() {
     loadWorld();
     loadUnits();
     loadBuildings();
+    graph = generateGraphForPathfinding();
 
     startTimer(17);
 }
@@ -64,6 +66,7 @@ Warcraft::~Warcraft() {
     delete enemy;
     delete player_gc;
     delete rm;
+    delete graph;
 
 }
 
@@ -94,7 +97,7 @@ void Warcraft::loadUnits(){
         scene()->addItem(w);
     }
 
-    Footman *f = new Footman(QPointF(1700,1700), rm);
+    Footman *f = new Footman(QPointF(32,32), rm);
     scene()->addItem(f);
     player->getUnits().append(f);
 
@@ -104,8 +107,6 @@ void Warcraft::loadUnits(){
         scene()->addItem(g);
         enemy->getUnits().append(g);
     }
-
-    f->attack(enemy->getUnits().at(0));
 
 }
 
@@ -182,8 +183,14 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
 
     } else if (event->button() == Qt::RightButton){
 
+        /* PATHFINDING TESTING */
+        Unit *u = player->getSelectedUnits().at(0);
+        QList<QPointF> path = BFS::shortestPath(graph->gimmeNode(u->pos()), graph->gimmeNode(actualPos));
+        u->setPath(path);
+        u->move();
+        /* PATHFINDING TESTING */
 
-        player->selectedMoveTo(actualPos,40);
+        //player->selectedMoveTo(actualPos,40);
 
         for(Goldmine *g : goldmines){
             if(g->boundingRect().translated(g->pos()).contains(actualPos)){
@@ -281,43 +288,41 @@ QList<Entity *> Warcraft::allEntities() const {
     for(Unit *u : allUnits()){
         allEntities.append(u);
     }
-
     return allEntities;
 }
 
 Graph *Warcraft::generateGraphForPathfinding() const {
-    // not optimized
-
     Graph *graph = new Graph();
 
-    qreal width = scene()->sceneRect().width();
-    qreal height = scene()->sceneRect().height();
-    int gap = 48;
-
-
-    for(int i = 0; i < height; i+=gap){
-        for(int j = 0; j < width; j+=gap){
+    // nodes that intersect static entities will be NULL
+    for(int i = 0; i < 2048/32; i++){
+        for(int j = 0; j < 2048/32; j++){
             for(Entity *entity : staticEntities()){
-                if(!entity->boundingRect().translated(entity->pos()).contains(j,i)){
-                    graph->addNode(j, i);
-                    //qDebug() << graph->getNodes().size();
-                }
-            }
-
-        }
-    }
-
-    for(Node *a : graph->getNodes()){
-        for(Node *b : graph->getNodes()){
-            if(QLineF(a->pos,b->pos).length() == gap){
-                if(a->getNeighbors().size() < 4){
-                    a->addNeighbor(b);
-                    b->addNeighbor(a);
-                }
+                graph->nodes[j][i] = entity->boundingRect().translated(entity->pos()).contains(j*32,i*32) ? NULL : new Node(j*32,i*32);
             }
         }
     }
 
+    // determine neighbors (4) of each node
+    for(int i = 0; i < 2048/32; i++){
+        for(int j = 0; j < 2048/32; j++){
+            Node *node = graph->nodes[j][i];
+            if(node != NULL) {
+                if(j > 0) {
+                    node->addNeighbor(graph->nodes[j-1][i]);
+                }
+                if(j < 2048/32){
+                    node->addNeighbor(graph->nodes[j+1][i]);
+                }
+                if(i > 0){
+                    node->addNeighbor(graph->nodes[j][i-1]);
+                }
+                if(i < 2048/32){
+                    node->addNeighbor(graph->nodes[j][i+1]);
+                }
+            }
+        }
+    }
     return graph;
 }
 

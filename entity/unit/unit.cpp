@@ -80,8 +80,23 @@ void Unit::update(){
 
     if(distanceFrom(targetPoint) < 1){
         stopMoving();
+        if(!path.isEmpty()) {
+            setTarget(path.dequeue());
+            move();
+        }
     }
 
+}
+
+void Unit::setPath(QList<QPointF> list){
+    path.clear();
+    for(QPointF p : list){
+        path.enqueue(p);
+    }
+    if(!path.isEmpty()){
+        setTarget(path.dequeue());
+        move();
+    }
 }
 
 void Unit::attack(Entity *victim) {

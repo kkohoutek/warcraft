@@ -2,45 +2,22 @@
 #include <QQueue>
 #include <QDebug>
 
-BFS::BFS(Graph *graph, Node *start, Node *goal) {
-    this->graph = graph;
-    this->start = start;
-    this->goal = goal;
-}
+BFS::BFS() { }
 
-BFS::BFS() {
-    graph = NULL;
-    start = NULL;
-    goal = NULL;
-}
 
-void BFS::setGraph(Graph *graph){
-    this->graph = graph;
-}
-
-void BFS::setStart(Node *node) {
-    start = node;
-
-}
-
-void BFS::setGoal(Node *node) {
-    goal = node;
-
-}
-
-QList<Node *> BFS::shortestPath() {
+QList<QPointF> BFS::shortestPath(Node *start, Node *goal) {
     // breadth-first search
 
     QQueue<Node *> queue;
     queue.enqueue(start);
 
     Node *node = NULL;
-    while(!queue.empty()){
+    while(!queue.isEmpty()){
         node = queue.dequeue();
         if(node == goal) break; // ???
 
         for(Node *neighbor : node->getNeighbors()){
-            if(!neighbor->visited){
+            if(neighbor != NULL && !neighbor->visited){
                 queue.enqueue(neighbor);
                 neighbor->visited = true;
                 neighbor->setParent(node);
@@ -50,14 +27,14 @@ QList<Node *> BFS::shortestPath() {
     }
 
     // retrace
-    QList<Node *> path;
+    QList<QPointF> path;
     while(node != start){
-        path.append(node);
+        path.append(node->pos);
         node = node->getParent();
+        qDebug() << node->pos;
 
     }
-    path.append(start);
-
+    path.append(start->pos);
 
     for(int k = 0; k < (path.size()/2); k++) path.swap(k,path.size()-(1+k)); // reverse list
     return path;

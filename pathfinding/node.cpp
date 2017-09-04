@@ -6,11 +6,12 @@ Node::Node(int x, int y) {
     parent = NULL;
 }
 
+Node::Node() {
+    parent = NULL;
+}
 
 void Node::addNeighbor(Node *n){
-    if(!neighbors.contains(n)){
-        neighbors.append(n);
-    }
+    neighbors.append(n);
 }
 
 void Node::setParent(Node *n){
@@ -21,7 +22,6 @@ Node *Node::getParent() {
     return parent;
 }
 
-QList<Node *> Node::getNeighbors(){
+QList<Node *> Node::getNeighbors() {
     return neighbors;
 }
-

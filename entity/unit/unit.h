@@ -3,6 +3,7 @@
 
 #include "entity/entity.h"
 #include "pathfinding/node.h"
+#include <QQueue>
 #include <QVector2D>
 
 
@@ -28,6 +29,8 @@ public:
     /* Začni se hýbat, setTarget musí být voláno před použitím */
     void move();
 
+    void setPath(QList<QPointF> list);
+
 
     QVector2D direction() const;
 
@@ -49,11 +52,13 @@ protected:
     QList<Animation *> deathAnims;
     QList<Animation *> *currentAnimationSet;
 
+    QQueue<QPointF> path;
     QPointF targetPoint;
     Entity *targetEntity = NULL;
 
     void approachTarget();
     bool moving = false;    // viditelný rect
+
 
 
 };

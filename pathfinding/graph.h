@@ -3,20 +3,17 @@
 
 #include "node.h"
 
-
 class Graph
 {
 public:
     Graph();
     ~Graph();
 
-    void                addNode(qreal x, qreal y);
-    Node                *getNodeByPos(qreal x, qreal y);
-    Node                *getClosestNode(qreal x, qreal y);
-    QList<Node *>       &getNodes();
+    // maps must be 2048x2048
+    Node *nodes[64][64];
 
-protected:
-    QList<Node *>       nodes;
+    // return node closest to these coords
+    Node *gimmeNode(QPointF pos);
 
 
 };

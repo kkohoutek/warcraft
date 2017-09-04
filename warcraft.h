@@ -35,6 +35,8 @@ protected:
     QPoint position;
     QGraphicsRectItem *rect; // selection rect
 
+    Graph *graph;
+
     void initResources();
     void loadBackground();
     void loadBuildings();

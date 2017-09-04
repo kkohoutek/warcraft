@@ -7,20 +7,9 @@
 class BFS
 {
 public:
-    BFS(Graph *graph, Node *start, Node *goal);
-    BFS();
-
-    void                setStart(Node *node);
-    void                setGoal(Node *node);
-    void                setGraph(Graph *graph);
-
-    QList<Node *>      shortestPath();
-
-
+    static QList<QPointF> shortestPath(Node *start, Node *goal);
 private:
-    Graph               *graph;
-    Node                *start;
-    Node                *goal;
+    BFS();
 };
 
 #endif // BFS_H
