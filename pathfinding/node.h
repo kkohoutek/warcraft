@@ -7,8 +7,8 @@
 class Node
 {
 public:
-    Node(int x, int y);
     Node();
+    Node(int x, int y);
 
     bool                visited;
     QPointF             pos;

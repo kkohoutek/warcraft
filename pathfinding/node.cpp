@@ -1,13 +1,14 @@
 #include "node.h"
 
-Node::Node(int x, int y) {
-    pos.setX(x);
-    pos.setY(y);
-    parent = NULL;
-}
-
 Node::Node() {
     parent = NULL;
+    neighbors.reserve(4);
+}
+
+
+Node::Node(int x, int y) : Node() {
+    pos.setX(x);
+    pos.setY(y);
 }
 
 void Node::addNeighbor(Node *n){
