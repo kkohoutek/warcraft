@@ -37,9 +37,11 @@ public:
     qreal distanceFrom(Entity *entity) const;
     qreal distanceFrom(QPointF point) const;
 
-    /* absolutní pozice středu entity */
+    // absolutní pozice středu entity
     QPointF center() const;
 
+    // absolute boundingrect
+    QRectF boundingRect2() const;
 
 protected:
     float scaleX;

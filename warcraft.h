@@ -44,7 +44,6 @@ protected:
     void loadWorld();
     void solveCollisions();
 
-
     void paintEvent(QPaintEvent *event);
     void timerEvent(QTimerEvent *event);
     void mousePressEvent(QMouseEvent *event);

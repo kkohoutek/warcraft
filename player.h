@@ -14,7 +14,7 @@ public:
 
     void update();
 
-    void newBuilding(Building *building, Worker *worker, int costGold, int costLumber, QList<Entity *> allEntities);
+    void newBuilding(Building *building, Worker *worker, int costGold, int costLumber);
 
     void addFood(int amount);
     void addGold(int amount);
@@ -24,10 +24,10 @@ public:
     int &getLumber();
     int &getFood();
 
-    void selectUnit(Unit *unit);                // select jedné jednotky
-    void selectUnits(QList<Unit *> selected);   // hromadný select
+    void selectUnit(Unit *unit);
+    void selectUnits(QList<Unit *> selected);
     void selectBuilding(Building *building);
-    void deselect();                            // zruš výběr jednotek/budovy
+    void deselect();
     void selectedMoveTo(QPointF target, int gap);
 
     QList<Building *> &getBuildings();
@@ -38,7 +38,6 @@ public:
     QList<Unit *> allUnits() const;              // units + workers
 
     Race getRace() const;
-
     Building *goldDestination() const;
     Building *lumberDestination() const;
 

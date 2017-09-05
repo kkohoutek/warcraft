@@ -54,7 +54,7 @@ Warcraft::Warcraft() {
     loadWorld();
     loadUnits();
     loadBuildings();
-    graph = generateGraphForPathfinding();
+    graph = new Graph(staticEntities());
 
     startTimer(17);
 }
@@ -185,7 +185,7 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
 
         /* PATHFINDING TESTING */
         Unit *u = player->getSelectedUnits().at(0);
-        QList<QPointF> path = BFS::shortestPath(graph->gimmeNode(u->pos()), graph->gimmeNode(actualPos));
+        QList<QPointF> path = BFS::shortestPath(graph, graph->gimmeNode(u->pos()), graph->gimmeNode(actualPos));
         u->setPath(path);
         u->move();
         /* PATHFINDING TESTING */
@@ -291,41 +291,6 @@ QList<Entity *> Warcraft::allEntities() const {
     return allEntities;
 }
 
-Graph *Warcraft::generateGraphForPathfinding() const {
-    Graph *graph = new Graph();
-
-    // nodes that intersect static entities will be NULL
-    for(int i = 0; i < 2048/32; i++){
-        for(int j = 0; j < 2048/32; j++){
-            for(Entity *entity : staticEntities()){
-                graph->nodes[j][i] = entity->boundingRect().translated(entity->pos()).contains(j*32,i*32) ? NULL : new Node(j*32,i*32);
-            }
-        }
-    }
-
-    // determine neighbors (4) of each node
-    for(int i = 0; i < 2048/32; i++){
-        for(int j = 0; j < 2048/32; j++){
-            Node *node = graph->nodes[j][i];
-            if(node != NULL) {
-                if(j > 0) {
-                    node->addNeighbor(graph->nodes[j-1][i]);
-                }
-                if(j < 2048/32){
-                    node->addNeighbor(graph->nodes[j+1][i]);
-                }
-                if(i > 0){
-                    node->addNeighbor(graph->nodes[j][i-1]);
-                }
-                if(i < 2048/32){
-                    node->addNeighbor(graph->nodes[j][i+1]);
-                }
-            }
-        }
-    }
-    return graph;
-}
-
 
 void Warcraft::paintEvent(QPaintEvent *event) {
     QGraphicsView::paintEvent(event); 
@@ -334,6 +299,14 @@ void Warcraft::paintEvent(QPaintEvent *event) {
     painter.setPen(Qt::white);
     painter.drawText(QPointF(700, 20), QString("FOOD: "+QString::number(player->getFood())+"   GOLD: "+QString::number(player->getGold())+"   LUMBER: "+QString::number(player->getLumber())));
 
+    for(int i = 0; i < NODES_ARRAY_SIZE; i++){
+        for(int j = 0; j < NODES_ARRAY_SIZE; j++){
+            Node *n = graph->nodes[i][j];
+            if(n != NULL){
+                painter.drawEllipse(mapFromScene(n->pos), 1, 1);
+            }
+        }
+    }
 }
 
 void Warcraft::initResources() {

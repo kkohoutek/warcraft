@@ -2,6 +2,8 @@
 
 Node::Node() {
     parent = NULL;
+    visited = false;
+    // every node has 4 neighbors
     neighbors.reserve(4);
 }
 

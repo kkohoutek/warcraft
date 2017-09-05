@@ -7,7 +7,9 @@
 class BFS
 {
 public:
-    static QList<QPointF> shortestPath(Node *start, Node *goal);
+    static QList<QPointF> shortestPath(Graph *graph, Node *start, Node *goal);
+
+
 private:
     BFS();
 };

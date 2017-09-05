@@ -97,6 +97,10 @@ qreal Entity::distanceFrom(QPointF point) const {
 }
 
 QPointF Entity::center() const {
-    return boundingRect().translated(pos()).center();
+    return boundingRect2().center();
 
+}
+
+QRectF Entity::boundingRect2() const {
+    return boundingRect().translated(pos());
 }

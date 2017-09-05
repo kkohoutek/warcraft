@@ -24,16 +24,10 @@ void Player::update(){
     }
 }
 
-void Player::newBuilding(Building *building, Worker *worker, int costGold, int costLumber, QList<Entity *> allEntities) {
+void Player::newBuilding(Building *building, Worker *worker, int costGold, int costLumber) {
     if(!workers.contains(worker)) return;
 
     if(gold >= costGold && lumber >= costLumber){
-        for(Entity *e : allEntities){
-            if(e->collidesWithItem(building)){
-                delete building;
-                return;
-            }
-        }
         gold-=costGold;
         lumber-=costLumber;
         worker->goBuild(building);
