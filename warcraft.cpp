@@ -97,7 +97,7 @@ void Warcraft::loadUnits(){
         scene()->addItem(w);
     }
 
-    Footman *f = new Footman(QPointF(32,32), rm);
+    Footman *f = new Footman(QPointF(1600,1600), rm);
     scene()->addItem(f);
     player->getUnits().append(f);
 
@@ -185,7 +185,7 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
 
         /* PATHFINDING TESTING */
         Unit *u = player->getSelectedUnits().at(0);
-        QList<QPointF> path = BFS::shortestPath(graph, graph->gimmeNode(u->pos()), graph->gimmeNode(actualPos));
+        QList<QPointF> path = BFS::shortestPath(graph, graph->gimmeNode(u->center()), graph->gimmeNode(actualPos));
         u->setPath(path);
         u->move();
         /* PATHFINDING TESTING */
