@@ -1,7 +1,7 @@
 #include "node.h"
 
 Node::Node() {
-    parent = NULL;
+    parent = nullptr;
     visited = false;
     // every node has 4 neighbors
     neighbors.reserve(4);

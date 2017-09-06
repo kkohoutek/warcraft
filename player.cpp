@@ -76,23 +76,11 @@ void Player::deselect() {
     }
     selectedUnits.clear();
 
-    if(selectedBuilding != NULL){
+    if(selectedBuilding){
         selectedBuilding->setHighlighted(false);
-        selectedBuilding = NULL;
+        selectedBuilding = nullptr;
     }
 }
-
-void Player::selectedMoveTo(QPointF target, int gap){
-    int i = 0 ;
-    for(Unit *unit : selectedUnits){
-        unit->cancel();
-        unit->setTarget(target+QPoint(0,i));
-        unit->move();
-        i +=gap;
-    }
-
-}
-
 
 void Player::addGold(int amount) {
     gold += amount;

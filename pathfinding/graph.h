@@ -2,7 +2,7 @@
 #define GRAPH_H
 
 #define NODES_DISTANCE 32
-#define NODES_ARRAY_SIZE 2048/NODES_DISTANCE // square array
+#define NODES_ARRAY_SIZE 1024/NODES_DISTANCE-1 // square array
 
 #include "node.h"
 #include "entity/entity.h"
@@ -14,7 +14,6 @@ public:
     Graph(QList<Entity *> obstacles);
     ~Graph();
 
-    // 2048/32 = 64
     Node *nodes[NODES_ARRAY_SIZE][NODES_ARRAY_SIZE];
 
     // return node closest to these coords

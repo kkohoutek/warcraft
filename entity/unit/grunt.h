@@ -4,8 +4,6 @@
 #include "unit.h"
 #include "resourcemanager.h"
 
-
-
 class Grunt : public Unit
 {
 public:

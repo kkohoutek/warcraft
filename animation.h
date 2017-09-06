@@ -12,7 +12,7 @@ class Animation : public QObject
 {
 public:
     Animation(QPixmap *spriteSheet, int frameWidth, int frameHeight, QList<QList<int>> frames, int duration, bool looping);
-    Animation(QString defFilePath, ResourceManager *rm = NULL);
+    Animation(QString defFilePath, ResourceManager *rm = nullptr);
 
     void draw(QPainter *painter);
     void stop();

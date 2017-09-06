@@ -52,9 +52,9 @@ protected:
     QList<Animation *> deathAnims;
     QList<Animation *> *currentAnimationSet;
 
-    QQueue<QPointF> path;
     QPointF targetPoint;
-    Entity *targetEntity = NULL;
+    QQueue<QPointF> path; // collection of target points
+    Entity *targetEntity = nullptr;
 
     void approachTarget();
     bool moving = false;    // viditelný rect

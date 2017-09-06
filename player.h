@@ -5,6 +5,7 @@
 #include "entity/unit/unit.h"
 #include "entity/unit/worker.h"
 
+#define MAX_SELECTED_UNITS 1
 
 class Player : public QObject
 {
@@ -28,7 +29,6 @@ public:
     void selectUnits(QList<Unit *> selected);
     void selectBuilding(Building *building);
     void deselect();
-    void selectedMoveTo(QPointF target, int gap);
 
     QList<Building *> &getBuildings();
     QList<Unit *> &getUnits();
@@ -43,8 +43,6 @@ public:
 
 
 protected:
-    static const int MAX_SELECTED_UNITS = 5;
-
     Race race;
 
     QList<Building *>   buildings;
@@ -52,7 +50,7 @@ protected:
     QList<Worker *>     workers;
     QList<Unit *>       selectedUnits;
 
-    Building *selectedBuilding = NULL;
+    Building *selectedBuilding = nullptr;
 
 
     int gold = 0;

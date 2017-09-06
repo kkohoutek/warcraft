@@ -42,7 +42,6 @@ protected:
     void loadBuildings();
     void loadUnits();
     void loadWorld();
-    void solveCollisions();
 
     void paintEvent(QPaintEvent *event);
     void timerEvent(QTimerEvent *event);
@@ -54,9 +53,6 @@ protected:
     QList<Entity *> staticEntities() const;
     QList<Unit *> allUnits() const;
     QList<Entity *> allEntities() const;
-
-    Graph *generateGraphForPathfinding() const;
-
 
 };
 

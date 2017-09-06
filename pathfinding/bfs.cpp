@@ -5,19 +5,20 @@
 BFS::BFS() { }
 
 QList<QPointF> BFS::shortestPath(Graph *graph, Node *start, Node *goal) {
+    if(!goal) return QList<QPointF>();
     /* Breadth-first search */
 
     QQueue<Node *> queue;
     start->visited = true;
     queue.enqueue(start);
 
-    Node *node = NULL;
+    Node *node = nullptr;
     while(!queue.isEmpty()){
         node = queue.dequeue();
         if(node == goal) break;
 
         for(Node *neighbor : node->getNeighbors()){
-            if(neighbor != NULL && !neighbor->visited){
+            if(neighbor != nullptr && !neighbor->visited){
                 queue.enqueue(neighbor);
                 neighbor->visited = true;
                 neighbor->setParent(node);
@@ -38,3 +39,9 @@ QList<QPointF> BFS::shortestPath(Graph *graph, Node *start, Node *goal) {
     for(int k = 0; k < (path.size()/2); k++) path.swap(k,path.size()-(1+k)); // reverse list
     return path;
 }
+
+
+QList<QPointF> BFS::shortestPath(Graph *graph, QPointF a, QPointF b) {
+    return BFS::shortestPath(graph, graph->gimmeNode(a), graph->gimmeNode(b));
+}
+

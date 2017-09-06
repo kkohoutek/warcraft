@@ -30,11 +30,11 @@ public:
 protected:
     static const int GOLD_PER_TRIP = 100;
 
-    Goldmine *currentGoldmine = NULL;
-    Trees    *currentTrees = NULL;
-    Building *lumberDestination = NULL;
-    Building *goldDestination = NULL;
-    Building *currentBuilding = NULL;
+    Goldmine *currentGoldmine = nullptr;
+    Trees    *currentTrees = nullptr;
+    Building *lumberDestination = nullptr;
+    Building *goldDestination = nullptr;
+    Building *currentBuilding = nullptr;
 
     void updateAnimation() override;
 

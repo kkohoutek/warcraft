@@ -11,7 +11,7 @@ public:
     ~ResourceManager();
 
     QPixmap*    getSprite(QString id) const;
-    void        addSprite(QString id, QPixmap* sprite);
+    void        loadSprite(QString id, QPixmap* sprite);
     void        deleteSprite(QString id);
     void        copySprite(QString idSrc, QString idNew, bool horizontalMirror = false, bool verticalMirror = false);
 

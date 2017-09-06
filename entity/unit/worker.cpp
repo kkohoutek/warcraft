@@ -378,18 +378,18 @@ void Worker::gatherLumber(Trees *source, Building *destination){
 
 void Worker::cancel(){
     Unit::cancel();
-    if(currentBuilding != NULL && scene()->items().contains(currentBuilding)) {
+    if(currentBuilding && scene()->items().contains(currentBuilding)) {
         scene()->removeItem(currentBuilding);
     }
-    currentGoldmine = NULL;
-    currentTrees = NULL;
-    currentBuilding = NULL;
-    goldDestination = NULL;
-    lumberDestination = NULL;
+    currentGoldmine = nullptr;
+    currentTrees = nullptr;
+    currentBuilding = nullptr;
+    goldDestination = nullptr;
+    lumberDestination = nullptr;
 }
 
 void Worker::goBuild(Building *building){
-    if(currentBuilding == NULL){
+    if(!currentBuilding){
         currentBuilding = building;
 
         if(!collidesWithItem(currentBuilding)){
@@ -401,7 +401,7 @@ void Worker::goBuild(Building *building){
 
 void Worker::update(){
     Unit::update();
-    if(currentBuilding != NULL){
+    if(currentBuilding){
         if(!currentBuilding->isBuildingFinished()){
             if(collidesWithItem(currentBuilding)){
                 stopMoving();
@@ -412,7 +412,7 @@ void Worker::update(){
         } else {
             show();
             setPos(currentBuilding->pos()-QPointF(0,6));
-            currentBuilding = NULL;
+            currentBuilding = nullptr;
         }
     } else if (isGatheringGold()){
             if(collidesWithItem(currentGoldmine)){
@@ -443,11 +443,11 @@ void Worker::updateAnimation() {
 }
 
 bool Worker::isGatheringGold() const {
-    return currentGoldmine != NULL;
+    return currentGoldmine != nullptr;
 }
 
 bool Worker::isGatheringLumber() const {
-    return currentTrees != NULL;
+    return currentTrees != nullptr;
 }
 
 Building *Worker::getCurrentBuilding() const {

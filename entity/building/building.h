@@ -26,7 +26,7 @@ public:
 private:
     int buildTime;
     Animation *buildAnimation;
-    QTimer *buildTimer = NULL;
+    QTimer *buildTimer = nullptr;
 
     bool finished;
 private slots:

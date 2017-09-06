@@ -8,19 +8,19 @@ Entity::Entity(QPointF pos) {
     scaleY = 1;
 
     highlighted = false;
-    currentAnimation = NULL;
+    currentAnimation = nullptr;
 
 }
 
 Entity::~Entity() {
     delete currentAnimation;
-    currentAnimation = NULL;
+    currentAnimation = nullptr;
 }
 
 void Entity::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
 
     painter->scale(scaleX,scaleY);
-    if(currentAnimation != NULL){
+    if(currentAnimation){
         currentAnimation->draw(painter);
     }
     painter->scale(1/scaleX,1/scaleY);
@@ -46,7 +46,7 @@ void Entity::die() {
 
 
 void Entity::setCurrentAnimation(Animation *anim) {
-    if(currentAnimation != NULL) {
+    if(currentAnimation) {
         currentAnimation->stop();
         currentAnimation->setCurrentFrame(0);
     }
@@ -88,17 +88,16 @@ void Entity::setHighlighted(bool h) {
 }
 
 qreal Entity::distanceFrom(Entity *entity) const {
-    return QLineF(boundingRect().translated(pos()).center(), entity->boundingRect().translated(entity->pos()).center()).length();
+    return QLineF(center(), entity->center()).length();
 
 }
 
 qreal Entity::distanceFrom(QPointF point) const {
-    return QLineF(boundingRect().translated(pos()).center(), point).length();
+    return QLineF(center(), point).length();
 }
 
 QPointF Entity::center() const {
     return boundingRect2().center();
-
 }
 
 QRectF Entity::boundingRect2() const {

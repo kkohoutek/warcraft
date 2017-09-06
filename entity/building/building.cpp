@@ -27,7 +27,7 @@ Building::Building(QPointF pos, bool finishedOnSpawn, Race race, QList<int> preF
 
     if(finishedOnSpawn){
         finished = true;
-        buildTimer = NULL;
+        buildTimer = nullptr;
         setHP(maxHP);
         buildAnimation->setCurrentFrame(3);
         buildAnimation->stop();
@@ -70,7 +70,7 @@ void Building::constructionUpdate()
     } else {
         buildTimer->stop();
         delete buildTimer;
-        buildTimer = NULL;
+        buildTimer = nullptr;
         finished = true;
     }
 }

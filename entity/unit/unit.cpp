@@ -1,5 +1,4 @@
 #include "unit.h"
-#include <QDebug>
 #include <QtMath>
 
 Unit::Unit(QPointF pos, float speed, int damage, int armor, int range) : Entity(pos)
@@ -16,7 +15,7 @@ Unit::Unit(QPointF pos, float speed, int damage, int armor, int range) : Entity(
 }
 
 Unit::~Unit() {
-    setCurrentAnimation(NULL);
+    setCurrentAnimation(nullptr);
 }
 
 void Unit::approachTarget() {
@@ -56,7 +55,7 @@ void Unit::update(){
         return;
     }
 
-    if(targetEntity != NULL) {
+    if(targetEntity) {
         if(targetEntity->isAlive()){
             if(distanceFrom(targetEntity) <= range + 8){
                 moving = false;
@@ -135,7 +134,7 @@ QVector2D Unit::direction() const {
 }
 
 void Unit::cancel(){
-    targetEntity = NULL;
+    targetEntity = nullptr;
 }
 
 void Unit::move() {

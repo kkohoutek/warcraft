@@ -2,7 +2,7 @@
 #include <QMutableListIterator>
 #include <QGraphicsScene>
 
-GarbageCollector::GarbageCollector(Player *monitoredPlayer, const int interval) : QObject(NULL) {
+GarbageCollector::GarbageCollector(Player *monitoredPlayer, const int interval) : QObject(nullptr) {
     this->monitoredPlayer = monitoredPlayer;
 
     updateTimer.setInterval(interval);
