@@ -6,8 +6,6 @@
 #include <QQueue>
 #include <QVector2D>
 
-
-
 class Unit : public Entity
 {
 public:

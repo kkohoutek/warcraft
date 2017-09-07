@@ -11,8 +11,7 @@
 class Animation : public QObject
 {
 public:
-    Animation(QPixmap *spriteSheet, int frameWidth, int frameHeight, QList<QList<int>> frames, int duration, bool looping);
-    Animation(QString defFilePath, ResourceManager *rm = nullptr);
+    Animation(QPixmap *spriteSheet, const int frameWidth, const int frameHeight, QList<QList<int>> &frames, const int duration, const bool looping);
 
     void draw(QPainter *painter);
     void stop();

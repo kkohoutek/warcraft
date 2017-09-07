@@ -31,7 +31,6 @@
 Warcraft::Warcraft() {
     initResources();
 
-    //setViewport(new QOpenGLWidget(this)); // paintEvent = blackscreen
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setMouseTracking(true);
@@ -56,7 +55,7 @@ Warcraft::Warcraft() {
     loadBuildings();
     graph = new Graph(staticEntities());
 
-    startTimer(17);
+    startTimer(18);
 }
 
 Warcraft::~Warcraft() {
@@ -167,8 +166,10 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
     } else if (event->button() == Qt::RightButton){
         for(Unit *u : player->getSelectedUnits()){
             QList<QPointF> path = BFS::shortestPath(graph, u->center(), actualPos);
-            u->setPath(path);
-            u->move();
+            if(!path.isEmpty()){
+                u->setPath(path);
+                u->move();
+            }
         }
 
         for(Goldmine *g : goldmines){
@@ -277,6 +278,7 @@ void Warcraft::paintEvent(QPaintEvent *event) {
 
 
      // visualize graph
+    /*
     for(int i = 0; i < NODES_ARRAY_SIZE; i++){
         for(int j = 0; j < NODES_ARRAY_SIZE; j++){
             Node *n = graph->nodes[i][j];
@@ -284,7 +286,7 @@ void Warcraft::paintEvent(QPaintEvent *event) {
                 painter.drawEllipse(mapFromScene(n->pos), 1, 1);
             }
         }
-    }
+    }*/
 }
 
 void Warcraft::initResources() {

@@ -4,6 +4,7 @@
 #define NODES_DISTANCE 32
 #define NODES_ARRAY_SIZE 1024/NODES_DISTANCE-1 // square array
 
+
 #include "node.h"
 #include "entity/entity.h"
 
@@ -11,7 +12,7 @@ class Graph
 {
 public:
     Graph();
-    Graph(QList<Entity *> obstacles);
+    Graph(const QList<Entity *> &obstacles);
     ~Graph();
 
     Node *nodes[NODES_ARRAY_SIZE][NODES_ARRAY_SIZE];

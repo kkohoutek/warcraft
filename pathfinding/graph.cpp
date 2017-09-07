@@ -11,9 +11,8 @@ Graph::Graph() {
     }
 }
 
-Graph::Graph(QList<Entity *> obstacles) : Graph() {
+Graph::Graph(const QList<Entity *> &obstacles) : Graph() {
     // nodes that intersect static entities will be nullptr
-
     for(int i = 0; i < NODES_ARRAY_SIZE; i++){
         for(int j = 0; j < NODES_ARRAY_SIZE; j++){
                 for(Entity *entity : obstacles){
@@ -29,18 +28,18 @@ Graph::Graph(QList<Entity *> obstacles) : Graph() {
     for(int i = 0; i < NODES_ARRAY_SIZE; i++){
         for(int j = 0; j < NODES_ARRAY_SIZE; j++){
             Node *node = nodes[i][j];
-            if(node != nullptr) {
-                if(i > 0) {
-                    node->addNeighbor(nodes[i-1][j]);
-                }
+            if(node) {
                 if(i < NODES_ARRAY_SIZE){
                     node->addNeighbor(nodes[i+1][j]);
                 }
-                if(j > 0){
-                    node->addNeighbor(nodes[i][j-1]);
+                if(i > 0) {
+                    node->addNeighbor(nodes[i-1][j]);
                 }
                 if(j < NODES_ARRAY_SIZE){
                     node->addNeighbor(nodes[i][j+1]);
+                }
+                if(j > 0){
+                    node->addNeighbor(nodes[i][j-1]);
                 }
             }
         }
@@ -52,29 +51,16 @@ Graph::~Graph() {
     for(int i = 0; i < NODES_ARRAY_SIZE; i++){
         for(int j = 0; j < NODES_ARRAY_SIZE; j++){
             delete nodes[i][j];
+
         }
     }
 }
 
 Node *Graph::gimmeNode(QPointF pos) {
-    Node *nearestNode = nullptr;
-    /*
-    float minLength = std::numeric_limits<float>::max();
-
-    for(int i = 0; i < NODES_ARRAY_SIZE; i++){
-        for(int j = 0; j < NODES_ARRAY_SIZE; j++) {
-            Node *node = nodes[i][j];
-            if(node != nullptr){
-                float length = QLineF(pos, node->pos).length();
-                if(length < minLength){
-                    minLength = length;
-                    nearestNode = node;
-                }
-            }
-        }
-    }*/
-    nearestNode = nodes[qRound(pos.y()/NODES_DISTANCE)-1][qRound(pos.x()/NODES_DISTANCE)-1];
-    return nearestNode;
+    // get indices based on pos, keep indices within array bounds
+    int i = qBound(0, qRound(pos.y()/NODES_DISTANCE)-1, NODES_ARRAY_SIZE-1);
+    int j = qBound(0, qRound(pos.x()/NODES_DISTANCE)-1, NODES_ARRAY_SIZE-1);
+    return nodes[i][j];
 }
 
 void Graph::resetNodes() {

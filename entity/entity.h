@@ -11,7 +11,6 @@ class Entity : public QGraphicsItem
 {
 
 public:
-
     Entity(QPointF pos);
     virtual ~Entity();
 

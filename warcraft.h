@@ -51,7 +51,7 @@ protected:
     void keyPressEvent(QKeyEvent *event);
 
     QList<Entity *> staticEntities() const;
-    QList<Unit *> allUnits() const;
+    QList<Unit *>   allUnits() const;
     QList<Entity *> allEntities() const;
 
 };

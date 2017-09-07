@@ -1,7 +1,7 @@
 #include "animation.h"
 #include <QFile>
 
-Animation::Animation(QPixmap *spriteSheet, int frameWidth, int frameHeight, QList<QList<int>> frames, int duration, bool looping) {
+Animation::Animation(QPixmap *spriteSheet, const int frameWidth, const int frameHeight, QList<QList<int>> &frames, const int duration, const bool looping) {
     this->spriteSheet = spriteSheet;
     this->frameWidth = frameWidth;
     this->frameHeight = frameHeight;
@@ -13,38 +13,6 @@ Animation::Animation(QPixmap *spriteSheet, int frameWidth, int frameHeight, QLis
     //animationTimer.start();
     connect(&animationTimer, &QTimer::timeout, this, &nextFrame);
 
-}
-
-Animation::Animation(QString defFilePath, ResourceManager *rm) {
-    QFile file(defFilePath);
-    file.open(QIODevice::ReadOnly);
-
-    while(!file.atEnd()){
-        auto line = file.readLine();
-        if(line.startsWith("image=")){
-            QString image(line.mid(5).data());
-            if(!rm) {
-                //pokud nebyl předán resourcemanager, alokuj nový qpixmap
-                //nezapomenout na delete!
-                spriteSheet = new QPixmap(image);
-            } else {
-                spriteSheet = rm->getSprite(image);
-            }
-        } else if (line.startsWith("duration=")){
-            animationTimer.setInterval(QString(line.mid(9).data()).toInt());
-        } else if (line.startsWith("fwidth=")){
-            frameWidth = QString(line.mid(7).data()).toInt();
-        } else if (line.startsWith("fheight=")){
-            frameHeight = QString(line.mid(8).data()).toInt();
-        } else if (line.startsWith("loop")){
-            looping = true;
-        } else if (line.startsWith("frame=")){
-            int x = QString(line.at(6)).toInt();
-            int y = QString(line.at(8)).toInt();;
-            frames.append(QList<int>() << x << y);
-        }
-    }
-    file.close();
 }
 
 void Animation::nextFrame() {

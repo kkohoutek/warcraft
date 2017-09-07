@@ -3,12 +3,11 @@
 Node::Node() {
     parent = nullptr;
     visited = false;
-    // every node has 4 neighbors
-    neighbors.reserve(4);
+    neighbors.reserve(4);     // 4 neighbors
 }
 
 
-Node::Node(int x, int y) : Node() {
+Node::Node(const int x, const int y) : Node() {
     pos.setX(x);
     pos.setY(y);
 }
@@ -21,10 +20,10 @@ void Node::setParent(Node *n){
     parent = n;
 }
 
-Node *Node::getParent() {
+Node *Node::getParent() const {
     return parent;
 }
 
-QList<Node *> Node::getNeighbors() {
+const QVector<Node *> &Node::getNeighbors() const {
     return neighbors;
 }

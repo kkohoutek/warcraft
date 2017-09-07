@@ -10,10 +10,10 @@ public:
     ResourceManager();
     ~ResourceManager();
 
-    QPixmap*    getSprite(QString id) const;
-    void        loadSprite(QString id, QPixmap* sprite);
-    void        deleteSprite(QString id);
-    void        copySprite(QString idSrc, QString idNew, bool horizontalMirror = false, bool verticalMirror = false);
+    QPixmap          *getSprite(QString id) const;
+    void             loadSprite(QString id, QPixmap* sprite);
+    void             deleteSprite(QString id);
+    void             copySprite(QString idSrc, QString idNew, bool horizontalMirror = false, bool verticalMirror = false);
 
 protected:
     QMap<QString, QPixmap*> sprites;
