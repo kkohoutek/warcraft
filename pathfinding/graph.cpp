@@ -1,7 +1,5 @@
 #include "graph.h"
 #include <QLineF>
-#include <QDebug>
-#include <QGraphicsScene>
 
 Graph::Graph() {
     for(int i = 0; i < NODES_ARRAY_SIZE; i++){

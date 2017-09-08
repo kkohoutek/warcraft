@@ -7,7 +7,7 @@
 #define NODES_ARRAY_SIZE 1024/NODES_DISTANCE-1 // square array
 
 struct Node {
-    Node() { visited = false; }
+    Node() { visited = false; neighbors.reserve(4) ;}
     Node(const int x, const int y) : Node() { pos.setX(x); pos.setY(y); }
     bool                visited;
     QPointF             pos;
