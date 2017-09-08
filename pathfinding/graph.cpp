@@ -52,16 +52,16 @@ void Graph::update(const QList<Entity *> &obstacles) {
                     n = nullptr;
                 }
 
-                if(i < NODES_ARRAY_SIZE){
+                if(i + 1 < NODES_ARRAY_SIZE){
                     node->neighbors[0] = nodes[i+1][j];
                 }
-                if(i > 0) {
+                if(i - 1 >= 0) {
                     node->neighbors[1] = nodes[i-1][j];
                 }
-                if(j < NODES_ARRAY_SIZE){
+                if(j + 1 < NODES_ARRAY_SIZE){
                     node->neighbors[2] = nodes[i][j+1];
                 }
-                if(j > 0){
+                if(j - 1 >= 0){
                     node->neighbors[3] = nodes[i][j-1];
                 }
             }
