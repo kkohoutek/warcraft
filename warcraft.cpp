@@ -24,7 +24,6 @@
 #include "entity/building/orctownhall.h"
 #include "entity/trees.h"
 #include "entity/unit/grunt.h"
-#include "pathfinding/bfs.h"
 
 #define MAP_SIZE 1024
 
@@ -53,7 +52,8 @@ Warcraft::Warcraft() {
     loadWorld();
     loadUnits();
     loadBuildings();
-    graph = new Graph(staticEntities());
+
+    graph.update(staticEntities());
 
     startTimer(18);
 }
@@ -65,8 +65,6 @@ Warcraft::~Warcraft() {
     delete enemy;
     delete player_gc;
     delete rm;
-    delete graph;
-
 }
 
 void Warcraft::loadBackground() {
@@ -165,7 +163,7 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
         }
     } else if (event->button() == Qt::RightButton){
         for(Unit *u : player->getSelectedUnits()){
-            QList<QPointF> path = BFS::shortestPath(graph, u->center(), actualPos);
+            QList<QPointF> path = graph.BFS_shortestPath(u->center(), actualPos);
             if(!path.isEmpty()){
                 u->setPath(path);
                 u->move();

@@ -16,7 +16,7 @@ public:
     void             copySprite(QString idSrc, QString idNew, bool horizontalMirror = false, bool verticalMirror = false);
 
 protected:
-    QMap<QString, QPixmap*> sprites;
+    QMap<QString, QPixmap *> sprites;
 
 
 

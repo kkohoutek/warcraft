@@ -51,8 +51,3 @@ int Animation::currentPositionX() const {
 int Animation::currentPositionY() const {
     return frames.at(currentFrameIndex).at(1) * frameHeight;
 }
-
-QPixmap *Animation::getSpriteSheet(){
-    return spriteSheet;
-}
-

@@ -18,8 +18,6 @@ public:
     void start();
     void setCurrentFrame(int index);
 
-    QPixmap *getSpriteSheet();
-
 private:
     QPixmap             *spriteSheet;
     QList<QList<int>>   frames;        // list s souřadnicemi snímků animace v spriteSheetu

@@ -9,7 +9,7 @@ ResourceManager::~ResourceManager() {
     qDeleteAll(sprites);
 }
 
-QPixmap* ResourceManager::getSprite(QString id) const {
+QPixmap *ResourceManager::getSprite(QString id) const {
     return sprites.value(id, nullptr);
 }
 

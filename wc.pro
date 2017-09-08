@@ -43,7 +43,6 @@ SOURCES += main.cpp\
     entity/trees.cpp \
     entity/unit/daemon.cpp \
     garbagecollector.cpp \
-    pathfinding/bfs.cpp \
     pathfinding/graph.cpp \
     resourcemanager.cpp
 
@@ -79,8 +78,6 @@ HEADERS  += mainwindow.h \
     entity/building/orcblacksmith.h \
     entity/unit/daemon.h \
     garbagecollector.h \
-    pathfinding/bfs.h \
-    pathfinding/node.h \
     pathfinding/graph.h \
     resourcemanager.h
 
