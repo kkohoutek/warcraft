@@ -20,9 +20,9 @@ public:
 
 private:
     QPixmap             *spriteSheet;
-    QList<QList<int>>   frames;        // list s souřadnicemi snímků animace v spriteSheetu
-    int                 frameWidth;    // šířka snímku
-    int                 frameHeight;   // výška snímku
+    QList<QList<int>>   frames;        // List s souřadnicemi snímků animace
+    int                 frameWidth;    // Šířka snímku
+    int                 frameHeight;   // Výška snímku
     int                 currentFrameIndex = 0;
     bool                looping;
 

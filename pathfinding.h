@@ -7,10 +7,11 @@
 #define NODES_ARRAY_SIZE 2048/NODES_DISTANCE-2
 
 struct Node {
-    Node(const int x, const int y) { pos.setX(x); pos.setY(y); }
+    Node() { for(Node *n : neighbors) { n = nullptr; } }
+    Node(const int x, const int y) : Node() { pos.setX(x); pos.setY(y); }
     bool                visited = false;
     QPointF             pos;
-    Node                *neighbors[4] = {0,0,0,0};
+    Node                *neighbors[8];
     Node                *parent = nullptr;
 };
 
@@ -18,7 +19,7 @@ class Graph
 {
 public:
     Graph();
-    // Constructs a graph and updates it
+    // Sestrojí graf a zavolá update
     Graph(const QList<Entity *> &obstacles);
     ~Graph();
 
@@ -26,14 +27,17 @@ public:
 
     void update(const QList<Entity *> &obstacles);
 
-    QList<QPointF> BFS_shortestPath(Node *start, Node *goal);
-    QList<QPointF> BFS_shortestPath(QPointF a, QPointF b);
-
-    // Return node closest to these coords
+    // Dej mi node, která nejlépe odpovídá této pozici
     Node *gimmeNode(QPointF pos);
 
-    // Resets visited and parent property of nodes
+    // Defaultuje visited a parent
     void resetNodes();
 };
+
+// Breadth-first search
+namespace bfs {
+    QList<QPointF> shortestPath(Graph &graph, Node *start, Node *goal);
+    QList<QPointF> shortestPath(Graph &graph, QPointF a, QPointF b);
+}
 
 #endif // GRAPH_H

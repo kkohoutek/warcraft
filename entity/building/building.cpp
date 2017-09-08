@@ -2,7 +2,6 @@
 
 Building::Building(QPointF pos, bool finishedOnSpawn, Race race, QList<int> preFrame, QList<int> endFrame, int buildTime, int maxHP, ResourceManager *rm) : Entity(pos)
 {
-    setZValue(-1);
     setMaxHP(maxHP);
     this->buildTime = buildTime;
 
@@ -42,6 +41,8 @@ Building::Building(QPointF pos, bool finishedOnSpawn, Race race, QList<int> preF
 
     scaleX = 2;
     scaleY = 2;
+
+    setZValue(-1);
 
 }
 

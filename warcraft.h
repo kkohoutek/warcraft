@@ -10,7 +10,7 @@
 #include "player.h"
 #include "entity/goldmine.h"
 #include "garbagecollector.h"
-#include "pathfinding/graph.h"
+#include "pathfinding.h"
 #include "resourcemanager.h"
 
 class Warcraft : public QGraphicsView
@@ -38,7 +38,6 @@ protected:
     Graph graph;
 
     void initResources();
-    void loadBackground();
     void loadBuildings();
     void loadUnits();
     void loadWorld();

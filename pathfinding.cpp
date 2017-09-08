@@ -1,7 +1,9 @@
-#include "graph.h"
+#include "pathfinding.h"
 #include <QLineF>
 #include <QQueue>
 #include <QDebug>
+
+#define NODES_NEIGHBORS_LIMIT 8   // S kolika sousedy počítáme (max 8)
 
 Graph::Graph() {
     for(int i = 0; i < NODES_ARRAY_SIZE; i++){
@@ -25,7 +27,7 @@ Graph::~Graph() {
 }
 
 void Graph::update(const QList<Entity *> &obstacles) {
-    // Delete nodes that intersect obstacles
+    // Smaž nodes které jsou překryty překážkami
     for(int i = 0; i < NODES_ARRAY_SIZE; i++){
         for(int j = 0; j < NODES_ARRAY_SIZE; j++){
             bool interr = false;
@@ -41,12 +43,12 @@ void Graph::update(const QList<Entity *> &obstacles) {
             }
         }
     }
-    // Find each node's neighbors
+    // Najdi sousedy pro každou node
     for(int i = 0; i < NODES_ARRAY_SIZE; i++){
         for(int j = 0; j < NODES_ARRAY_SIZE; j++){
             Node *node = nodes[i][j];
             if(node) {
-                // Reset neighbors
+                // Resetuj sousedy
                 for(Node *n : node->neighbors){
                     n = nullptr;
                 }
@@ -63,54 +65,36 @@ void Graph::update(const QList<Entity *> &obstacles) {
                 if(j - 1 >= 0){
                     node->neighbors[3] = nodes[i][j-1];
                 }
+
+                // Diagonálně
+
+                if(i - 1 >= 0 && j - 1 >= 0){
+                    node->neighbors[4] = nodes[i-1][j-1];
+                }
+                if(j + 1 < NODES_ARRAY_SIZE && i - 1 >= 0){
+                    node->neighbors[5] = nodes[i-1][j+1];
+                }
+                if(i + 1 < NODES_ARRAY_SIZE && j + 1 < NODES_ARRAY_SIZE){
+                    node->neighbors[6] = nodes[i+1][j+1];
+                }
+                if(i + 1 < NODES_ARRAY_SIZE && j - 1 >= 0){
+                    node->neighbors[7] = nodes[i+1][j-1];
+                }
+
             }
         }
     }
 }
-
-
-QList<QPointF> Graph::BFS_shortestPath(Node *start, Node *goal) {
-    if(!goal || !start) return QList<QPointF>();
-
-    QQueue<Node *> queue;
-    start->visited = true;
-    queue.enqueue(start);
-
-    Node *node = nullptr;
-    while(!queue.isEmpty()){
-        node = queue.dequeue();
-        if(node == goal) break;
-
-        for(Node *neighbor : node->neighbors){
-            if(neighbor && !neighbor->visited){
-                queue.enqueue(neighbor);
-                neighbor->visited = true;
-                neighbor->parent = node;
-            }
-        }
-    }
-    // Retrace path
-    QList<QPointF> path;
-    while(node){
-        path.append(node->pos);
-        node = node->parent;
-    }
-    resetNodes();
-    for(int k = 0; k < (path.size()/2); k++) path.swap(k,path.size()-(1+k)); // reverse list
-
-    return path;
-}
-
-
-QList<QPointF> Graph::BFS_shortestPath(QPointF a, QPointF b) {
-    return BFS_shortestPath(gimmeNode(a), gimmeNode(b));
-}
-
 
 Node *Graph::gimmeNode(QPointF pos) {
-    // Get indices based on pos and keep indices within bounds
+    // Získej indexy podle pozice a udrž je v rozsahu arraye
     int i = qBound(0, qRound(pos.y()/NODES_DISTANCE)-2, NODES_ARRAY_SIZE-1);
     int j = qBound(0, qRound(pos.x()/NODES_DISTANCE)-2, NODES_ARRAY_SIZE-1);
+
+    if(!nodes[i][j]){
+
+    }
+
     return nodes[i][j];
 }
 
@@ -124,5 +108,45 @@ void Graph::resetNodes() {
             }
         }
     }
+}
+
+
+
+QList<QPointF> bfs::shortestPath(Graph &graph, Node *start, Node *goal) {
+    if(!goal || !start) return QList<QPointF>();
+
+    QQueue<Node *> queue;
+    start->visited = true;
+    queue.enqueue(start);
+
+    Node *node = nullptr;
+    while(!queue.isEmpty()){
+        node = queue.dequeue();
+        if(node == goal) break;
+
+        for(int i = 0; i < NODES_NEIGHBORS_LIMIT; i++){
+            Node *neighbor = node->neighbors[i];
+            if(neighbor && !neighbor->visited){
+                queue.enqueue(neighbor);
+                neighbor->visited = true;
+                neighbor->parent = node;
+            }
+        }
+    }
+    // Retrace
+    QList<QPointF> path;
+    while(node){
+        path.append(node->pos);
+        node = node->parent;
+    }
+    graph.resetNodes();
+    for(int k = 0; k < (path.size()/2); k++) path.swap(k,path.size()-(1+k)); // Reverse list
+
+    return path;
+}
+
+
+QList<QPointF> bfs::shortestPath(Graph &graph, QPointF a, QPointF b) {
+    return bfs::shortestPath(graph, graph.gimmeNode(a), graph.gimmeNode(b));
 }
 

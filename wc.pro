@@ -43,8 +43,8 @@ SOURCES += main.cpp\
     entity/trees.cpp \
     entity/unit/daemon.cpp \
     garbagecollector.cpp \
-    pathfinding/graph.cpp \
-    resourcemanager.cpp
+    resourcemanager.cpp \
+    pathfinding.cpp
 
 
 HEADERS  += mainwindow.h \
@@ -78,8 +78,8 @@ HEADERS  += mainwindow.h \
     entity/building/orcblacksmith.h \
     entity/unit/daemon.h \
     garbagecollector.h \
-    pathfinding/graph.h \
-    resourcemanager.h
+    resourcemanager.h \
+    pathfinding.h
 
 
 FORMS    += mainwindow.ui

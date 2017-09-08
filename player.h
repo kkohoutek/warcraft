@@ -57,8 +57,8 @@ protected:
     int lumber = 0;
     int food = 0;
 
-    int goldDestinationIndex;   // index v buildings
-    int lumberDestinationIndex; // index v buildings
+    int goldDestinationIndex;   // Index v buildings
+    int lumberDestinationIndex; // Index v buildings
 };
 
 #endif // PLAYER_H

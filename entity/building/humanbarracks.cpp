@@ -6,5 +6,5 @@ HumanBarracks::HumanBarracks(QPointF pos, bool finishedOnSpawn, ResourceManager 
 }
 
 QRectF HumanBarracks::boundingRect() const {
-    return QRectF(0,0,48,48);
+    return QRectF(0,0,96,96);
 }

@@ -24,6 +24,7 @@
 #include "entity/building/orctownhall.h"
 #include "entity/trees.h"
 #include "entity/unit/grunt.h"
+#include "pathfinding.h"
 
 #define MAP_SIZE 2048
 
@@ -48,7 +49,7 @@ Warcraft::Warcraft() {
 
     enemy = new Player(ORC);
 
-    loadBackground();
+    scene->setBackgroundBrush(QBrush(*(rm->getSprite("MAP1"))));
     loadWorld();
     loadUnits();
     loadBuildings();
@@ -67,19 +68,24 @@ Warcraft::~Warcraft() {
     delete rm;
 }
 
-void Warcraft::loadBackground() {
-    /*
-    QRect rect(3*32, 0, 32, 32);
-    QPixmap cropped = rm->getSprite("WORLD")->copy(rect);
-    QBrush brush(cropped);
-    brush.setStyle(Qt::TexturePattern);
-    scene()->setBackgroundBrush(brush);
-    */
-    scene()->setBackgroundBrush(QBrush(*(rm->getSprite("MAP1"))));
-}
-
 void Warcraft::loadBuildings() {
     Building *th = new HumanTownHall(QPointF(216,216), true, rm);
+    player->getBuildings().append(th);
+    scene()->addItem(th);
+
+    th = new HumanFarm(QPointF(70, 262), true, rm, player->getFood());
+    player->getBuildings().append(th);
+    scene()->addItem(th);
+
+    th = new HumanFarm(QPointF(310, 290), true, rm, player->getFood());
+    player->getBuildings().append(th);
+    scene()->addItem(th);
+
+    th = new HumanChurch(QPointF(278, 81), true, rm);
+    player->getBuildings().append(th);
+    scene()->addItem(th);
+
+    th = new HumanBarracks(QPointF(220, 400), true, rm);
     player->getBuildings().append(th);
     scene()->addItem(th);
 
@@ -100,7 +106,6 @@ void Warcraft::loadUnits(){
     scene()->addItem(f);
     player->getUnits().append(f);
 
-
     for(int i = 0; i < 4; i++){
         Grunt *g = new Grunt(QPointF(MAP_SIZE-420+i*40, MAP_SIZE-286-i*40), rm);
         scene()->addItem(g);
@@ -116,14 +121,9 @@ void Warcraft::loadWorld() {
     g = new Goldmine(QPointF(MAP_SIZE-192, MAP_SIZE-192), rm);
     scene()->addItem(g);
     goldmines.append(g);
-    g = new Goldmine(QPointF(450,400), rm);
-    scene()->addItem(g);
-    goldmines.append(g);
     g = new Goldmine(QPointF(800,522), rm);
     scene()->addItem(g);
     goldmines.append(g);
-
-
 }
 
 void Warcraft::timerEvent(QTimerEvent *event) {
@@ -165,20 +165,21 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
         }
     } else if (event->button() == Qt::RightButton){
         for(Unit *u : player->getSelectedUnits()){
-            QList<QPointF> path = graph.BFS_shortestPath(u->center(), actualPos);
+            QList<QPointF> path = bfs::shortestPath(graph, u->center(), actualPos);
             if(!path.isEmpty()){
                 u->setPath(path);
                 u->move();
             }
         }
 
+        // Klikl hráč na goldmine?
         for(Goldmine *g : goldmines){
             if(g->boundingRect2().contains(actualPos)){
                 QList<Worker *> sw = player->selectedWorkers();
                 if(!sw.empty()){
                     for(Worker *w : sw){
                         w->gatherGold(g, player->goldDestination());
-                        w->setTarget(g->center());
+                        w->setPath(bfs::shortestPath(graph, w->center(), g->center()));
                         w->move();
                     }
                 }
