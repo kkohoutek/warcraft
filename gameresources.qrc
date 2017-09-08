@@ -8,5 +8,6 @@
         <file alias="PEASANT">res/peasant.png</file>
         <file alias="GRUNT">res/grunt.png</file>
         <file alias="DAEMON">res/daemon.png</file>
+        <file alias="MAP1">res/map1.png</file>
     </qresource>
 </RCC>

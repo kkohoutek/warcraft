@@ -4,13 +4,13 @@
 #include "entity/entity.h"
 
 #define NODES_DISTANCE 32
-#define NODES_ARRAY_SIZE 1024/NODES_DISTANCE-1
+#define NODES_ARRAY_SIZE 2048/NODES_DISTANCE-2
 
 struct Node {
     Node(const int x, const int y) { pos.setX(x); pos.setY(y); }
     bool                visited = false;
     QPointF             pos;
-    Node                *neighbors[4] = {nullptr,nullptr,nullptr,nullptr};
+    Node                *neighbors[4] = {0,0,0,0};
     Node                *parent = nullptr;
 };
 

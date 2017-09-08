@@ -25,7 +25,7 @@
 #include "entity/trees.h"
 #include "entity/unit/grunt.h"
 
-#define MAP_SIZE 1024
+#define MAP_SIZE 2048
 
 Warcraft::Warcraft() {
     initResources();
@@ -68,12 +68,14 @@ Warcraft::~Warcraft() {
 }
 
 void Warcraft::loadBackground() {
+    /*
     QRect rect(3*32, 0, 32, 32);
     QPixmap cropped = rm->getSprite("WORLD")->copy(rect);
     QBrush brush(cropped);
     brush.setStyle(Qt::TexturePattern);
     scene()->setBackgroundBrush(brush);
-
+    */
+    scene()->setBackgroundBrush(QBrush(*(rm->getSprite("MAP1"))));
 }
 
 void Warcraft::loadBuildings() {
@@ -111,7 +113,7 @@ void Warcraft::loadWorld() {
     Goldmine *g = new Goldmine(QPointF(64,64), rm);
     scene()->addItem(g);
     goldmines.append(g);
-    g = new Goldmine(QPointF(MAP_SIZE-132, MAP_SIZE-132), rm);
+    g = new Goldmine(QPointF(MAP_SIZE-192, MAP_SIZE-192), rm);
     scene()->addItem(g);
     goldmines.append(g);
     g = new Goldmine(QPointF(450,400), rm);
@@ -289,6 +291,7 @@ void Warcraft::paintEvent(QPaintEvent *event) {
 
 void Warcraft::initResources() {
     rm = new ResourceManager();
+    rm->loadSprite("MAP1", new QPixmap(":graphics/MAP1"));
     rm->loadSprite("BUILDINGS_H", new QPixmap(":graphics/BUILDINGS_H"));
     rm->loadSprite("BUILDINGS_O", new QPixmap(":graphics/BUILDINGS_O"));
     rm->loadSprite("FOOTMAN", new QPixmap(":graphics/FOOTMAN"));

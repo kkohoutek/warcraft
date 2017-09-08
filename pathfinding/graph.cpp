@@ -6,7 +6,7 @@
 Graph::Graph() {
     for(int i = 0; i < NODES_ARRAY_SIZE; i++){
         for(int j = 0; j < NODES_ARRAY_SIZE; j++){
-            nodes[i][j] = new Node((j+1)*NODES_DISTANCE, (i+1)*NODES_DISTANCE);
+            nodes[i][j] = new Node((j+2)*NODES_DISTANCE, (i+2)*NODES_DISTANCE);
         }
     }
 }
@@ -14,7 +14,6 @@ Graph::Graph() {
 Graph::Graph(const QList<Entity *> &obstacles) : Graph() {
     update(obstacles);
 }
-
 
 Graph::~Graph() {
     for(int i = 0; i < NODES_ARRAY_SIZE; i++){
@@ -31,13 +30,13 @@ void Graph::update(const QList<Entity *> &obstacles) {
         for(int j = 0; j < NODES_ARRAY_SIZE; j++){
             bool interr = false;
             for(int k = 0;  !interr && k < obstacles.size(); k++){
-                if(obstacles.at(k)->boundingRect2().contains((j+1)*NODES_DISTANCE, (i+1)*NODES_DISTANCE)){
+                if(obstacles.at(k)->boundingRect2().contains((j+2)*NODES_DISTANCE, (i+2)*NODES_DISTANCE)){
                     delete nodes[i][j];
                     nodes[i][j] = nullptr;
                     interr = true;
                 } else {
                     delete nodes[i][j];
-                    nodes[i][j] = new Node((j+1)*NODES_DISTANCE, (i+1)*NODES_DISTANCE);
+                    nodes[i][j] = new Node((j+2)*NODES_DISTANCE, (i+2)*NODES_DISTANCE);
                 }
             }
         }
@@ -110,8 +109,8 @@ QList<QPointF> Graph::BFS_shortestPath(QPointF a, QPointF b) {
 
 Node *Graph::gimmeNode(QPointF pos) {
     // Get indices based on pos and keep indices within bounds
-    int i = qBound(0, qRound(pos.y()/NODES_DISTANCE)-1, NODES_ARRAY_SIZE-1);
-    int j = qBound(0, qRound(pos.x()/NODES_DISTANCE)-1, NODES_ARRAY_SIZE-1);
+    int i = qBound(0, qRound(pos.y()/NODES_DISTANCE)-2, NODES_ARRAY_SIZE-1);
+    int j = qBound(0, qRound(pos.x()/NODES_DISTANCE)-2, NODES_ARRAY_SIZE-1);
     return nodes[i][j];
 }
 
