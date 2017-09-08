@@ -44,7 +44,6 @@ SOURCES += main.cpp\
     entity/unit/daemon.cpp \
     garbagecollector.cpp \
     pathfinding/bfs.cpp \
-    pathfinding/node.cpp \
     pathfinding/graph.cpp \
     resourcemanager.cpp
 

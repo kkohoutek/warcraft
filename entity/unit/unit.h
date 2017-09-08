@@ -2,7 +2,6 @@
 #define UNIT_H
 
 #include "entity/entity.h"
-#include "pathfinding/node.h"
 #include <QQueue>
 #include <QVector2D>
 

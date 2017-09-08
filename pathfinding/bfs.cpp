@@ -17,11 +17,11 @@ QList<QPointF> BFS::shortestPath(Graph *graph, Node *start, Node *goal) {
         node = queue.dequeue();
         if(node == goal) break;
 
-        for(Node *neighbor : node->getNeighbors()){
+        for(Node *neighbor : node->neighbors){
             if(neighbor && !neighbor->visited){
                 queue.enqueue(neighbor);
                 neighbor->visited = true;
-                neighbor->setParent(node);
+                neighbor->parent = node;
             }
         }
     }
@@ -29,7 +29,7 @@ QList<QPointF> BFS::shortestPath(Graph *graph, Node *start, Node *goal) {
     QList<QPointF> path;
     while(node){
         path.append(node->pos);
-        node = node->getParent();
+        node = node->parent;
     }
 
     graph->resetNodes();

@@ -1,12 +1,19 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
+#include "entity/entity.h"
+
 #define NODES_DISTANCE 32
 #define NODES_ARRAY_SIZE 1024/NODES_DISTANCE-1 // square array
 
-
-#include "node.h"
-#include "entity/entity.h"
+struct Node {
+    Node() { visited = false; }
+    Node(const int x, const int y) : Node() { pos.setX(x); pos.setY(y); }
+    bool                visited;
+    QPointF             pos;
+    QVector<Node *>     neighbors;
+    Node                *parent;   // ze které node jsme přišli
+};
 
 class Graph
 {

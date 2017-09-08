@@ -30,16 +30,16 @@ Graph::Graph(const QList<Entity *> &obstacles) : Graph() {
             Node *node = nodes[i][j];
             if(node) {
                 if(i < NODES_ARRAY_SIZE){
-                    node->addNeighbor(nodes[i+1][j]);
+                    node->neighbors.append(nodes[i+1][j]);
                 }
                 if(i > 0) {
-                    node->addNeighbor(nodes[i-1][j]);
+                    node->neighbors.append(nodes[i-1][j]);
                 }
                 if(j < NODES_ARRAY_SIZE){
-                    node->addNeighbor(nodes[i][j+1]);
+                    node->neighbors.append(nodes[i][j+1]);
                 }
                 if(j > 0){
-                    node->addNeighbor(nodes[i][j-1]);
+                    node->neighbors.append(nodes[i][j-1]);
                 }
             }
         }
@@ -67,9 +67,9 @@ void Graph::resetNodes() {
     for(int i = 0; i < NODES_ARRAY_SIZE; i++){
         for(int j = 0; j < NODES_ARRAY_SIZE; j++){
             Node *n = nodes[i][j];
-            if(n != nullptr){
+            if(n){
                 n->visited = false;
-                n->setParent(nullptr);
+                n->parent = nullptr;
             }
         }
     }
