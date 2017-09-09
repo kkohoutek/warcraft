@@ -7,10 +7,15 @@
 #include "entity/building/building.h"
 #include "resourcemanager.h"
 
+struct BuildCommand {
+    BuildingType type;
+    QPointF where;
+};
+
 class Worker : public Unit
 {
 public:
-    Worker(QPointF pos, Race race, int &playerGold, int &playerLumber, ResourceManager *rm);
+    Worker(QPointF pos, UnitType type, int &playerGold, int &playerLumber, ResourceManager *rm);
     ~Worker();
 
     QRectF boundingRect() const override;
@@ -28,13 +33,13 @@ public:
     Building *getCurrentBuilding() const;
 
 protected:
-    static const int GOLD_PER_TRIP = 100;
+    static const int GOLD_PER_TRIP = 10;
 
-    Goldmine *currentGoldmine = nullptr;
-    Trees    *currentTrees = nullptr;
+    Goldmine *currentGoldmine   = nullptr;
+    Trees    *currentTrees      = nullptr;
     Building *lumberDestination = nullptr;
-    Building *goldDestination = nullptr;
-    Building *currentBuilding = nullptr;
+    Building *goldDestination   = nullptr;
+    Building *currentBuilding   = nullptr;
 
     void updateAnimation() override;
 
@@ -45,8 +50,6 @@ private:
 
     int *playerGold;    // pointer na hráčovo zlato
     int *playerLumber;  // pointer na hráčovo dřevo
-
-
 
 };
 

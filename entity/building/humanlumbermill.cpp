@@ -1,7 +1,7 @@
 #include "humanlumbermill.h"
 
 
-HumanLumberMill::HumanLumberMill(QPointF pos, bool finishedOnSpawn, ResourceManager *rm)  : Building(pos, finishedOnSpawn, HUMAN, QList<int>() << 3 << 3, QList<int>() << 2 << 3, BUILD_TIME, HP, rm)
+HumanLumberMill::HumanLumberMill(QPointF pos, bool finishedOnSpawn, ResourceManager *rm)  : Building(pos, H_LUMBERMILL, finishedOnSpawn, HUMAN, QList<int>() << 3 << 3, QList<int>() << 2 << 3, BUILD_TIME, HP, rm)
 {
 
 }

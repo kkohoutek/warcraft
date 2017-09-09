@@ -1,6 +1,6 @@
 #include "footman.h"
 
-Footman::Footman(QPointF pos, ResourceManager *rm) : Unit(pos, 0.75f, 1, 2, 0)
+Footman::Footman(QPointF pos, ResourceManager *rm) : Unit(pos, FOOTMAN, 0.75f, 1, 2, 0)
 {
     setMaxHP(60);
     setHP(60);

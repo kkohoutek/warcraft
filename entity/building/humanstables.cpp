@@ -1,6 +1,6 @@
 #include "humanstables.h"
 
-HumanStables::HumanStables(QPointF pos, bool finishedOnSpawn, ResourceManager *rm) : Building(pos, finishedOnSpawn, HUMAN, QList<int>() << 1 << 4, QList<int>() << 0 << 4, BUILD_TIME, HP, rm)
+HumanStables::HumanStables(QPointF pos, bool finishedOnSpawn, ResourceManager *rm) : Building(pos, H_STABLES, finishedOnSpawn, HUMAN, QList<int>() << 1 << 4, QList<int>() << 0 << 4, BUILD_TIME, HP, rm)
 {
 
 }

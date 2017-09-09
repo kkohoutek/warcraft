@@ -2,7 +2,7 @@
 #include <QGraphicsScene>
 #include <QDebug>
 
-Worker::Worker(QPointF pos, Race race, int &playerGold, int &playerLumber, ResourceManager *rm) : Unit(pos, 0.7F, 0, 0, 0)
+Worker::Worker(QPointF pos, UnitType type, int &playerGold, int &playerLumber, ResourceManager *rm) : Unit(pos, type, 0.7F, 0, 0, 0)
 {
     this->playerGold   = &playerGold;
     this->playerLumber = &playerLumber;
@@ -10,12 +10,9 @@ Worker::Worker(QPointF pos, Race race, int &playerGold, int &playerLumber, Resou
     setMaxHP(40);
     setHP(40);
 
-
-    switch(race){
-        case HUMAN:
+    switch(type){
+        case PEASANT:
     {
-
-        /* ****** PEASANT ****** */
         QPixmap *spriteSheet = rm->getSprite("PEASANT");
         QPixmap *spriteSheetFlipped = rm->getSprite("PEASANT_flipped");
 
@@ -350,9 +347,12 @@ Worker::Worker(QPointF pos, Race race, int &playerGold, int &playerLumber, Resou
         break;
     }
 
-        case ORC:
+        case PEON:
         //peon
         break;
+
+    default:
+        qFatal("Incorrect UnitType!");
     }
 }
 
@@ -401,6 +401,7 @@ void Worker::goBuild(Building *building){
 
 void Worker::update(){
     Unit::update();
+    /*
     if(currentBuilding){
         if(!currentBuilding->isBuildingFinished()){
             if(collidesWithItem(currentBuilding)){
@@ -413,8 +414,8 @@ void Worker::update(){
             show();
             setPos(currentBuilding->pos()-QPointF(0,6));
             currentBuilding = nullptr;
-        }
-    } else if (isGatheringGold()){
+        }*/
+    if (isGatheringGold()){
             if(collidesWithItem(currentGoldmine)){
                 currentGoldmine->damage(GOLD_PER_TRIP);
                 stopMoving();

@@ -13,9 +13,6 @@ Player::Player(Race race) {
 }
 
 void Player::update(){
-    for(Worker *worker : workers){
-        worker->update();
-    }
     for(Unit *unit : units){
         unit->update();
     }
@@ -25,7 +22,7 @@ void Player::update(){
 }
 
 void Player::newBuilding(Building *building, Worker *worker, int costGold, int costLumber) {
-    if(!workers.contains(worker)) return;
+    if(!units.contains(worker)) return;
 
     if(gold >= costGold && lumber >= costLumber){
         gold-=costGold;
@@ -39,7 +36,7 @@ void Player::newBuilding(Building *building, Worker *worker, int costGold, int c
 
 
 void Player::selectUnit(Unit *unit){
-    if(units.contains(unit) || workers.contains(static_cast<Worker *>(unit))){
+    if(units.contains(unit)){
         deselect();
         selectedUnits.append(unit);
         unit->setHighlighted(true);
@@ -55,7 +52,7 @@ void Player::selectUnits(QList<Unit *> selected){
 
     deselect();
     for(Unit *u : selected){
-        if(units.contains(u) || workers.contains(static_cast<Worker *>(u))){
+        if(units.contains(u)){
             selectedUnits.append(u);
             u->setHighlighted(true);
         }
@@ -114,33 +111,8 @@ QList<Unit *> &Player::getUnits(){
     return units;
 }
 
-QList<Worker *> &Player::getWorkers() {
-    return workers;
-}
-
 QList<Unit *> &Player::getSelectedUnits() {
     return selectedUnits;
-}
-
-QList<Worker *> Player::selectedWorkers() const {
-    QList<Worker *> selectedWorkers;
-    for(Unit *u : selectedUnits){
-        Worker *w = static_cast<Worker *>(u);
-        if(workers.contains(w)){
-            selectedWorkers.append(w);
-        }
-    }
-    return selectedWorkers;
-
-}
-
-QList<Unit *> Player::allUnits() const {
-    QList<Unit *> all;
-    all.append(units);
-    for(Worker *w : workers){
-        all.append(w);
-    }
-    return all;
 }
 
 Race Player::getRace() const {

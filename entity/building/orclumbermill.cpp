@@ -1,7 +1,7 @@
 #include "orclumbermill.h"
 
 OrcLumberMill::OrcLumberMill(QPointF pos, bool finishedOnSpawn, ResourceManager*rm) :
-    Building(pos, finishedOnSpawn,ORC,QList<int>() << 0 << 3, QList<int>() << 4 << 2, BUILD_TIME, HP, rm)
+    Building(pos, O_LUMBERMILL, finishedOnSpawn,ORC,QList<int>() << 0 << 3, QList<int>() << 4 << 2, BUILD_TIME, HP, rm)
 {
 
 }

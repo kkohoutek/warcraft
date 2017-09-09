@@ -5,11 +5,19 @@
 #include <QQueue>
 #include <QVector2D>
 
+enum UnitType {
+    DAEMON,
+    FOOTMAN,
+    PEASANT,
+    PEON,
+    GRUNT
+};
+
 class Unit : public Entity
 {
 public:
 
-    Unit(QPointF pos, float speed, int damage, int armor, int range);
+    Unit(QPointF pos, UnitType type, float speed, int damage, int armor, int range);
     virtual ~Unit();
 
     void setTarget(QPointF target);
@@ -31,6 +39,7 @@ public:
 
     QVector2D direction() const;
 
+    UnitType getType() const;
     QPointF getTarget() const;
     float getSpeed() const;
     void setSpeed(float speed);
@@ -54,7 +63,10 @@ protected:
     Entity *targetEntity = nullptr;
 
     void approachTarget();
-    bool moving = false;    // viditelný rect
+    bool moving = false;
+
+private:
+    UnitType type;
 
 
 

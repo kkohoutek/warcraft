@@ -1,12 +1,13 @@
 #include "unit.h"
 #include <QtMath>
 
-Unit::Unit(QPointF pos, float speed, int damage, int armor, int range) : Entity(pos)
+Unit::Unit(QPointF pos, UnitType type, float speed, int damage, int armor, int range) : Entity(pos)
 {
     this->speed = speed;
     this->damage = damage;
     this->range = range;
     this->armor = armor;
+    this->type = type;
 
     scaleX = 2;
     scaleY = 2;
@@ -16,6 +17,10 @@ Unit::Unit(QPointF pos, float speed, int damage, int armor, int range) : Entity(
 
 Unit::~Unit() {
     setCurrentAnimation(nullptr);
+
+    qDeleteAll(movementAnims);
+    qDeleteAll(deathAnims);
+    qDeleteAll(attackAnims);
 }
 
 void Unit::approachTarget() {
@@ -131,6 +136,10 @@ void Unit::setTarget(QPointF target){
 
 QVector2D Unit::direction() const {
     return QVector2D(targetPoint - center()).normalized();
+}
+
+UnitType Unit::getType() const {
+    return type;
 }
 
 void Unit::cancel(){

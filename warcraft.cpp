@@ -81,7 +81,7 @@ void Warcraft::loadBuildings() {
     player->getBuildings().append(th);
     scene()->addItem(th);
 
-    th = new HumanChurch(QPointF(278, 81), true, rm);
+    th = new HumanChurch(QPointF(278, 81), false, rm);
     player->getBuildings().append(th);
     scene()->addItem(th);
 
@@ -97,12 +97,12 @@ void Warcraft::loadBuildings() {
 
 void Warcraft::loadUnits(){
     for(int i = 0; i < 4; i++){
-        Worker *w = new Worker(QPointF(128+i*28,128), player->getRace(), player->getGold(), player->getLumber(), rm);
-        player->getWorkers().append(w);
+        Worker *w = new Worker(QPointF(128+i*28,128), PEASANT, player->getGold(), player->getLumber(), rm);
+        player->getUnits().append(w);
         scene()->addItem(w);
     }
 
-    Footman *f = new Footman(QPointF(1000,1000), rm);
+    Footman *f = new Footman(QPointF(500,120), rm);
     scene()->addItem(f);
     player->getUnits().append(f);
 
@@ -158,7 +158,7 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
         position.setX(actualPos.x());
         position.setY(actualPos.y());
 
-        for(Unit *unit : player->allUnits()){
+        for(Unit *unit : player->getUnits()){
             if(unit->boundingRect2().contains(actualPos) && unit->isAlive()){
                 player->selectUnit(unit);
             }
@@ -175,12 +175,11 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
         // Klikl hráč na goldmine?
         for(Goldmine *g : goldmines){
             if(g->boundingRect2().contains(actualPos)){
-                QList<Worker *> sw = player->selectedWorkers();
-                if(!sw.empty()){
-                    for(Worker *w : sw){
-                        w->gatherGold(g, player->goldDestination());
-                        w->setPath(bfs::shortestPath(graph, w->center(), g->center()));
-                        w->move();
+                for(Unit *u : player->getUnits()){
+                    if(u->getType() == PEASANT) {
+                        static_cast<Worker *>(u)->gatherGold(g, player->goldDestination());
+                        u->setPath(bfs::shortestPath(graph, u->center(), g->center()));
+                        u->move();
                     }
                 }
             }
@@ -193,7 +192,7 @@ void Warcraft::mouseReleaseEvent(QMouseEvent *releaseEvent) {
         isPressedLeftButton = false;
 
         QList<Unit *> selected;
-        for(Unit *unit : player->allUnits()){
+        for(Unit *unit : player->getUnits()){
             if(rect->rect().contains(unit->center()) && unit->isAlive() && unit->isVisible()){
                 selected.append(unit);
             }
@@ -220,14 +219,9 @@ void Warcraft::mouseMoveEvent(QMouseEvent *event) {
 }
 
 void Warcraft::keyPressEvent(QKeyEvent *event){
-    QList<Worker *> sw = player->selectedWorkers();
     switch(event->key()){
     case Qt::Key_Escape:
         window()->close();
-        break;
-    case Qt::Key_B:
-
-
         break;
     }
 
@@ -251,12 +245,6 @@ QList<Unit *> Warcraft::allUnits() const {
     QList<Unit *> allUnits;
     allUnits.append(player->getUnits());
     allUnits.append(enemy->getUnits());
-    for(Worker *w : player->getWorkers()){
-        allUnits.append(w);
-    }
-    for(Worker *w : enemy->getWorkers()){
-        allUnits.append(w);
-    }
     return allUnits;
 }
 

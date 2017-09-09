@@ -1,6 +1,6 @@
 #include "humanfarm.h"
 
-HumanFarm::HumanFarm(QPointF pos, bool finishedOnSpawn, ResourceManager *rm, int &playerFood) : Building(pos, finishedOnSpawn, HUMAN, QList<int>() << 1 << 1, QList<int>() << 0 << 1, BUILD_TIME, HP, rm) {
+HumanFarm::HumanFarm(QPointF pos, bool finishedOnSpawn, ResourceManager *rm, int &playerFood) : Building(pos, H_FARM, finishedOnSpawn, HUMAN, QList<int>() << 1 << 1, QList<int>() << 0 << 1, BUILD_TIME, HP, rm) {
     this->playerFood = &playerFood;
 }
 

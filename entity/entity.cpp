@@ -14,7 +14,6 @@ Entity::Entity(QPointF pos) {
 
 Entity::~Entity() {
     delete currentAnimation;
-    currentAnimation = nullptr;
 }
 
 void Entity::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {

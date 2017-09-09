@@ -1,9 +1,10 @@
 #include "building.h"
 
-Building::Building(QPointF pos, bool finishedOnSpawn, Race race, QList<int> preFrame, QList<int> endFrame, int buildTime, int maxHP, ResourceManager *rm) : Entity(pos)
+Building::Building(QPointF pos, BuildingType type, bool finishedOnSpawn, Race race, QList<int> preFrame, QList<int> endFrame, int buildTime, int maxHP, ResourceManager *rm) : Entity(pos)
 {
     setMaxHP(maxHP);
     this->buildTime = buildTime;
+    this->type = type;
 
     QPixmap *spriteSheet;
     switch(race){
@@ -30,13 +31,14 @@ Building::Building(QPointF pos, bool finishedOnSpawn, Race race, QList<int> preF
         buildTimer = nullptr;
         setHP(maxHP);
         buildAnimation->setCurrentFrame(3);
-        buildAnimation->stop();
     } else {
         setHP(0);
         finished = false;
         buildTimer = new QTimer();
         buildTimer->setInterval(buildTime/maxHP);
         connect(buildTimer, &QTimer::timeout, this, &constructionUpdate);
+        buildAnimation->start();
+        buildTimer->start();
     }
 
     scaleX = 2;
@@ -54,19 +56,7 @@ void Building::update(){
 
 }
 
-void Building::beginConstruction(){
-    if(buildTimer->isActive()) return;
-    buildTimer->start();
-    buildAnimation->start();
-}
-
-bool Building::isBuildingFinished() const {
-    return finished;
-}
-
-
-void Building::constructionUpdate()
-{
+void Building::constructionUpdate() {
     if(getHP() + 1 < getMaxHP()){
         setHP(getHP()+1);
     } else {
@@ -76,3 +66,12 @@ void Building::constructionUpdate()
         finished = true;
     }
 }
+
+bool Building::isBuildingFinished() const {
+    return finished;
+}
+
+BuildingType Building::getType() const {
+    return type;
+}
+
