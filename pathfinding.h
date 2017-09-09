@@ -1,17 +1,16 @@
-#ifndef GRAPH_H
-#define GRAPH_H
+#ifndef PATHFINDING_H
+#define PATHFINDING_H
 
 #include "entity/entity.h"
 
-#define NODES_DISTANCE 32
-#define NODES_ARRAY_SIZE 2048/NODES_DISTANCE-2
+#define SPACING 32
+#define NODES_ARRAY_SIZE 2048/SPACING-2
 
 struct Node {
-    Node() { for(Node *n : neighbors) { n = nullptr; } }
-    Node(const int x, const int y) : Node() { pos.setX(x); pos.setY(y); }
+    Node(const int x, const int y) { pos.setX(x); pos.setY(y); }
     bool                visited = false;
     QPointF             pos;
-    Node                *neighbors[8];
+    Node                *neighbors[8] = {nullptr};
     Node                *parent = nullptr;
 };
 
@@ -40,4 +39,4 @@ namespace bfs {
     QList<QPointF> shortestPath(Graph &graph, QPointF a, QPointF b);
 }
 
-#endif // GRAPH_H
+#endif // PATHFINDING_H

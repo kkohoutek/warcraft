@@ -1,16 +1,11 @@
 #include "pathfinding.h"
-#include <QLineF>
 #include <QQueue>
 #include <QDebug>
 
-#define NODES_NEIGHBORS_LIMIT 8   // S kolika sousedy počítáme (max 8)
+#define NODE_NEIGHBORS_LIMIT 8   // S kolika sousedy počítáme (max 8)
 
 Graph::Graph() {
-    for(int i = 0; i < NODES_ARRAY_SIZE; i++){
-        for(int j = 0; j < NODES_ARRAY_SIZE; j++){
-            nodes[i][j] = new Node((j+2)*NODES_DISTANCE, (i+2)*NODES_DISTANCE);
-        }
-    }
+    memset(nodes, 0, sizeof(nodes));
 }
 
 Graph::Graph(const QList<Entity *> &obstacles) : Graph() {
@@ -32,13 +27,13 @@ void Graph::update(const QList<Entity *> &obstacles) {
         for(int j = 0; j < NODES_ARRAY_SIZE; j++){
             bool interr = false;
             for(int k = 0;  !interr && k < obstacles.size(); k++){
-                if(obstacles.at(k)->boundingRect2().contains((j+2)*NODES_DISTANCE, (i+2)*NODES_DISTANCE)){
+                if(obstacles[k]->boundingRect2().contains((j+2)*SPACING, (i+2)*SPACING)){
                     delete nodes[i][j];
                     nodes[i][j] = nullptr;
                     interr = true;
                 } else {
                     delete nodes[i][j];
-                    nodes[i][j] = new Node((j+2)*NODES_DISTANCE, (i+2)*NODES_DISTANCE);
+                    nodes[i][j] = new Node((j+2)*SPACING, (i+2)*SPACING);
                 }
             }
         }
@@ -48,10 +43,8 @@ void Graph::update(const QList<Entity *> &obstacles) {
         for(int j = 0; j < NODES_ARRAY_SIZE; j++){
             Node *node = nodes[i][j];
             if(node) {
-                // Resetuj sousedy
-                for(Node *n : node->neighbors){
-                    n = nullptr;
-                }
+                // Vynulluj sousedy
+                memset(node->neighbors, 0, 8 * sizeof(Node *));
 
                 if(i + 1 < NODES_ARRAY_SIZE){
                     node->neighbors[0] = nodes[i+1][j];
@@ -88,8 +81,8 @@ void Graph::update(const QList<Entity *> &obstacles) {
 
 Node *Graph::gimmeNode(QPointF pos) {
     // Získej indexy podle pozice a udrž je v rozsahu arraye
-    int i = qBound(0, qRound(pos.y()/NODES_DISTANCE)-2, NODES_ARRAY_SIZE-1);
-    int j = qBound(0, qRound(pos.x()/NODES_DISTANCE)-2, NODES_ARRAY_SIZE-1);
+    int i = qBound(0, qRound(pos.y()/SPACING)-2, NODES_ARRAY_SIZE-1);
+    int j = qBound(0, qRound(pos.x()/SPACING)-2, NODES_ARRAY_SIZE-1);
 
     if(!nodes[i][j]){
 
@@ -124,7 +117,7 @@ QList<QPointF> bfs::shortestPath(Graph &graph, Node *start, Node *goal) {
         node = queue.dequeue();
         if(node == goal) break;
 
-        for(int i = 0; i < NODES_NEIGHBORS_LIMIT; i++){
+        for(int i = 0; i < NODE_NEIGHBORS_LIMIT; i++){
             Node *neighbor = node->neighbors[i];
             if(neighbor && !neighbor->visited){
                 queue.enqueue(neighbor);

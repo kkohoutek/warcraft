@@ -125,8 +125,9 @@ QList<Unit *> &Player::getSelectedUnits() {
 QList<Worker *> Player::selectedWorkers() const {
     QList<Worker *> selectedWorkers;
     for(Unit *u : selectedUnits){
-        if(workers.contains(static_cast<Worker *>(u))){
-            selectedWorkers.append(static_cast<Worker *>(u));
+        Worker *w = static_cast<Worker *>(u);
+        if(workers.contains(w)){
+            selectedWorkers.append(w);
         }
     }
     return selectedWorkers;
@@ -148,9 +149,9 @@ Race Player::getRace() const {
 }
 
 Building *Player::goldDestination() const {
-    return buildings.at(goldDestinationIndex);
+    return buildings[goldDestinationIndex];
 }
 
 Building *Player::lumberDestination() const {
-    return buildings.at(lumberDestinationIndex);
+    return buildings[lumberDestinationIndex];
 }
