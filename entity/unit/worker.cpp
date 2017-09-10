@@ -1,11 +1,19 @@
 #include "worker.h"
+#include "entity/building/humanfarm.h"
+#include "entity/building/humanbarracks.h"
+#include "entity/building/humanstables.h"
+#include "entity/building/humantower.h"
+#include "entity/building/humantownhall.h"
+#include "entity/building/humanchurch.h"
+#include "entity/building/humanblacksmith.h"
+#include "entity/building/humanlumbermill.h"
 #include <QGraphicsScene>
-#include <QDebug>
 
-Worker::Worker(QPointF pos, UnitType type, int &playerGold, int &playerLumber, ResourceManager *rm) : Unit(pos, type, 0.7F, 0, 0, 0)
+Worker::Worker(QPointF pos, UnitType type, int *playerGold, int *playerLumber, Graph *graph, ResourceManager *rm) : Unit(pos, type, 0.7f, 0, 0, 0)
 {
-    this->playerGold   = &playerGold;
-    this->playerLumber = &playerLumber;
+    this->playerGold   = playerGold;
+    this->playerLumber = playerLumber;
+    this->graph = graph;
 
     setMaxHP(40);
     setHP(40);
@@ -364,93 +372,76 @@ QRectF Worker::boundingRect() const {
 
 }
 
-void Worker::gatherGold(Goldmine *source, Building *destination){
+void Worker::mine(Goldmine *source, Building *dest){
     cancel();
-    currentGoldmine = source;
-    goldDestination = destination;
+    mineCommand = new MineCommand(source, dest);
+    setPath(path);
 }
 
-void Worker::gatherLumber(Trees *source, Building *destination){
+void Worker::harvest(Trees *source, Building *dest){
     cancel();
-    currentTrees = source;
-    lumberDestination = destination;
+    harvestCommand = new HarvestCommand(source, dest);
+    setPath(path);
+}
+
+void Worker::build(Building *building) {
+    cancel();
+    buildCommand = new BuildCommand(building);
+    scene()->addItem(building);
+    building->hide();
+    setPath(bfs::shortestPath(*graph, center(), building->center()));
 }
 
 void Worker::cancel(){
     Unit::cancel();
-    if(currentBuilding && scene()->items().contains(currentBuilding)) {
-        scene()->removeItem(currentBuilding);
-    }
-    currentGoldmine = nullptr;
-    currentTrees = nullptr;
-    currentBuilding = nullptr;
-    goldDestination = nullptr;
-    lumberDestination = nullptr;
-}
-
-void Worker::goBuild(Building *building){
-    if(!currentBuilding){
-        currentBuilding = building;
-
-        if(!collidesWithItem(currentBuilding)){
-            setTarget(currentBuilding->center());
-            move();
-        }
-    }
+    delete mineCommand;
+    delete buildCommand;
+    delete harvestCommand;
+    mineCommand = nullptr;
+    buildCommand = nullptr;
+    harvestCommand = nullptr;
 }
 
 void Worker::update(){
-    Unit::update();
-    /*
-    if(currentBuilding){
-        if(!currentBuilding->isBuildingFinished()){
-            if(collidesWithItem(currentBuilding)){
+    if(buildCommand){
+        if(!buildCommand->what->isBuildingFinished()){
+            if(collidesWithItem(buildCommand->what)){
                 stopMoving();
-                currentBuilding->beginConstruction();
-                scene()->addItem(currentBuilding);
-                hide();
+                buildCommand->what->show();
+                this->hide();
+                buildCommand->what->startConstruction();
             }
         } else {
-            show();
-            setPos(currentBuilding->pos()-QPointF(0,6));
-            currentBuilding = nullptr;
-        }*/
-    if (isGatheringGold()){
-            if(collidesWithItem(currentGoldmine)){
-                currentGoldmine->damage(GOLD_PER_TRIP);
-                stopMoving();
-                setTarget(goldDestination->center());
-                move();
-                currentAnimationSet = &goldCarryAnims;
+            this->show();
+            setPos(graph->gimmeNode(buildCommand->what->center(),true)->pos);
+            cancel();
+        }
+    } else if (mineCommand){
+        if(collidesWithItem(mineCommand->source)){
+            mineCommand->source->damage(GOLD_PER_TRIP);
+            stopMoving();
+            setTarget(mineCommand->dest->center());
+            move();
+            currentAnimationSet = &goldCarryAnims;
 
-            } else if (collidesWithItem(goldDestination)){
-                *playerGold += GOLD_PER_TRIP;
-                stopMoving();
-                setTarget(currentGoldmine->center());
-                move();
-                currentAnimationSet = &movementAnims;
-            }
+        } else if (collidesWithItem(mineCommand->dest)){
+            *playerGold += GOLD_PER_TRIP;
+            stopMoving();
+            setTarget(mineCommand->source->center());
+            move();
+            currentAnimationSet = &movementAnims;
+        }
     }
+
+    Unit::update();
 }
 
 void Worker::updateAnimation() {
-    if(isGatheringGold() && targetPoint == goldDestination->center()){
+    if(mineCommand && targetPoint == mineCommand->dest->center()){
         currentAnimationSet = &goldCarryAnims;
     } else {
         currentAnimationSet = &movementAnims;
     }
     Unit::updateAnimation();
-
 }
 
-bool Worker::isGatheringGold() const {
-    return currentGoldmine != nullptr;
-}
-
-bool Worker::isGatheringLumber() const {
-    return currentTrees != nullptr;
-}
-
-Building *Worker::getCurrentBuilding() const {
-    return currentBuilding;
-}

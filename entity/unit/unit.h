@@ -5,6 +5,7 @@
 #include <QQueue>
 #include <QVector2D>
 
+// C++ nemá reflexi, opravte to
 enum UnitType {
     DAEMON,
     FOOTMAN,
@@ -34,7 +35,7 @@ public:
     /* Začni se hýbat, setTarget musí být voláno před použitím */
     void move();
 
-    void setPath(QList<QPointF> list);
+    void setPath(const QList<QPointF> &list);
 
 
     QVector2D direction() const;

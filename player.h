@@ -11,24 +11,19 @@ class Player : public QObject
 {
 
 public:
+    int gold = 0;
+    int lumber = 0;
+    int food = 0;
+
     Player(Race race);
 
     void update();
-
-    void newBuilding(Building *building, Worker *worker, int costGold, int costLumber);
-
-    void addFood(int amount);
-    void addGold(int amount);
-    void addLumber(int amount);
-
-    int &getGold();
-    int &getLumber();
-    int &getFood();
 
     void selectUnit(Unit *unit);
     void selectUnits(QList<Unit *> selected);
     void selectBuilding(Building *building);
     void deselect();
+    void newBuilding(Building *building, Worker *worker, int costGold, int costLumber);
 
     QList<Building *> &getBuildings();
     QList<Unit *> &getUnits();
@@ -38,7 +33,6 @@ public:
     Building *goldDestination() const;
     Building *lumberDestination() const;
 
-
 protected:
     Race race;
 
@@ -47,10 +41,6 @@ protected:
     QList<Unit *>       selectedUnits;
 
     Building *selectedBuilding = nullptr;
-
-    int gold = 0;
-    int lumber = 0;
-    int food = 0;
 
     int goldDestinationIndex;   // Index v buildings
     int lumberDestinationIndex; // Index v buildings

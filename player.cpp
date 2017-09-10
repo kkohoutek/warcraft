@@ -21,19 +21,6 @@ void Player::update(){
     }
 }
 
-void Player::newBuilding(Building *building, Worker *worker, int costGold, int costLumber) {
-    if(!units.contains(worker)) return;
-
-    if(gold >= costGold && lumber >= costLumber){
-        gold-=costGold;
-        lumber-=costLumber;
-        worker->goBuild(building);
-        buildings.append(building);
-        deselect();
-    }
-
-}
-
 
 void Player::selectUnit(Unit *unit){
     if(units.contains(unit)){
@@ -79,29 +66,19 @@ void Player::deselect() {
     }
 }
 
-void Player::addGold(int amount) {
-    gold += amount;
+void Player::newBuilding(Building *building, Worker *worker, int costGold, int costLumber) {
+    if(!units.contains(worker)) return;
+
+    if(gold >= costGold && lumber >= costLumber){
+        gold -= costGold;
+        lumber -= costLumber;
+        worker->build(building);
+        buildings.append(building);
+        deselect();
+    }
 }
 
-void Player::addLumber(int amount) {
-    lumber += amount;
-}
 
-void Player::addFood(int amount) {
-    food += amount;
-}
-
-int &Player::getGold() {
-    return gold;
-}
-
-int &Player::getLumber() {
-    return lumber;
-}
-
-int &Player::getFood() {
-    return food;
-}
 
 QList<Building *> &Player::getBuildings() {
     return buildings;

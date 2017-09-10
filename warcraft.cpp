@@ -43,8 +43,7 @@ Warcraft::Warcraft() {
     rect = new QGraphicsRectItem();
 
     player = new Player(HUMAN);
-    player->addFood(8);
-    player->addLumber(10000);
+    player->food += 8;
     player_gc = new GarbageCollector(player, 15000);
 
     enemy = new Player(ORC);
@@ -61,6 +60,7 @@ Warcraft::Warcraft() {
 
 Warcraft::~Warcraft() {
     qDeleteAll(goldmines);
+    qDeleteAll(trees);
     delete rect;
     delete player;
     delete enemy;
@@ -73,17 +73,18 @@ void Warcraft::loadBuildings() {
     player->getBuildings().append(th);
     scene()->addItem(th);
 
-    th = new HumanFarm(QPointF(70, 262), true, rm, player->getFood());
+    th = new HumanFarm(QPointF(70, 262), true, rm, &(player->food));
     player->getBuildings().append(th);
     scene()->addItem(th);
 
-    th = new HumanFarm(QPointF(310, 290), true, rm, player->getFood());
+    th = new HumanFarm(QPointF(310, 290), true, rm, &(player->food));
     player->getBuildings().append(th);
     scene()->addItem(th);
 
     th = new HumanChurch(QPointF(278, 81), false, rm);
     player->getBuildings().append(th);
     scene()->addItem(th);
+    th->startConstruction();
 
     th = new HumanBarracks(QPointF(220, 400), true, rm);
     player->getBuildings().append(th);
@@ -97,7 +98,7 @@ void Warcraft::loadBuildings() {
 
 void Warcraft::loadUnits(){
     for(int i = 0; i < 4; i++){
-        Worker *w = new Worker(QPointF(128+i*28,128), PEASANT, player->getGold(), player->getLumber(), rm);
+        Worker *w = new Worker(QPointF(128+i*28,128), PEASANT, &(player->gold), &(player->lumber), &graph, rm);
         player->getUnits().append(w);
         scene()->addItem(w);
     }
@@ -164,8 +165,9 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
             }
         }
     } else if (event->button() == Qt::RightButton){
-        for(Unit *u : player->getSelectedUnits()){
-            QList<QPointF> path = bfs::shortestPath(graph, u->center(), actualPos);
+        for(int i = 0; i < player->getSelectedUnits().size(); i++){
+            Unit *u = player->getSelectedUnits()[i];
+            auto path = bfs::shortestPath(graph, u->center(), actualPos+QPointF(i*32, 0));
             if(!path.isEmpty()){
                 u->setPath(path);
                 u->move();
@@ -175,11 +177,10 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
         // Klikl hráč na goldmine?
         for(Goldmine *g : goldmines){
             if(g->boundingRect2().contains(actualPos)){
-                for(Unit *u : player->getUnits()){
+                for(Unit *u : player->getSelectedUnits()){
                     if(u->getType() == PEASANT) {
-                        static_cast<Worker *>(u)->gatherGold(g, player->goldDestination());
-                        u->setPath(bfs::shortestPath(graph, u->center(), g->center()));
-                        u->move();
+                        Worker *w = static_cast<Worker *>(u);
+                        w->mine(g, player->getBuildings()[0]);
                     }
                 }
             }
@@ -193,7 +194,7 @@ void Warcraft::mouseReleaseEvent(QMouseEvent *releaseEvent) {
 
         QList<Unit *> selected;
         for(Unit *unit : player->getUnits()){
-            if(rect->rect().contains(unit->center()) && unit->isAlive() && unit->isVisible()){
+            if(rect->rect().intersects(unit->boundingRect2()) && unit->isAlive() && unit->isVisible()){
                 selected.append(unit);
             }
         }
@@ -202,6 +203,7 @@ void Warcraft::mouseReleaseEvent(QMouseEvent *releaseEvent) {
         if(scene()->items().contains(rect)) scene()->removeItem(rect);
     }
 }
+
 
 void Warcraft::mouseMoveEvent(QMouseEvent *event) {
     if(isPressedLeftButton){
@@ -222,6 +224,11 @@ void Warcraft::keyPressEvent(QKeyEvent *event){
     switch(event->key()){
     case Qt::Key_Escape:
         window()->close();
+        break;
+
+    case Qt::Key_B:
+        player->newBuilding(new HumanChurch(QPointF(550,550), false, rm), static_cast<Worker *>(player->getUnits()[0]), 0, 0);
+        graph.update(staticEntities());
         break;
     }
 
@@ -264,14 +271,14 @@ void Warcraft::paintEvent(QPaintEvent *event) {
     QPainter painter(viewport());
     painter.setFont(QFont("sans-serif",10));
     painter.setPen(Qt::white);
-    painter.drawText(QPointF(700, 20), QString("FOOD: "+QString::number(player->getFood())+"   GOLD: "+QString::number(player->getGold())+"   LUMBER: "+QString::number(player->getLumber())));
+    painter.drawText(QPointF(700, 20), QString("FOOD: "+QString::number(player->food)+"   GOLD: "+QString::number(player->gold)+"   LUMBER: "+QString::number(player->lumber)));
 
 
      // visualize graph
     /*
     for(int i = 0; i < NODES_ARRAY_SIZE; i++){
         for(int j = 0; j < NODES_ARRAY_SIZE; j++){
-            Node *n = graph->nodes[i][j];
+            Node *n = graph.nodes[i][j];
             if(n){
                 painter.drawEllipse(mapFromScene(n->pos), 1, 1);
             }

@@ -188,8 +188,6 @@ Footman::Footman(QPointF pos, ResourceManager *rm) : Unit(pos, FOOTMAN, 0.75f, 1
        deathAnims.append(death);
 
        setCurrentAnimation(walk0Deg);
-
-
 }
 
 QRectF Footman::boundingRect() const {

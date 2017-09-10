@@ -6,7 +6,7 @@ Building::Building(QPointF pos, BuildingType type, bool finishedOnSpawn, Race ra
     this->buildTime = buildTime;
     this->type = type;
 
-    QPixmap *spriteSheet;
+    QPixmap *spriteSheet = nullptr;
     switch(race){
     case HUMAN:
         spriteSheet = rm->getSprite("BUILDINGS_H");
@@ -37,8 +37,6 @@ Building::Building(QPointF pos, BuildingType type, bool finishedOnSpawn, Race ra
         buildTimer = new QTimer();
         buildTimer->setInterval(buildTime/maxHP);
         connect(buildTimer, &QTimer::timeout, this, &constructionUpdate);
-        buildAnimation->start();
-        buildTimer->start();
     }
 
     scaleX = 2;
@@ -54,6 +52,13 @@ Building::~Building() {
 
 void Building::update(){
 
+}
+
+void Building::startConstruction() {
+    buildAnimation->start();
+    if(!buildTimer->isActive()){
+        buildTimer->start();
+    }
 }
 
 void Building::constructionUpdate() {

@@ -27,13 +27,12 @@ void Graph::update(const QList<Entity *> &obstacles) {
         for(int j = 0; j < NODES_ARRAY_SIZE; j++){
             bool interr = false;
             for(int k = 0;  !interr && k < obstacles.size(); k++){
-                if(obstacles[k]->boundingRect2().contains((j+2)*SPACING, (i+2)*SPACING)){
-                    delete nodes[i][j];
+                delete nodes[i][j];
+                if(obstacles[k]->boundingRect2().contains((j+GRAPH_MARGIN)*GRAPH_SPACING, (i+GRAPH_MARGIN)*GRAPH_SPACING)){
                     nodes[i][j] = nullptr;
                     interr = true;
                 } else {
-                    delete nodes[i][j];
-                    nodes[i][j] = new Node((j+2)*SPACING, (i+2)*SPACING);
+                    nodes[i][j] = new Node((j+GRAPH_MARGIN)*GRAPH_SPACING, (i+GRAPH_MARGIN)*GRAPH_SPACING);
                 }
             }
         }
@@ -79,16 +78,30 @@ void Graph::update(const QList<Entity *> &obstacles) {
     }
 }
 
-Node *Graph::gimmeNode(QPointF pos) {
+Node *Graph::gimmeNode(QPointF pos, bool noNull) {
     // Získej indexy podle pozice a udrž je v rozsahu arraye
-    int i = qBound(0, qRound(pos.y()/SPACING)-2, NODES_ARRAY_SIZE-1);
-    int j = qBound(0, qRound(pos.x()/SPACING)-2, NODES_ARRAY_SIZE-1);
+    int i = qBound(0, qRound(pos.y()/GRAPH_SPACING)-GRAPH_MARGIN, NODES_ARRAY_SIZE-1);
+    int j = qBound(0, qRound(pos.x()/GRAPH_SPACING)-GRAPH_MARGIN, NODES_ARRAY_SIZE-1);
 
-    if(!nodes[i][j]){
+    Node *result = nodes[i][j];
 
+    if(noNull && !result){
+        // Najdi nejbližší
+        float minLength = std::numeric_limits<float>::max();
+        for(int i = 0; i < NODES_ARRAY_SIZE; i++){
+            for(int j = 0; j < NODES_ARRAY_SIZE; j++) {
+                Node *node = nodes[i][j];
+                if(node){
+                    float length = QLineF(pos, node->pos).length();
+                    if(length < minLength){
+                        minLength = length;
+                        result = node;
+                    }
+                }
+            }
+        }
     }
-
-    return nodes[i][j];
+    return result;
 }
 
 void Graph::resetNodes() {
@@ -133,13 +146,12 @@ QList<QPointF> bfs::shortestPath(Graph &graph, Node *start, Node *goal) {
         node = node->parent;
     }
     graph.resetNodes();
-    for(int k = 0; k < (path.size()/2); k++) path.swap(k,path.size()-(1+k)); // Reverse list
-
+    // Reverse list
+    for(int i = 0; i < (path.size()/2); i++) path.swap(i,path.size()-(1+i));
     return path;
 }
 
 
 QList<QPointF> bfs::shortestPath(Graph &graph, QPointF a, QPointF b) {
-    return bfs::shortestPath(graph, graph.gimmeNode(a), graph.gimmeNode(b));
+    return bfs::shortestPath(graph, graph.gimmeNode(a, true), graph.gimmeNode(b, true));
 }
-

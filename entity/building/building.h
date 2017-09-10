@@ -5,9 +5,10 @@
 #include "common.h"
 #include "animation.h"
 #include "resourcemanager.h"
-#include <QPixmap>
+
 #include <QObject>
 
+// C++ nemá reflexi, opravte to
 enum BuildingType {
     H_BARRACKS,
     H_BLACKSMITH,
@@ -37,6 +38,7 @@ public:
     virtual ~Building();
 
     virtual void update() override;
+    void startConstruction();
     bool isBuildingFinished() const;
     BuildingType getType() const;
 

@@ -6,40 +6,47 @@
 #include "entity/trees.h"
 #include "entity/building/building.h"
 #include "resourcemanager.h"
+#include "pathfinding.h"
+
+#define GOLD_PER_TRIP 10
 
 struct BuildCommand {
-    BuildingType type;
-    QPointF where;
+    Building *what;
+    BuildCommand(Building *what) { this->what = what; }
+};
+
+struct MineCommand {
+    Goldmine *source;
+    Building *dest;
+    QList<QPointF> path;
+    MineCommand(Goldmine *source, Building *dest) { this->source = source; this->dest = dest; }
+};
+
+struct HarvestCommand {
+    Trees *source;
+    Building *dest;
+    QList<QPointF> path;
+    HarvestCommand(Trees *source, Building *dest) { this->source = source; this->dest = dest; }
 };
 
 class Worker : public Unit
 {
 public:
-    Worker(QPointF pos, UnitType type, int &playerGold, int &playerLumber, ResourceManager *rm);
+    Worker(QPointF pos, UnitType type, int *playerGold, int *playerLumber, Graph *graph, ResourceManager *rm);
     ~Worker();
 
-    QRectF boundingRect() const override;
-
-    void gatherGold(Goldmine *source, Building *destination);
-    void gatherLumber(Trees *source, Building *destination);
-    void stopWorking();
-    void goBuild(Building *building);
     void update() override;
     void cancel() override;
+    QRectF boundingRect() const override;
 
-    bool isGatheringGold() const;
-    bool isGatheringLumber() const;
-
-    Building *getCurrentBuilding() const;
+    void mine(Goldmine *source, Building *dest);
+    void harvest(Trees *source, Building *dest);
+    void build(Building *building);
 
 protected:
-    static const int GOLD_PER_TRIP = 10;
-
-    Goldmine *currentGoldmine   = nullptr;
-    Trees    *currentTrees      = nullptr;
-    Building *lumberDestination = nullptr;
-    Building *goldDestination   = nullptr;
-    Building *currentBuilding   = nullptr;
+    HarvestCommand  *harvestCommand     = nullptr;
+    BuildCommand    *buildCommand       = nullptr;
+    MineCommand     *mineCommand        = nullptr;
 
     void updateAnimation() override;
 
@@ -48,9 +55,12 @@ private:
     QList<Animation *> goldCarryAnims;
     QList<Animation *> woodCarryAnims;
 
-    int *playerGold;    // pointer na hráčovo zlato
-    int *playerLumber;  // pointer na hráčovo dřevo
+    int *playerGold;    // Pointer na hráčovo zlato
+    int *playerLumber;  // Pointer na hráčovo dřevo
+    Graph *graph;       // Pointer na pathfinding graph
 
 };
+
+
 
 #endif // WORKER_H

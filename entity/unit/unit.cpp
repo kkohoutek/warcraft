@@ -92,7 +92,7 @@ void Unit::update(){
 
 }
 
-void Unit::setPath(QList<QPointF> list){
+void Unit::setPath(const QList<QPointF> &list){
     if(!path.isEmpty() && path.last() == list.last()) return;
     path.clear();
     for(QPointF p : list){

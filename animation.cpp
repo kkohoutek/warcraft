@@ -22,7 +22,6 @@ void Animation::nextFrame() {
         currentFrameIndex = 0;
     } else {
         stop();
-
     }
 }
 
