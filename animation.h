@@ -10,6 +10,7 @@
 
 class Animation : public QObject
 {
+    Q_OBJECT
 public:
     Animation(QPixmap *spriteSheet, const int frameWidth, const int frameHeight, QList<QList<int>> &frames, const int duration, const bool looping);
 

@@ -10,8 +10,3 @@ QRectF OrcBarracks::boundingRect() const
 {
     return QRectF(-2,-2,100,100);
 }
-
-void OrcBarracks::update()
-{
-
-}

@@ -10,8 +10,3 @@ QRectF OrcTemple::boundingRect() const
 {
     return QRectF(0,0,92,92);
 }
-
-void OrcTemple::update()
-{
-
-}

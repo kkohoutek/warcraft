@@ -405,16 +405,16 @@ void Worker::cancel(){
 void Worker::update(){
     if(buildCommand){
         if(!buildCommand->what->isBuildingFinished()){
-            if(collidesWithItem(buildCommand->what)){
-                stopMoving();
-                buildCommand->what->show();
-                this->hide();
-                buildCommand->what->startConstruction();
-            }
-        } else {
-            this->show();
-            setPos(graph->gimmeNode(buildCommand->what->center(),true)->pos);
-            cancel();
+                    if(collidesWithItem(buildCommand->what)){
+                        stopMoving();
+                        buildCommand->what->show();
+                        this->hide();
+                        buildCommand->what->startConstruction();
+                    }
+                } else {
+                    this->show();
+                    setPos(graph->gimmeNode(buildCommand->what->center(),true)->pos);
+                    cancel();
         }
     } else if (mineCommand){
         if(collidesWithItem(mineCommand->source)){

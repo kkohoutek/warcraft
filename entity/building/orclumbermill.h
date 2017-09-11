@@ -15,7 +15,6 @@ public:
 
     // QGraphicsItem interface
     QRectF boundingRect() const override;
-    void update() override;
 };
 
 #endif // ORCLUMBERMILL_H

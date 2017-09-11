@@ -24,11 +24,9 @@ Building::Building(QPointF pos, BuildingType type, bool finishedOnSpawn, Race ra
 
     buildAnimation = new Animation(spriteSheet, 48, 48, frames, buildTime/frames.size(), false);
     setCurrentAnimation(buildAnimation);
-    buildAnimation->stop();
 
     if(finishedOnSpawn){
         finished = true;
-        buildTimer = nullptr;
         setHP(maxHP);
         buildAnimation->setCurrentFrame(3);
     } else {
@@ -36,7 +34,7 @@ Building::Building(QPointF pos, BuildingType type, bool finishedOnSpawn, Race ra
         finished = false;
         buildTimer = new QTimer();
         buildTimer->setInterval(buildTime/maxHP);
-        connect(buildTimer, &QTimer::timeout, this, &constructionUpdate);
+        connect(buildTimer, SIGNAL(timeout()), this, SLOT(constructionUpdate()));
     }
 
     scaleX = 2;

@@ -11,7 +11,3 @@ QRectF OrcBlacksmith::boundingRect() const
     return QRectF(4,4,82,82);
 }
 
-void OrcBlacksmith::update()
-{
-
-}

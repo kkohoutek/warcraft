@@ -10,8 +10,3 @@ QRectF OrcLumberMill::boundingRect() const
 {
     return QRectF(0,0,98,98);
 }
-
-void OrcLumberMill::update()
-{
-
-}

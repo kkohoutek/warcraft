@@ -10,8 +10,3 @@ QRectF OrcFarm::boundingRect() const
 {
     return QRectF(6,6,78,78);
 }
-
-void OrcFarm::update()
-{
-
-}

@@ -5,7 +5,7 @@
 #include "entity/unit/unit.h"
 #include "entity/unit/worker.h"
 
-#define MAX_SELECTED_UNITS 8
+#define MAX_SELECTED_UNITS 4
 
 class Player : public QObject
 {

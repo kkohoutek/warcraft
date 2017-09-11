@@ -10,8 +10,3 @@ QRectF OrcTower::boundingRect() const
 {
     return QRectF(6,6,84,84);
 }
-
-void OrcTower::update()
-{
-
-}

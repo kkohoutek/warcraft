@@ -6,7 +6,7 @@
 
 /*
 Garbage collector, který monitoruje hráčovy entity
-a maže ty, které již nejsou potřeba.
+a maže ty, které již nejsou potřeba..
 */
 
 class GarbageCollector : public QObject

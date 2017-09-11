@@ -165,6 +165,7 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
             }
         }
     } else if (event->button() == Qt::RightButton){
+
         for(int i = 0; i < player->getSelectedUnits().size(); i++){
             Unit *u = player->getSelectedUnits()[i];
             auto path = bfs::shortestPath(graph, u->center(), actualPos+QPointF(i*32, 0));

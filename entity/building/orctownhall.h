@@ -15,8 +15,6 @@ public:
 
     // QGraphicsItem interface
     QRectF boundingRect() const override;
-
-    void update() override;
 };
 
 #endif // ORCTOWNHALL_H

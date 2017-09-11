@@ -16,7 +16,6 @@ public:
     // QGraphicsItem interface
 
     QRectF boundingRect() const override;
-    void update() override;
 
 };
 

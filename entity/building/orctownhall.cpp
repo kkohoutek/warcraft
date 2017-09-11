@@ -10,8 +10,3 @@ QRectF OrcTownHall::boundingRect() const
 {
     return QRectF(0,0,96,96);
 }
-
-void OrcTownHall::update()
-{
-
-}

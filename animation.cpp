@@ -11,7 +11,7 @@ Animation::Animation(QPixmap *spriteSheet, const int frameWidth, const int frame
 
     animationTimer.setInterval(duration);
     //animationTimer.start();
-    connect(&animationTimer, &QTimer::timeout, this, &nextFrame);
+    connect(&animationTimer, SIGNAL(timeout()), this, SLOT(nextFrame()));
 
 }
 
