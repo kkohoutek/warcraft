@@ -13,7 +13,6 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
     entity/entity.cpp \
     animation.cpp \
     warcraft.cpp \
@@ -44,10 +43,11 @@ SOURCES += main.cpp\
     entity/unit/daemon.cpp \
     garbagecollector.cpp \
     resourcemanager.cpp \
-    pathfinding.cpp
+    pathfinding.cpp \
+    ui/buildhumanfarm.cpp
 
 
-HEADERS  += mainwindow.h \
+HEADERS  += \
     entity/entity.h \
     animation.h \
     warcraft.h \
@@ -79,10 +79,11 @@ HEADERS  += mainwindow.h \
     entity/unit/daemon.h \
     garbagecollector.h \
     resourcemanager.h \
-    pathfinding.h
+    pathfinding.h \
+    ui/buildhumanfarm.h
 
 
-FORMS    += mainwindow.ui
+FORMS    +=
 
 RESOURCES += \
     gameresources.qrc

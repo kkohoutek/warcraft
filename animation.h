@@ -12,7 +12,7 @@ class Animation : public QObject
 {
     Q_OBJECT
 public:
-    Animation(QPixmap *spriteSheet, const int frameWidth, const int frameHeight, QList<QList<int>> &frames, const int duration, const bool looping);
+    Animation(const QPixmap *spriteSheet, const int frameWidth, const int frameHeight, QList<QList<int>> &frames, const int duration, const bool looping);
 
     void draw(QPainter *painter);
     void stop();
@@ -20,7 +20,7 @@ public:
     void setCurrentFrame(int index);
 
 private:
-    QPixmap             *spriteSheet;
+    const QPixmap       *spriteSheet;
     QList<QList<int>>   frames;        // List s souřadnicemi snímků animace
     int                 frameWidth;    // Šířka snímku
     int                 frameHeight;   // Výška snímku

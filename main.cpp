@@ -1,12 +1,13 @@
-#include "mainwindow.h"
 #include <QApplication>
-#include <QDEBUG>
+#include "warcraft.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
+
+    Warcraft *game = new Warcraft();
+    game->setWindowTitle("Warcraft (Kamil Kohoutek)");
+    game->show();
 
     return a.exec();
 }

@@ -22,7 +22,7 @@ Building::Building(QPointF pos, BuildingType type, bool finishedOnSpawn, Race ra
     frames.append(preFrame);
     frames.append(endFrame);
 
-    buildAnimation = new Animation(spriteSheet, 48, 48, frames, buildTime/frames.size(), false);
+    Animation *buildAnimation = new Animation(spriteSheet, 48, 48, frames, buildTime/frames.size(), false);
     setCurrentAnimation(buildAnimation);
 
     if(finishedOnSpawn){
@@ -53,7 +53,7 @@ void Building::update(){
 }
 
 void Building::startConstruction() {
-    buildAnimation->start();
+    getCurrentAnimation()->start();
     if(!buildTimer->isActive()){
         buildTimer->start();
     }

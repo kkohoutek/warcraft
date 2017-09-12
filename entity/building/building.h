@@ -45,7 +45,6 @@ public:
 private:
     BuildingType type;
     int buildTime;
-    Animation *buildAnimation;
     QTimer *buildTimer = nullptr;
 
     bool finished;

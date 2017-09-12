@@ -1,7 +1,7 @@
 #include "animation.h"
 #include <QFile>
 
-Animation::Animation(QPixmap *spriteSheet, const int frameWidth, const int frameHeight, QList<QList<int>> &frames, const int duration, const bool looping) {
+Animation::Animation(const QPixmap *spriteSheet, const int frameWidth, const int frameHeight, QList<QList<int>> &frames, const int duration, const bool looping) {
     this->spriteSheet = spriteSheet;
     this->frameWidth = frameWidth;
     this->frameHeight = frameHeight;

@@ -57,7 +57,7 @@ protected:
     QList<Animation *> movementAnims;
     QList<Animation *> attackAnims;
     QList<Animation *> deathAnims;
-    QList<Animation *> *currentAnimationSet;
+    QList<Animation *> *currentAnimationSet; // Ukazuje na jeden z předešlých listů
 
     QPointF targetPoint;
     QQueue<QPointF> path; // collection of target points
@@ -68,8 +68,6 @@ protected:
 
 private:
     UnitType type;
-
-
 
 };
 

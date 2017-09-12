@@ -187,6 +187,8 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
             }
         }
     }
+
+    QGraphicsView::mousePressEvent(event);
 }
 
 void Warcraft::mouseReleaseEvent(QMouseEvent *releaseEvent) {
@@ -274,7 +276,6 @@ void Warcraft::paintEvent(QPaintEvent *event) {
     painter.setPen(Qt::white);
     painter.drawText(QPointF(700, 20), QString("FOOD: "+QString::number(player->food)+"   GOLD: "+QString::number(player->gold)+"   LUMBER: "+QString::number(player->lumber)));
 
-
      // visualize graph
     /*
     for(int i = 0; i < NODES_ARRAY_SIZE; i++){
@@ -289,6 +290,7 @@ void Warcraft::paintEvent(QPaintEvent *event) {
 
 void Warcraft::initResources() {
     rm = new ResourceManager();
+    rm->loadSprite("ICONS", new QPixmap(":graphics/ICONS"));
     rm->loadSprite("MAP1", new QPixmap(":graphics/MAP1"));
     rm->loadSprite("BUILDINGS_H", new QPixmap(":graphics/BUILDINGS_H"));
     rm->loadSprite("BUILDINGS_O", new QPixmap(":graphics/BUILDINGS_O"));
