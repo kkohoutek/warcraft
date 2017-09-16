@@ -1,4 +1,4 @@
-#include "resourcemanager.h"
+#include "ResourceManager.hpp"
 #include <QDirIterator>
 
 ResourceManager::ResourceManager() {

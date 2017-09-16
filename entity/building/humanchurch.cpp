@@ -1,4 +1,4 @@
-#include "humanchurch.h"
+#include "HumanChurch.hpp"
 
 HumanChurch::HumanChurch(QPointF pos, bool finishedOnSpawn, ResourceManager *rm):
     Building(pos, H_CHURCH, finishedOnSpawn, HUMAN, QList<int>() << 1 << 3, QList<int>() << 0 << 3, BUILD_TIME, HP, rm)

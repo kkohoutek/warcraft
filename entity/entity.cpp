@@ -1,6 +1,7 @@
-#include "entity.h"
-#include "common.h"
+#include "Entity.hpp"
 #include <QGraphicsScene>
+
+#define SHOW_HP_BARS 1
 
 Entity::Entity(QPointF pos) {
     this->setPos(pos);
@@ -17,20 +18,22 @@ Entity::~Entity() {
 }
 
 void Entity::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
-
-    painter->scale(scaleX,scaleY);
     if(currentAnimation){
+        painter->scale(scaleX,scaleY);
         currentAnimation->draw(painter);
+        painter->scale(1/scaleX,1/scaleY);
     }
-    painter->scale(1/scaleX,1/scaleY);
-    if(highlighted){
-        painter->setPen(QPen(Qt::green));
-        painter->drawRect(boundingRect());
-    }
-    if(SHOW_HP_BARS && hp > 0){
-        painter->setBrush(QBrush(Qt::green));
-        painter->setPen(QPen(Qt::green));
-        painter->drawRect(boundingRect().topLeft().x(),boundingRect().topLeft().y()-5, hp*boundingRect().width()/maxHP, 1.25f); // health bar
+    {
+        QRectF r = boundingRect();
+        if(highlighted){
+            painter->setPen(QPen(Qt::green));
+            painter->drawRect(r);
+        }
+        if(SHOW_HP_BARS && hp > 0){
+            painter->setBrush(QBrush(Qt::green));
+            painter->setPen(QPen(Qt::green));
+            painter->drawRect(r.topLeft().x(), r.topLeft().y()-5, hp*r.width()/maxHP, 1.25f); // health bar
+        }
     }
 
     Q_UNUSED(option);

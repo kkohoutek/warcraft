@@ -1,6 +1,6 @@
-#include "building.h"
+#include "Building.hpp"
 
-Building::Building(QPointF pos, BuildingType type, bool finishedOnSpawn, Race race, QList<int> preFrame, QList<int> endFrame, int buildTime, int maxHP, ResourceManager *rm) : Entity(pos)
+Building::Building(QPointF pos, Building::Type type, bool finishedOnSpawn, Race race, QList<int> preFrame, QList<int> endFrame, int buildTime, int maxHP, ResourceManager *rm) : Entity(pos)
 {
     setMaxHP(maxHP);
     this->buildTime = buildTime;
@@ -48,9 +48,8 @@ Building::~Building() {
     delete buildTimer;
 }
 
-void Building::update(){
+void Building::update(){ }
 
-}
 
 void Building::startConstruction() {
     getCurrentAnimation()->start();
@@ -68,13 +67,5 @@ void Building::constructionUpdate() {
         buildTimer = nullptr;
         finished = true;
     }
-}
-
-bool Building::isBuildingFinished() const {
-    return finished;
-}
-
-BuildingType Building::getType() const {
-    return type;
 }
 

@@ -1,4 +1,4 @@
-#include "grunt.h"
+#include "Grunt.hpp"
 
 Grunt::Grunt(QPointF pos, ResourceManager *rm) : Unit(pos,GRUNT,1,1,2,0)
 {

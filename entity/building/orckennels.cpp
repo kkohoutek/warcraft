@@ -1,4 +1,4 @@
-#include "orckennels.h"
+#include "OrcKennels.hpp"
 
 OrcKennels::OrcKennels(QPointF pos, bool finishedOnSpawn, ResourceManager*rm) :
     Building(pos, O_KENNELS, finishedOnSpawn, ORC,QList<int>() << 2 << 3, QList<int>() << 1 << 3, BUILD_TIME, HP, rm)

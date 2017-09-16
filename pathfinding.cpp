@@ -1,4 +1,4 @@
-#include "pathfinding.h"
+#include "pathfinding.hpp"
 #include <QQueue>
 #include <QDebug>
 
@@ -16,7 +16,6 @@ Graph::~Graph() {
     for(int i = 0; i < NODES_ARRAY_SIZE; i++){
         for(int j = 0; j < NODES_ARRAY_SIZE; j++){
             delete nodes[i][j];
-
         }
     }
 }

@@ -1,15 +1,15 @@
-#include "worker.h"
-#include "entity/building/humanfarm.h"
-#include "entity/building/humanbarracks.h"
-#include "entity/building/humanstables.h"
-#include "entity/building/humantower.h"
-#include "entity/building/humantownhall.h"
-#include "entity/building/humanchurch.h"
-#include "entity/building/humanblacksmith.h"
-#include "entity/building/humanlumbermill.h"
+#include "Worker.hpp"
+#include "entity/building/HumanFarm.hpp"
+#include "entity/building/HumanBarracks.hpp"
+#include "entity/building/HumanStables.hpp"
+#include "entity/building/HumanTower.hpp"
+#include "entity/building/HumanTownHall.hpp"
+#include "entity/building/HumanChurch.hpp"
+#include "entity/building/HumanBlacksmith.hpp"
+#include "entity/building/HumanLumberMill.hpp"
 #include <QGraphicsScene>
 
-Worker::Worker(QPointF pos, UnitType type, int *playerGold, int *playerLumber, Graph *graph, ResourceManager *rm) : Unit(pos, type, 0.7f, 0, 0, 0)
+Worker::Worker(QPointF pos, Unit::Type type, int *playerGold, int *playerLumber, Graph *graph, ResourceManager *rm) : Unit(pos, type, 0.7f, 0, 0, 0)
 {
     this->playerGold   = playerGold;
     this->playerLumber = playerLumber;
@@ -372,26 +372,6 @@ QRectF Worker::boundingRect() const {
 
 }
 
-void Worker::mine(Goldmine *source, Building *dest){
-    cancel();
-    mineCommand = new MineCommand(source, dest);
-    setPath(path);
-}
-
-void Worker::harvest(Trees *source, Building *dest){
-    cancel();
-    harvestCommand = new HarvestCommand(source, dest);
-    setPath(path);
-}
-
-void Worker::build(Building *building) {
-    cancel();
-    buildCommand = new BuildCommand(building);
-    scene()->addItem(building);
-    building->hide();
-    setPath(bfs::shortestPath(*graph, center(), building->center()));
-}
-
 void Worker::cancel(){
     Unit::cancel();
     delete mineCommand;
@@ -400,6 +380,27 @@ void Worker::cancel(){
     mineCommand = nullptr;
     buildCommand = nullptr;
     harvestCommand = nullptr;
+}
+
+void Worker::mine(Goldmine *source, Building *dest){
+    cancel();
+    mineCommand = new MineCommand(source, dest);
+    setPath(bfs::shortestPath(*graph, center(), source->center()));
+}
+
+void Worker::harvest(Trees *source, Building *dest){
+    cancel();
+    harvestCommand = new HarvestCommand(source, dest);
+    setPath(bfs::shortestPath(*graph, center(), source->center()));
+}
+
+void Worker::build(Building *building) {
+    if(buildCommand != nullptr) return;
+    cancel();
+    buildCommand = new BuildCommand(building);
+    scene()->addItem(building);
+    building->hide();
+    setPath(bfs::shortestPath(*graph, center(), building->center()));
 }
 
 void Worker::update(){

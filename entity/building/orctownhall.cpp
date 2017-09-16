@@ -1,4 +1,4 @@
-#include "orctownhall.h"
+#include "OrcTownHall.hpp"
 
 OrcTownHall::OrcTownHall(QPointF pos, bool finishedOnSpawn, ResourceManager *rm) :
     Building(pos, O_TOWNHALL, finishedOnSpawn, ORC, QList<int>() << 1 << 2,

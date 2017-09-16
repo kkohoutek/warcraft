@@ -1,4 +1,4 @@
-#include "footman.h"
+#include "Footman.hpp"
 
 Footman::Footman(QPointF pos, ResourceManager *rm) : Unit(pos, FOOTMAN, 0.75f, 1, 2, 0)
 {

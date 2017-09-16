@@ -1,7 +1,7 @@
-#include "unit.h"
+#include "Unit.hpp"
 #include <QtMath>
 
-Unit::Unit(QPointF pos, UnitType type, float speed, int damage, int armor, int range) : Entity(pos)
+Unit::Unit(QPointF pos, Unit::Type type, float speed, int damage, int armor, int range) : Entity(pos)
 {
     this->speed = speed;
     this->damage = damage;
@@ -21,10 +21,6 @@ Unit::~Unit() {
     qDeleteAll(movementAnims);
     qDeleteAll(deathAnims);
     qDeleteAll(attackAnims);
-}
-
-void Unit::approachTarget() {
-    moveBy(speed * direction().x(), speed * direction().y());
 }
 
 void Unit::updateAnimation(){
@@ -79,14 +75,17 @@ void Unit::update(){
     }
 
     if(moving){
-        approachTarget();
+        // Přibliž se k cíli
+        moveBy(speed * direction().x(), speed * direction().y());
     }
 
     if(distanceFrom(targetPoint) < 1){
-        stopMoving();
+        moving = false;
         if(!path.isEmpty()) {
             setTarget(path.dequeue());
             move();
+        } else {
+            stopMoving();
         }
     }
 
@@ -138,10 +137,6 @@ QVector2D Unit::direction() const {
     return QVector2D(targetPoint - center()).normalized();
 }
 
-UnitType Unit::getType() const {
-    return type;
-}
-
 void Unit::cancel(){
     targetEntity = nullptr;
 }
@@ -150,24 +145,5 @@ void Unit::move() {
     moving = true;
     currentAnimationSet = &movementAnims;
 }
-
-
-bool Unit::isMoving() const {
-    return moving;
-}
-
-QPointF Unit::getTarget() const {
-    return targetPoint;
-}
-
-void Unit::setSpeed(float speed){
-    this->speed = speed;
-}
-
-float Unit::getSpeed() const {
-    return speed;
-}
-
-
 
 

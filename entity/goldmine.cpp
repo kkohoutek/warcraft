@@ -1,4 +1,4 @@
-#include "goldmine.h"
+#include "Goldmine.hpp"
 
 Goldmine::Goldmine(QPointF pos, ResourceManager *rm) : Entity(pos)
 {

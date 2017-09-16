@@ -1,5 +1,5 @@
 #include <QApplication>
-#include "warcraft.h"
+#include "Warcraft.hpp"
 
 int main(int argc, char *argv[])
 {

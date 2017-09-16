@@ -1,4 +1,4 @@
-#include "buildhumanfarm.h"
+#include "BuildHumanFarm.hpp"
 
 BuildHumanFarm::BuildHumanFarm(QPointF pos, Player *player, ResourceManager *rm)  {
     this->player = player;

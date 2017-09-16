@@ -1,4 +1,4 @@
-#include "trees.h"
+#include "Trees.hpp"
 
 Trees::Trees(QPointF pos) : Entity(pos){
     setMaxHP(0);

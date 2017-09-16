@@ -1,4 +1,4 @@
-#include "player.h"
+#include "Player.hpp"
 #include <QDebug>
 #include <QGraphicsScene>
 

@@ -1,30 +1,28 @@
-#include "warcraft.h"
+#include "Warcraft.hpp"
 
-#include <QGraphicsScene>
+#include "entity/building/HumanFarm.hpp"
+#include "entity/building/HumanBlacksmith.hpp"
+#include "entity/building/HumanChurch.hpp"
+#include "entity/building/HumanBarracks.hpp"
+#include "entity/building/HumanStables.hpp"
+#include "entity/building/HumanTownHall.hpp"
+#include "entity/building/HumanLumberMill.hpp"
+#include "entity/building/HumanTower.hpp"
+#include "entity/unit/Footman.hpp"
+#include "entity/building/OrcBarracks.hpp"
+#include "entity/building/OrcBlacksmith.hpp"
+#include "entity/building/OrcFarm.hpp"
+#include "entity/building/OrcKennels.hpp"
+#include "entity/building/OrcLumberMill.hpp"
+#include "entity/building/OrcTemple.hpp"
+#include "entity/building/OrcTower.hpp"
+#include "entity/building/OrcTownHall.hpp"
+#include "entity/Trees.hpp"
+#include "entity/unit/Grunt.hpp"
+#include "pathfinding.hpp"
+
 #include <QScrollBar>
 #include <QDebug>
-#include <QPainter>
-
-#include "entity/building/humanfarm.h"
-#include "entity/building/humanblacksmith.h"
-#include "entity/building/humanchurch.h"
-#include "entity/building/humanbarracks.h"
-#include "entity/building/humanstables.h"
-#include "entity/building/humantownhall.h"
-#include "entity/building/humanlumbermill.h"
-#include "entity/building/humantower.h"
-#include "entity/unit/footman.h"
-#include "entity/building/orcbarracks.h"
-#include "entity/building/orcblacksmith.h"
-#include "entity/building/orcfarm.h"
-#include "entity/building/orckennels.h"
-#include "entity/building/orclumbermill.h"
-#include "entity/building/orctemple.h"
-#include "entity/building/orctower.h"
-#include "entity/building/orctownhall.h"
-#include "entity/trees.h"
-#include "entity/unit/grunt.h"
-#include "pathfinding.h"
 
 #define MAP_SIZE 2048
 
@@ -44,7 +42,6 @@ Warcraft::Warcraft() {
 
     player = new Player(HUMAN);
     player->food += 8;
-    player_gc = new GarbageCollector(player, 15000);
 
     enemy = new Player(ORC);
 
@@ -64,7 +61,6 @@ Warcraft::~Warcraft() {
     delete rect;
     delete player;
     delete enemy;
-    delete player_gc;
     delete rm;
 }
 
@@ -98,7 +94,7 @@ void Warcraft::loadBuildings() {
 
 void Warcraft::loadUnits(){
     for(int i = 0; i < 4; i++){
-        Worker *w = new Worker(QPointF(128+i*28,128), PEASANT, &(player->gold), &(player->lumber), &graph, rm);
+        Worker *w = new Worker(QPointF(128+i*28,128), Unit::PEASANT, &(player->gold), &(player->lumber), &graph, rm);
         player->getUnits().append(w);
         scene()->addItem(w);
     }
@@ -112,6 +108,8 @@ void Warcraft::loadUnits(){
         scene()->addItem(g);
         enemy->getUnits().append(g);
     }
+
+    f->die();
 
 }
 
@@ -129,6 +127,7 @@ void Warcraft::loadWorld() {
 
 void Warcraft::timerEvent(QTimerEvent *event) {
     QPoint p = mapFromGlobal(QCursor::pos());
+    // Pohyb kamery
     if(p.x() >=  window()->width() - 50 && p.x() <= window()->width() && p.y() >= 0 && p.y() <= window()->height() ){
         horizontalScrollBar()->setValue(horizontalScrollBar()->value()+20);
     }
@@ -170,6 +169,7 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
             Unit *u = player->getSelectedUnits()[i];
             auto path = bfs::shortestPath(graph, u->center(), actualPos+QPointF(i*32, 0));
             if(!path.isEmpty()){
+                u->cancel();
                 u->setPath(path);
                 u->move();
             }
@@ -179,7 +179,7 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
         for(Goldmine *g : goldmines){
             if(g->boundingRect2().contains(actualPos)){
                 for(Unit *u : player->getSelectedUnits()){
-                    if(u->getType() == PEASANT) {
+                    if(u->getType() == Unit::PEASANT) {
                         Worker *w = static_cast<Worker *>(u);
                         w->mine(g, player->getBuildings()[0]);
                     }
