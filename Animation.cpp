@@ -10,7 +10,6 @@ Animation::Animation(const QPixmap *spriteSheet, const int frameWidth, const int
 
     animationTimer.setInterval(duration);
     connect(&animationTimer, SIGNAL(timeout()), this, SLOT(nextFrame()));
-
 }
 
 void Animation::nextFrame() {
@@ -21,30 +20,4 @@ void Animation::nextFrame() {
     } else {
         stop();
     }
-}
-
-void Animation::draw(QPainter *painter){
-    painter->drawPixmap(0, 0, *spriteSheet, currentPositionX(), currentPositionY(), frameWidth, frameHeight);
-}
-
-void Animation::setCurrentFrame(int index) {
-    currentFrameIndex = index;
-}
-
-void Animation::start(){
-    if(!animationTimer.isActive()) {
-        animationTimer.start();
-    }
-}
-
-void Animation::stop(){
-    animationTimer.stop();
-}
-
-int Animation::currentPositionX() const {
-    return frames[currentFrameIndex][0] * frameWidth;
-}
-
-int Animation::currentPositionY() const {
-    return frames[currentFrameIndex][1] * frameHeight;
 }
