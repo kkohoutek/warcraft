@@ -17,10 +17,4 @@ QRectF Goldmine::boundingRect() const
     return QRectF(-8,0,96,92);
 }
 
-void Goldmine::update()
-{
-
-}
-
-
 

@@ -8,6 +8,8 @@
 #include "ResourceManager.hpp"
 
 
+// Tato třída reprezentuje animaci podle sprite sheetu.
+
 class Animation : public QObject
 {
     Q_OBJECT
@@ -21,9 +23,9 @@ public:
 
 private:
     const QPixmap       *spriteSheet;
-    QList<QList<int>>   frames;        // List s souřadnicemi snímků animace
-    int                 frameWidth;    // Šířka snímku
-    int                 frameHeight;   // Výška snímku
+    QList<QList<int>>   frames;             // List s souřadnicemi snímků animace
+    int                 frameWidth;         // Šířka snímku
+    int                 frameHeight;        // Výška snímku
     int                 currentFrameIndex = 0;
     bool                looping;
 

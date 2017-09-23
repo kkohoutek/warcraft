@@ -5,6 +5,10 @@
 #include <QQueue>
 #include <QVector2D>
 
+/*
+ * Tato třída je základem všech jednotek.
+ * Nemělá by být instancována přímo, nýbrž být rozšířena specifickými podtřídami.
+ */
 class Unit : public Entity
 {
 public:

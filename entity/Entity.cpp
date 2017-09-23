@@ -40,12 +40,10 @@ void Entity::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
     Q_UNUSED(widget);
 }
 
-
 void Entity::die() {
     hp = 0;
     setZValue(-1);
 }
-
 
 void Entity::setCurrentAnimation(Animation *anim) {
     if(currentAnimation) {
@@ -56,42 +54,13 @@ void Entity::setCurrentAnimation(Animation *anim) {
     //currentAnimation->start();
 }
 
-Animation *Entity::getCurrentAnimation() const {
-    return currentAnimation;
-}
-
 void Entity::damage(int amount){
     hp -= amount;
     if(hp < 0) hp = 0;
 }
 
-void Entity::setHP(int hp) {
-    this->hp = hp;
-}
-
-int Entity::getHP() const {
-    return hp;
-}
-
-void Entity::setMaxHP(int hp) {
-    maxHP = hp;
-}
-
-int Entity::getMaxHP() const {
-    return maxHP;
-}
-
-bool Entity::isAlive() const {
-    return hp > 0;
-}
-
-void Entity::setHighlighted(bool h) {
-    highlighted = h;
-}
-
 qreal Entity::distanceFrom(Entity *entity) const {
     return QLineF(center(), entity->center()).length();
-
 }
 
 qreal Entity::distanceFrom(QPointF point) const {

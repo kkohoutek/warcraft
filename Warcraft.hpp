@@ -11,10 +11,17 @@
 #include "entity/Goldmine.hpp"
 #include "pathfinding.hpp"
 #include "ResourceManager.hpp"
+#include "ui/PeasantUI.hpp"
 
 class Warcraft : public QGraphicsView
 {
 public:
+    Player *player;
+    Player *enemy;
+
+    QList<Goldmine *>   goldmines;
+    QList<Trees *>      trees;
+
     Warcraft();
     ~Warcraft();
 
@@ -30,24 +37,29 @@ public:
     void mouseMoveEvent(QMouseEvent *event);
     void keyPressEvent(QKeyEvent *event);
 
+    void spawnEntity(Entity *e);
+    void spawnUnit(Unit *u, Player *owner = nullptr);
+    void spawnBuilding(Building *b, Player *owner = nullptr);
+    void spawnGoldmine(Goldmine *g);
+
     QList<Entity *> staticEntities() const;
     QList<Unit *>   allUnits() const;
     QList<Entity *> allEntities() const;
+    QList<Entity *> deadEntities() const;
+
+    void printGameInfo();
 
 private:
     ResourceManager *rm;
+    Graph graph;
 
-    Player *player;
-    Player *enemy;
-
-    QList<Goldmine *>   goldmines;
-    QList<Trees *>      trees;
-
+    // ui stuff
     bool isPressedLeftButton = false;
     QPoint position;
     QGraphicsRectItem *rect; // selection rect
 
-    Graph graph;
+    PeasantUI *peasantUI;
+
 };
 
 #endif // WARCRAFT_HPP

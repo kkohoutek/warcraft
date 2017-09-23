@@ -1,8 +1,7 @@
 #include "Unit.hpp"
 #include <QtMath>
 
-Unit::Unit(QPointF pos, Unit::Type type, float speed, int damage, int armor, int range) : Entity(pos)
-{
+Unit::Unit(QPointF pos, Unit::Type type, float speed, int damage, int armor, int range) : Entity(pos) {
     this->speed = speed;
     this->damage = damage;
     this->range = range;
@@ -24,7 +23,7 @@ Unit::~Unit() {
 }
 
 void Unit::updateAnimation(){
-    qreal angle = QLineF(center(), targetPoint).angle();
+    float angle = QLineF(center(), targetPoint).angle();
 
     int index = 0;
     if(currentAnimationSet->size() == 8){
@@ -50,12 +49,7 @@ void Unit::updateAnimation(){
 }
 
 void Unit::update(){
-    if(!isAlive()) {
-
-        die();
-        return;
-    }
-
+    if(!isAlive()) return;
     if(targetEntity) {
         if(targetEntity->isAlive()){
             if(distanceFrom(targetEntity) <= range + 8){
@@ -112,7 +106,7 @@ void Unit::attack(Entity *victim) {
 
 void Unit::die() {
     stopMoving();
-    if(getCurrentAnimation() != deathAnims.at(0)){
+    if(!deathAnims.contains(getCurrentAnimation())){
         setCurrentAnimation(deathAnims.at(0));
         getCurrentAnimation()->start();
     }

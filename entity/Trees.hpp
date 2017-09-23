@@ -13,9 +13,6 @@ public:
     // QGraphicsItem interface
     QRectF boundingRect() const;
 
-    // Entity interface
-    void update();
-
 
 };
 

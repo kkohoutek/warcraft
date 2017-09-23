@@ -28,4 +28,8 @@ void ResourceManager::copySprite(QString idSrc, QString idNew, bool horizontalMi
     sprites.insert(idNew, copy);
 }
 
+int ResourceManager::memoryUsed() {
+    return sprites.size() * sizeof(QPixmap);
+}
+
 

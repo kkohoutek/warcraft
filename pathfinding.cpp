@@ -57,7 +57,7 @@ void Graph::update(const QList<Entity *> &obstacles) {
                     node->neighbors[3] = nodes[i][j-1];
                 }
 
-                // Diagonálně
+                /* Diagonálně */
 
                 if(i - 1 >= 0 && j - 1 >= 0){
                     node->neighbors[4] = nodes[i-1][j-1];
@@ -140,7 +140,7 @@ QList<QPointF> bfs::shortestPath(Graph &graph, Node *start, Node *goal) {
     }
     // Retrace
     QList<QPointF> path;
-    while(node){
+    while(node != start){
         path.append(node->pos);
         node = node->parent;
     }

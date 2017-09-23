@@ -13,7 +13,7 @@ public slots:
     void update();
 
 private:
-    QQueue<Entity *> queue;
+    QQueue<Entity **> delQueue;
     QTimer updateTimer;
 
     Warcraft *game;

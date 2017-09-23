@@ -8,6 +8,7 @@
 #include "entity/building/HumanBlacksmith.hpp"
 #include "entity/building/HumanLumberMill.hpp"
 #include <QGraphicsScene>
+#include <QDebug>
 
 Worker::Worker(QPointF pos, Unit::Type type, int *playerGold, int *playerLumber, Graph *graph, ResourceManager *rm) : Unit(pos, type, 0.7f, 0, 0, 0)
 {
@@ -404,7 +405,7 @@ void Worker::build(Building *building) {
 }
 
 void Worker::update(){
-    if(buildCommand){
+    if(buildCommand && buildCommand->what){
         if(!buildCommand->what->isBuildingFinished()){
                     if(collidesWithItem(buildCommand->what)){
                         stopMoving();
@@ -418,17 +419,19 @@ void Worker::update(){
                     cancel();
         }
     } else if (mineCommand){
-        if(collidesWithItem(mineCommand->source)){
+        if(currentAnimationSet == &movementAnims && collidesWithItem(mineCommand->source)){
             mineCommand->source->damage(GOLD_PER_TRIP);
             stopMoving();
             setTarget(mineCommand->dest->center());
+            //setPath(bfs::shortestPath(*graph, center(), mineCommand->dest->center())); // anims broken
             move();
             currentAnimationSet = &goldCarryAnims;
 
-        } else if (collidesWithItem(mineCommand->dest)){
+        } else if (currentAnimationSet == &goldCarryAnims && collidesWithItem(mineCommand->dest)){
             *playerGold += GOLD_PER_TRIP;
             stopMoving();
             setTarget(mineCommand->source->center());
+            //setPath(bfs::shortestPath(*graph, center(), mineCommand->source->center())); // anims broken
             move();
             currentAnimationSet = &movementAnims;
         }

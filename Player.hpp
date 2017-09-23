@@ -4,8 +4,6 @@
 #include "entity/unit/Unit.hpp"
 #include "entity/unit/Worker.hpp"
 
-#define MAX_SELECTED_UNITS 4
-
 class Player
 {
 
@@ -19,18 +17,16 @@ public:
     void update();
 
     void selectUnit(Unit *unit);
-    void selectUnits(QList<Unit *> selected);
+    void selectUnits(QList<Unit *> &selected);
     void selectBuilding(Building *building);
     void deselect();
     void newBuilding(Building *building, Worker *worker, int costGold, int costLumber);
 
-    QList<Building *> &getBuildings();
-    QList<Unit *> &getUnits();
-    QList<Unit *> &getSelectedUnits();
+    QList<Building *>   &getBuildings()         { return buildings; }
+    QList<Unit *>       &getUnits()             { return units; }
+    QList<Unit *>       &getSelectedUnits()     { return selectedUnits; }
 
-    Race getRace() const;
-    Building *goldDestination() const;
-    Building *lumberDestination() const;
+    Race getRace() const                        { return race; }
 
 protected:
     Race race;
@@ -40,9 +36,6 @@ protected:
     QList<Unit *>       selectedUnits;
 
     Building *selectedBuilding = nullptr;
-
-    int goldDestinationIndex;   // Index v buildings
-    int lumberDestinationIndex; // Index v buildings
 };
 
 #endif // PLAYER_HPP

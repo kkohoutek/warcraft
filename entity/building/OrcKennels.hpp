@@ -1,7 +1,7 @@
 #ifndef ORCKENNELS_HPP
 #define ORCKENNELS_HPP
-#include "Building.hpp"
 
+#include "Building.hpp"
 
 class OrcKennels : public Building
 {

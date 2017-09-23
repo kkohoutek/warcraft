@@ -5,7 +5,7 @@ Footman::Footman(QPointF pos, ResourceManager *rm) : Unit(pos, FOOTMAN, 0.75f, 1
     setMaxHP(60);
     setHP(60);
     QPixmap *spriteSheet = rm->getSprite("FOOTMAN");
-       QPixmap *spriteSheetFlipped = rm->getSprite("FOOTMAN_flipped");
+    QPixmap *spriteSheetFlipped = rm->getSprite("FOOTMAN_flipped");
 
        //walk animations
 

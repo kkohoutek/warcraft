@@ -1,5 +1,6 @@
 #include <QApplication>
 #include "Warcraft.hpp"
+#include "Janitor.hpp"
 
 int main(int argc, char *argv[])
 {

@@ -7,6 +7,7 @@
 #include "race.h"
 #include <QObject>
 
+
 class Building : public QObject, public Entity
 {
     Q_OBJECT
@@ -37,7 +38,6 @@ public:
     virtual ~Building();
 
     void startConstruction();
-    virtual void update() override;
 
     bool            isAlive() const override       { return finished && Entity::isAlive(); }
     bool            isBuildingFinished() const     { return finished; }

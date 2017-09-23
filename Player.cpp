@@ -2,13 +2,13 @@
 #include <QDebug>
 #include <QGraphicsScene>
 
+#define MAX_SELECTED_UNITS 4
+#define MAX_FOOD           100
+#define MAX_GOLD           40000
+#define MAX_LUMBER         20000
 
 Player::Player(Race race) {
     this->race = race;
-
-    goldDestinationIndex = 0;
-    lumberDestinationIndex = 0;
-
     selectedUnits.reserve(MAX_SELECTED_UNITS);
 }
 
@@ -21,7 +21,6 @@ void Player::update(){
     }
 }
 
-
 void Player::selectUnit(Unit *unit){
     if(units.contains(unit)){
         deselect();
@@ -30,7 +29,7 @@ void Player::selectUnit(Unit *unit){
     }
 }
 
-void Player::selectUnits(QList<Unit *> selected){
+void Player::selectUnits(QList<Unit *> &selected){
     if(selected.empty()) return;
 
     if(selected.size() > MAX_SELECTED_UNITS){
@@ -76,31 +75,4 @@ void Player::newBuilding(Building *building, Worker *worker, int costGold, int c
         buildings.append(building);
         deselect();
     }
-}
-
-
-
-QList<Building *> &Player::getBuildings() {
-    return buildings;
-}
-
-QList<Unit *> &Player::getUnits(){
-    return units;
-}
-
-QList<Unit *> &Player::getSelectedUnits() {
-    return selectedUnits;
-}
-
-Race Player::getRace() const {
-    return race;
-
-}
-
-Building *Player::goldDestination() const {
-    return buildings[goldDestinationIndex];
-}
-
-Building *Player::lumberDestination() const {
-    return buildings[lumberDestinationIndex];
 }

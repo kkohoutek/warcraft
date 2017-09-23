@@ -48,9 +48,6 @@ Building::~Building() {
     delete buildTimer;
 }
 
-void Building::update(){ }
-
-
 void Building::startConstruction() {
     getCurrentAnimation()->start();
     if(!buildTimer->isActive()){

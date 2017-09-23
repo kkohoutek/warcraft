@@ -4,12 +4,10 @@
 #include "Entity.hpp"
 #include "ResourceManager.hpp"
 
-
 class Goldmine : public Entity
 {
 public:
     Goldmine(QPointF pos, ResourceManager *rm);
-    void update();
 
     // QGraphicsItem interface
     QRectF boundingRect() const;

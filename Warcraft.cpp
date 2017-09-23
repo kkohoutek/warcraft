@@ -20,15 +20,18 @@
 #include "entity/Trees.hpp"
 #include "entity/unit/Grunt.hpp"
 #include "pathfinding.hpp"
+#include "ui/PeasantUI.hpp"
 
 #include <QScrollBar>
 #include <QDebug>
+#include <QPushButton>
+#include <QGraphicsProxyWidget>
 
 #define MAP_SIZE 2048
 
 Warcraft::Warcraft() {
-    initResources();
-
+    setFixedHeight(600);
+    setFixedWidth(800);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setMouseTracking(true);
@@ -39,11 +42,12 @@ Warcraft::Warcraft() {
     centerOn(0,0);
 
     rect = new QGraphicsRectItem();
-
     player = new Player(HUMAN);
     player->food += 8;
 
     enemy = new Player(ORC);
+
+    initResources();
 
     scene->setBackgroundBrush(QBrush(*(rm->getSprite("MAP1"))));
     loadWorld();
@@ -51,6 +55,10 @@ Warcraft::Warcraft() {
     loadBuildings();
 
     graph.update(staticEntities());
+
+    peasantUI = new PeasantUI(player, this);
+    peasantUI->hide();
+    scene->addWidget(peasantUI);
 
     startTimer(18);
 }
@@ -65,64 +73,29 @@ Warcraft::~Warcraft() {
 }
 
 void Warcraft::loadBuildings() {
-    Building *th = new HumanTownHall(QPointF(216,216), true, rm);
-    player->getBuildings().append(th);
-    scene()->addItem(th);
-
-    th = new HumanFarm(QPointF(70, 262), true, rm, &(player->food));
-    player->getBuildings().append(th);
-    scene()->addItem(th);
-
-    th = new HumanFarm(QPointF(310, 290), true, rm, &(player->food));
-    player->getBuildings().append(th);
-    scene()->addItem(th);
-
-    th = new HumanChurch(QPointF(278, 81), false, rm);
-    player->getBuildings().append(th);
-    scene()->addItem(th);
-    th->startConstruction();
-
-    th = new HumanBarracks(QPointF(220, 400), true, rm);
-    player->getBuildings().append(th);
-    scene()->addItem(th);
-
-    th = new OrcTownHall(QPointF(MAP_SIZE-300,MAP_SIZE-300), true, rm);
-    enemy->getBuildings().append(th);
-    scene()->addItem(th);
-
+    spawnBuilding(new HumanTownHall(QPointF(216,216), true, rm), player);;
+    spawnBuilding(new HumanFarm(QPointF(70, 262), true, rm, &(player->food)), player);
+    spawnBuilding(new HumanFarm(QPointF(310, 290), true, rm, &(player->food)), player);
+    spawnBuilding(new HumanChurch(QPointF(278, 81), true, rm), player);
+    spawnBuilding(new HumanBarracks(QPointF(220, 400), true, rm), player);;
+    spawnBuilding(new OrcTownHall(QPointF(MAP_SIZE-300,MAP_SIZE-300), true, rm), enemy);
 }
 
 void Warcraft::loadUnits(){
     for(int i = 0; i < 4; i++){
-        Worker *w = new Worker(QPointF(128+i*28,128), Unit::PEASANT, &(player->gold), &(player->lumber), &graph, rm);
-        player->getUnits().append(w);
-        scene()->addItem(w);
+        spawnUnit(new Worker(QPointF(128+i*28,128), Unit::PEASANT, &(player->gold), &(player->lumber), &graph, rm), player);;
     }
-
-    Footman *f = new Footman(QPointF(500,120), rm);
-    scene()->addItem(f);
-    player->getUnits().append(f);
+    spawnUnit(new Footman(QPointF(500,120), rm), player);
 
     for(int i = 0; i < 4; i++){
-        Grunt *g = new Grunt(QPointF(MAP_SIZE-420+i*40, MAP_SIZE-286-i*40), rm);
-        scene()->addItem(g);
-        enemy->getUnits().append(g);
+        spawnUnit(new Grunt(QPointF(MAP_SIZE-420+i*40, MAP_SIZE-286-i*40), rm), enemy);;
     }
-
-    f->die();
-
 }
 
 void Warcraft::loadWorld() {
-    Goldmine *g = new Goldmine(QPointF(64,64), rm);
-    scene()->addItem(g);
-    goldmines.append(g);
-    g = new Goldmine(QPointF(MAP_SIZE-192, MAP_SIZE-192), rm);
-    scene()->addItem(g);
-    goldmines.append(g);
-    g = new Goldmine(QPointF(800,522), rm);
-    scene()->addItem(g);
-    goldmines.append(g);
+    spawnGoldmine(new Goldmine(QPointF(64,64), rm));
+    spawnGoldmine(new Goldmine(QPointF(MAP_SIZE-192, MAP_SIZE-192), rm));
+    spawnGoldmine(new Goldmine(QPointF(800,522), rm));
 }
 
 void Warcraft::timerEvent(QTimerEvent *event) {
@@ -158,11 +131,6 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
         position.setX(actualPos.x());
         position.setY(actualPos.y());
 
-        for(Unit *unit : player->getUnits()){
-            if(unit->boundingRect2().contains(actualPos) && unit->isAlive()){
-                player->selectUnit(unit);
-            }
-        }
     } else if (event->button() == Qt::RightButton){
 
         for(int i = 0; i < player->getSelectedUnits().size(); i++){
@@ -197,11 +165,20 @@ void Warcraft::mouseReleaseEvent(QMouseEvent *releaseEvent) {
 
         QList<Unit *> selected;
         for(Unit *unit : player->getUnits()){
-            if(rect->rect().intersects(unit->boundingRect2()) && unit->isAlive() && unit->isVisible()){
+            if(unit->isVisible() && unit->isAlive() && rect->rect().intersects(unit->boundingRect2())){
                 selected.append(unit);
             }
         }
         player->selectUnits(selected);
+
+        for(Unit *u : selected){
+            if(u->getType() == Unit::PEASANT){
+                peasantUI->show();
+                break;
+            } else {
+                peasantUI->hide();
+            }
+        }
 
         if(scene()->items().contains(rect)) scene()->removeItem(rect);
     }
@@ -219,7 +196,6 @@ void Warcraft::mouseMoveEvent(QMouseEvent *event) {
 
         scene()->addItem(rect);
     }
-
     Q_UNUSED(event);
 }
 
@@ -227,11 +203,6 @@ void Warcraft::keyPressEvent(QKeyEvent *event){
     switch(event->key()){
     case Qt::Key_Escape:
         window()->close();
-        break;
-
-    case Qt::Key_B:
-        player->newBuilding(new HumanChurch(QPointF(550,550), false, rm), static_cast<Worker *>(player->getUnits()[0]), 0, 0);
-        graph.update(staticEntities());
         break;
     }
 
@@ -268,14 +239,42 @@ QList<Entity *> Warcraft::allEntities() const {
     return allEntities;
 }
 
+QList<Entity *> Warcraft::deadEntities() const {
+    QList<Entity *> dead;
+    for(Entity *e : allEntities()){
+        if(!e->isAlive()) {
+            dead.append(e);
+        }
+    }
+    return dead;
+}
+
+void Warcraft::spawnEntity(Entity *e) {
+    scene()->addItem(e);
+
+}
+
+void Warcraft::spawnUnit(Unit *u, Player *owner) {
+    if(owner) owner->getUnits().append(u);
+    scene()->addItem(u);
+}
+
+void Warcraft::spawnBuilding(Building *b, Player *owner) {
+    if(owner) owner->getBuildings().append(b);
+    scene()->addItem(b);
+}
+
+void Warcraft::spawnGoldmine(Goldmine *g) {
+    goldmines.append(g);
+    scene()->addItem(g);
+}
 
 void Warcraft::paintEvent(QPaintEvent *event) {
     QGraphicsView::paintEvent(event); 
     QPainter painter(viewport());
     painter.setFont(QFont("sans-serif",10));
     painter.setPen(Qt::white);
-    painter.drawText(QPointF(700, 20), QString("FOOD: "+QString::number(player->food)+"   GOLD: "+QString::number(player->gold)+"   LUMBER: "+QString::number(player->lumber)));
-
+    painter.drawText(QPointF(width()*3/5, 20), "FOOD: "+QString::number(player->food)+"   GOLD: "+QString::number(player->gold)+"   LUMBER: "+QString::number(player->lumber));
      // visualize graph
     /*
     for(int i = 0; i < NODES_ARRAY_SIZE; i++){
@@ -304,6 +303,15 @@ void Warcraft::initResources() {
     rm->copySprite("FOOTMAN", "FOOTMAN_flipped", true, false);
     rm->copySprite("GRUNT", "GRUNT_flipped", true, false);
     rm->copySprite("DAEMON", "DAEMON_flipped", true, false);
+
+}
+
+void Warcraft::printGameInfo() {
+    int entityCount = allEntities().size();
+    qDebug() << "All entities: " + QString::number(entityCount) + " (" + QString::number(entityCount * sizeof(Entity)) + " bytes)";
+    int deadCount = deadEntities().size();
+    qDebug() << "Alive entities: " + QString::number(entityCount - deadCount) + " (" + QString::number((entityCount - deadCount) * sizeof(Entity)) + " bytes)";
+    qDebug() << "Dead entities: " + QString::number(deadCount) + " (" + QString::number(deadCount * sizeof(Entity)) + " bytes)";
 
 }
 
