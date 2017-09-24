@@ -44,7 +44,6 @@ SOURCES += main.cpp\
     entity/building/OrcLumberMill.cpp \
     entity/building/OrcKennels.cpp \
     entity/building/OrcFarm.cpp \
-    ui/BuildHumanFarm.cpp \
     ui/PeasantUI.cpp
 
 
@@ -66,7 +65,6 @@ HEADERS  += \
     pathfinding.hpp \
     Warcraft.hpp \
     entity/building/HumanBlacksmith.hpp \
-    ui/BuildHumanFarm.hpp \
     entity/building/HumanChurch.hpp \
     entity/building/HumanFarm.hpp \
     entity/building/HumanLumberMill.hpp \

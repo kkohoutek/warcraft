@@ -36,10 +36,10 @@ Warcraft::Warcraft() {
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setMouseTracking(true);
 
-    QGraphicsScene *scene = new QGraphicsScene();
-    scene->setSceneRect(0,0,MAP_SIZE,MAP_SIZE);
+    QGraphicsScene *scene = new QGraphicsScene(this);
+    scene->setSceneRect(0, 0, MAP_SIZE,MAP_SIZE);
     setScene(scene);
-    centerOn(0,0);
+    centerOn(0, 0);
 
     rect = new QGraphicsRectItem();
     player = new Player(HUMAN);
@@ -131,6 +131,20 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
         position.setX(actualPos.x());
         position.setY(actualPos.y());
 
+        if(peasantUI->isVisible()){
+            switch(peasantUI->getSelectedType()){
+            case Building::H_CHURCH:
+                player->newBuilding(new HumanChurch(graph.gimmeNode(actualPos, false)->pos, false, rm), static_cast<Worker *>(player->getSelectedUnits()[0]), 0, 0);
+                graph.update(staticEntities());
+                break;
+
+           case Building::H_FARM:
+                player->newBuilding(new HumanFarm(graph.gimmeNode(actualPos, false)->pos, false, rm, &(player->food)), static_cast<Worker *>(player->getSelectedUnits()[0]), 0, 0);
+                graph.update(staticEntities());
+                break;
+            }
+        }
+
     } else if (event->button() == Qt::RightButton){
 
         for(int i = 0; i < player->getSelectedUnits().size(); i++){
@@ -156,7 +170,7 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
         }
     }
 
-    QGraphicsView::mousePressEvent(event);
+    //QGraphicsView::mousePressEvent(event);
 }
 
 void Warcraft::mouseReleaseEvent(QMouseEvent *releaseEvent) {
@@ -303,7 +317,6 @@ void Warcraft::initResources() {
     rm->copySprite("FOOTMAN", "FOOTMAN_flipped", true, false);
     rm->copySprite("GRUNT", "GRUNT_flipped", true, false);
     rm->copySprite("DAEMON", "DAEMON_flipped", true, false);
-
 }
 
 void Warcraft::printGameInfo() {

@@ -40,6 +40,10 @@ void Entity::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
     Q_UNUSED(widget);
 }
 
+void Entity::update() {
+    if(!isAlive()) return;
+}
+
 void Entity::die() {
     hp = 0;
     setZValue(-1);

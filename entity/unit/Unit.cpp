@@ -49,7 +49,7 @@ void Unit::updateAnimation(){
 }
 
 void Unit::update(){
-    if(!isAlive()) return;
+    Entity::update();
     if(targetEntity) {
         if(targetEntity->isAlive()){
             if(distanceFrom(targetEntity) <= range + 8){

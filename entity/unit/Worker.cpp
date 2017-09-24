@@ -387,12 +387,14 @@ void Worker::mine(Goldmine *source, Building *dest){
     cancel();
     mineCommand = new MineCommand(source, dest);
     setPath(bfs::shortestPath(*graph, center(), source->center()));
+    move();
 }
 
 void Worker::harvest(Trees *source, Building *dest){
     cancel();
     harvestCommand = new HarvestCommand(source, dest);
     setPath(bfs::shortestPath(*graph, center(), source->center()));
+    move();
 }
 
 void Worker::build(Building *building) {
@@ -402,6 +404,7 @@ void Worker::build(Building *building) {
     scene()->addItem(building);
     building->hide();
     setPath(bfs::shortestPath(*graph, center(), building->center()));
+    move();
 }
 
 void Worker::update(){

@@ -17,11 +17,11 @@ public:
 
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
-    virtual void update() { }
+    virtual void update();
     virtual void die();
 
     void setCurrentAnimation(Animation *anim);
-    Animation *getCurrentAnimation() const      { return currentAnimation; }
+    Animation *getCurrentAnimation() const  { return currentAnimation; }
 
     void damage(int amount);
 
@@ -34,7 +34,7 @@ public:
     virtual bool isAlive() const    { return hp > 0; }
     void setHighlighted(bool h)     { highlighted = h; }
 
-    qreal distanceFrom(Entity *entity) const;
+    qreal distanceFrom(Entity *entity) const ;
     qreal distanceFrom(QPointF point) const;
 
     // absolutní pozice středu entity
