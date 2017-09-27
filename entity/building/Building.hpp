@@ -14,6 +14,8 @@ class Building : public QObject, public Entity
 public:
     // C++ nemá reflexi, opravte to
     enum Type {
+        NONE,
+
         H_BARRACKS,
         H_BLACKSMITH,
         H_CHURCH,

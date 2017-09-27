@@ -8,20 +8,23 @@ class PeasantUI : public QWidget
 {
     Q_OBJECT
 public:
-    explicit PeasantUI(Player *player, QWidget *parent = nullptr);
-    Building::Type getSelectedType() { return selectedType; }
+    explicit PeasantUI(Building *&buildingPtr, Player *player, ResourceManager *rm, QGraphicsScene *scene, QWidget *parent = nullptr);
 
 private:
-    Building::Type selectedType;
+    // Pointer na pointer na budovu kterou chce hráč stavět
+    Building **buildingPtr = nullptr;
+    ResourceManager *rm;
+    Player *player;
+    QGraphicsScene *scene;
 
 private slots:
-    void clickFarm()        { selectedType = Building::H_FARM; }
-    void clickBarracks()    { selectedType = Building::H_BARRACKS; }
-    void clickHall()        { selectedType = Building::H_TOWNHALL; }
-    void clickStables()     { selectedType = Building::H_STABLES; }
-    void clickBlacks()      { selectedType = Building::H_BLACKSMITH; }
-    void clickChurch()      { selectedType = Building::H_CHURCH; }
-    void clickMill()        { selectedType = Building::H_LUMBERMILL; }
+    void clickFarm();
+    void clickBarracks();
+    void clickHall();
+    void clickStables();
+    void clickBlacks();
+    void clickChurch();
+    void clickMill();
 };
 
 #endif // PEASANTUI_HPP

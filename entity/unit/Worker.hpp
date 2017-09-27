@@ -18,6 +18,7 @@ public:
 
     void    update() override;
     void    cancel() override;
+    bool    canSelect() const override;
     QRectF  boundingRect() const override;
 
     void    mine(Goldmine *source, Building *dest);

@@ -24,8 +24,6 @@
 
 #include <QScrollBar>
 #include <QDebug>
-#include <QPushButton>
-#include <QGraphicsProxyWidget>
 
 #define MAP_SIZE 2048
 
@@ -42,9 +40,10 @@ Warcraft::Warcraft() {
     centerOn(0, 0);
 
     rect = new QGraphicsRectItem();
-    player = new Player(HUMAN);
-    player->food += 8;
+    scene->addItem(rect);
+    rect->hide();
 
+    player = new Player(HUMAN);
     enemy = new Player(ORC);
 
     initResources();
@@ -56,7 +55,7 @@ Warcraft::Warcraft() {
 
     graph.update(staticEntities());
 
-    peasantUI = new PeasantUI(player, this);
+    peasantUI = new PeasantUI(currentBuilding, player, rm, scene, this);
     peasantUI->hide();
     scene->addWidget(peasantUI);
 
@@ -64,8 +63,7 @@ Warcraft::Warcraft() {
 }
 
 Warcraft::~Warcraft() {
-    qDeleteAll(goldmines);
-    qDeleteAll(trees);
+    qDeleteAll(allEntities());
     delete rect;
     delete player;
     delete enemy;
@@ -112,43 +110,55 @@ void Warcraft::timerEvent(QTimerEvent *event) {
         verticalScrollBar()->setValue(verticalScrollBar()->value()+20);
     }
     else if(p.y() <= 50 && p.y() >= 0 && p.x() <= window()->width() && p.x() >= 0){
-         verticalScrollBar()->setValue(verticalScrollBar()->value()-20);
+        verticalScrollBar()->setValue(verticalScrollBar()->value()-20);
+    }
+
+    if(currentBuilding){
+        currentBuilding->setPos(mapToScene(p));
     }
 
     player->update();
     enemy->update();
 
-    viewport()->update();
+    scene()->update();
 
     Q_UNUSED(event);
 }
 
 void Warcraft::mousePressEvent(QMouseEvent *event){
+    QPointF actualPos = mapToScene(event->pos());
+    auto selected = player->getSelectedUnits();
 
-    QPointF actualPos = mapToScene(mapFromGlobal(QCursor::pos()));
     if(event->button() == Qt::LeftButton){
         isPressedLeftButton = true;
         position.setX(actualPos.x());
         position.setY(actualPos.y());
 
-        if(peasantUI->isVisible()){
-            switch(peasantUI->getSelectedType()){
-            case Building::H_CHURCH:
-                player->newBuilding(new HumanChurch(graph.gimmeNode(actualPos, false)->pos, false, rm), static_cast<Worker *>(player->getSelectedUnits()[0]), 0, 0);
-                graph.update(staticEntities());
-                break;
+        if(selected.size() == 0){
+            player->deselect();
+        }
 
-           case Building::H_FARM:
-                player->newBuilding(new HumanFarm(graph.gimmeNode(actualPos, false)->pos, false, rm, &(player->food)), static_cast<Worker *>(player->getSelectedUnits()[0]), 0, 0);
-                graph.update(staticEntities());
+        Worker *worker = nullptr;
+        for(auto *i : selected){
+            if(i->getType() == Unit::PEASANT){
+                worker = static_cast<Worker *>(i);
                 break;
             }
         }
 
-    } else if (event->button() == Qt::RightButton){
+        if(currentBuilding){
+            if(currentBuilding->collidingItems().size() == 0){
+                player->newBuilding(currentBuilding, worker, 0, 0);
+                currentBuilding = nullptr;
+                graph.update(staticEntities());
+                //peasantUI->hide();
+            }
+        }
 
-        for(int i = 0; i < player->getSelectedUnits().size(); i++){
-            Unit *u = player->getSelectedUnits()[i];
+    } else if (event->button() == Qt::RightButton){
+        // Nastavení cesty vybraným jednotkám
+        for(int i = 0; i < selected.size(); i++){
+            Unit *u = selected[i];
             auto path = bfs::shortestPath(graph, u->center(), actualPos+QPointF(i*32, 0));
             if(!path.isEmpty()){
                 u->cancel();
@@ -157,19 +167,17 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
             }
         }
 
-        // Klikl hráč na goldmine?
+        // Pokud hráč klikl na goldmine a má zvoleného pracovníka, pošleme ho těžit
         for(Goldmine *g : goldmines){
             if(g->boundingRect2().contains(actualPos)){
-                for(Unit *u : player->getSelectedUnits()){
+                for(Unit *u : selected){
                     if(u->getType() == Unit::PEASANT) {
-                        Worker *w = static_cast<Worker *>(u);
-                        w->mine(g, player->getBuildings()[0]);
+                        static_cast<Worker *>(u)->mine(g, player->getBuildings()[0]);
                     }
                 }
             }
         }
     }
-
     //QGraphicsView::mousePressEvent(event);
 }
 
@@ -179,7 +187,7 @@ void Warcraft::mouseReleaseEvent(QMouseEvent *releaseEvent) {
 
         QList<Unit *> selected;
         for(Unit *unit : player->getUnits()){
-            if(unit->isVisible() && unit->isAlive() && rect->rect().intersects(unit->boundingRect2())){
+            if(unit->canSelect() && rect->rect().intersects(unit->boundingRect2())){
                 selected.append(unit);
             }
         }
@@ -193,22 +201,18 @@ void Warcraft::mouseReleaseEvent(QMouseEvent *releaseEvent) {
                 peasantUI->hide();
             }
         }
-
-        if(scene()->items().contains(rect)) scene()->removeItem(rect);
+        rect->hide();
     }
 }
 
 
 void Warcraft::mouseMoveEvent(QMouseEvent *event) {
     if(isPressedLeftButton){
-        if(scene()->items().contains(rect)){
-            scene()->removeItem(rect);
-        }
-        QPointF actualPos = mapToScene(mapFromGlobal(QCursor::pos()));
+        rect->hide();
+        QPointF actualPos = mapToScene(event->pos());
         rect->setPen(QPen(Qt::green));
         rect->setRect(position.x(), position.y(),actualPos.x() -position.x() , actualPos.y()-position.y());
-
-        scene()->addItem(rect);
+        rect->show();
     }
     Q_UNUSED(event);
 }
@@ -219,7 +223,6 @@ void Warcraft::keyPressEvent(QKeyEvent *event){
         window()->close();
         break;
     }
-
 }
 
 QList<Entity *> Warcraft::staticEntities() const {
@@ -261,11 +264,6 @@ QList<Entity *> Warcraft::deadEntities() const {
         }
     }
     return dead;
-}
-
-void Warcraft::spawnEntity(Entity *e) {
-    scene()->addItem(e);
-
 }
 
 void Warcraft::spawnUnit(Unit *u, Player *owner) {

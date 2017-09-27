@@ -366,14 +366,17 @@ Worker::Worker(QPointF pos, Unit::Type type, int *playerGold, int *playerLumber,
 }
 
 Worker::~Worker() {
+    // Pro bezpečnost
+    delete mineCommand;
+    delete buildCommand;
+    delete harvestCommand;
 }
 
 QRectF Worker::boundingRect() const {
     return QRectF(16,16,32,32);
-
 }
 
-void Worker::cancel(){
+void Worker::cancel() {
     Unit::cancel();
     delete mineCommand;
     delete buildCommand;
@@ -381,6 +384,10 @@ void Worker::cancel(){
     mineCommand = nullptr;
     buildCommand = nullptr;
     harvestCommand = nullptr;
+}
+
+bool Worker::canSelect() const {
+    return Entity::canSelect() && buildCommand == nullptr;
 }
 
 void Worker::mine(Goldmine *source, Building *dest){
@@ -403,12 +410,13 @@ void Worker::build(Building *building) {
     buildCommand = new BuildCommand(building);
     scene()->addItem(building);
     building->hide();
+    building->setHighlighted(false);
     setPath(bfs::shortestPath(*graph, center(), building->center()));
     move();
 }
 
 void Worker::update(){
-    if(buildCommand && buildCommand->what){
+    if(buildCommand){
         if(!buildCommand->what->isBuildingFinished()){
                     if(collidesWithItem(buildCommand->what)){
                         stopMoving();
@@ -439,7 +447,6 @@ void Worker::update(){
             currentAnimationSet = &movementAnims;
         }
     }
-
     Unit::update();
 }
 

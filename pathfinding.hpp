@@ -1,11 +1,11 @@
 #ifndef PATHFINDING_HPP
 #define PATHFINDING_HPP
 
-#include "entity/Entity.hpp"
-
 #define GRAPH_MARGIN 2
 #define GRAPH_SPACING 32  // Rozestup uzlů horizontálně a vertikálně
 #define NODES_ARRAY_SIZE 2048/GRAPH_SPACING-GRAPH_MARGIN
+
+#include "entity/Entity.hpp"
 
 struct Node {
     Node(int x, int y) { pos.setX(x); pos.setY(y); }

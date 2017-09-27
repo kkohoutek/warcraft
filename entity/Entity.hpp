@@ -32,10 +32,11 @@ public:
     int getMaxHP() const            { return maxHP; }
 
     virtual bool isAlive() const    { return hp > 0; }
+    virtual bool canSelect() const  { return isVisible() && isAlive(); }
     void setHighlighted(bool h)     { highlighted = h; }
 
-    qreal distanceFrom(Entity *entity) const ;
-    qreal distanceFrom(QPointF point) const;
+    float distanceFrom(Entity *entity) const ;
+    float distanceFrom(QPointF point) const;
 
     // absolutní pozice středu entity
     QPointF center() const;
@@ -44,16 +45,15 @@ public:
     QRectF boundingRect2() const;
 
 protected:
-    float scaleX;
-    float scaleY;
-
+    float scaleX = 1;
+    float scaleY = 1;
 
  private:
-    int hp;
-    int maxHP;
-    Animation *currentAnimation;
+    Animation *currentAnimation = nullptr;
 
-    bool highlighted;
+    int hp              = 0;
+    int maxHP           = 0;
+    bool highlighted    = false;
 
 };
 

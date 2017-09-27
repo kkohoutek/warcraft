@@ -37,7 +37,6 @@ public:
     void mouseMoveEvent(QMouseEvent *event);
     void keyPressEvent(QKeyEvent *event);
 
-    void spawnEntity(Entity *e);
     void spawnUnit(Unit *u, Player *owner = nullptr);
     void spawnBuilding(Building *b, Player *owner = nullptr);
     void spawnGoldmine(Goldmine *g);
@@ -59,6 +58,7 @@ private:
     QGraphicsRectItem *rect; // selection rect
 
     PeasantUI *peasantUI;
+    Building *currentBuilding = nullptr;
 
 };
 

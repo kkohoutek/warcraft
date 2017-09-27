@@ -14,6 +14,7 @@ class Unit : public Entity
 public:
     // C++ nemá reflexi, opravte to
     enum Type {
+        NONE,
         DAEMON,
         FOOTMAN,
         PEASANT,

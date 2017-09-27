@@ -2,8 +2,15 @@
 
 #include <QPushButton>
 #include <QLayout>
+#include <QGraphicsScene>
 
-PeasantUI::PeasantUI(Player *player, QWidget *parent) : QWidget(parent) {
+#include "entity/building/HumanFarm.hpp"
+
+PeasantUI::PeasantUI(Building *&buildingPtr, Player *player, ResourceManager *rm, QGraphicsScene *scene, QWidget *parent) : QWidget(parent) {
+    this->buildingPtr = &buildingPtr;
+    this->player = player;
+    this->rm = rm;
+    this->scene = scene;
     this->setGeometry(700,300,80,300);
     QGridLayout *layout = new QGridLayout(this);
     this->setLayout(layout);
@@ -38,5 +45,42 @@ PeasantUI::PeasantUI(Player *player, QWidget *parent) : QWidget(parent) {
     connect(church, SIGNAL(clicked(bool)), SLOT(clickChurch()));
     connect(blacks, SIGNAL(clicked(bool)), SLOT(clickBlacks()));
     connect(stables, SIGNAL(clicked(bool)), SLOT(clickStables()));
+
+}
+
+void PeasantUI::clickFarm() {
+    *buildingPtr = new HumanFarm(QPointF(0,0),false,rm,&(player->food));
+    scene->addItem(*buildingPtr);
+    (*buildingPtr)->setHighlighted(true);
+
+}
+
+void PeasantUI::clickBarracks()
+{
+
+}
+
+void PeasantUI::clickHall()
+{
+
+}
+
+void PeasantUI::clickStables()
+{
+
+}
+
+void PeasantUI::clickBlacks()
+{
+
+}
+
+void PeasantUI::clickChurch()
+{
+
+}
+
+void PeasantUI::clickMill()
+{
 
 }

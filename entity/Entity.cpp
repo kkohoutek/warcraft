@@ -5,12 +5,6 @@
 
 Entity::Entity(QPointF pos) {
     this->setPos(pos);
-    scaleX = 1;
-    scaleY = 1;
-
-    highlighted = false;
-    currentAnimation = nullptr;
-
 }
 
 Entity::~Entity() {
@@ -55,7 +49,6 @@ void Entity::setCurrentAnimation(Animation *anim) {
         currentAnimation->setCurrentFrame(0);
     }
     currentAnimation = anim;
-    //currentAnimation->start();
 }
 
 void Entity::damage(int amount){
@@ -63,12 +56,12 @@ void Entity::damage(int amount){
     if(hp < 0) hp = 0;
 }
 
-qreal Entity::distanceFrom(Entity *entity) const {
-    return QLineF(center(), entity->center()).length();
+float Entity::distanceFrom(QPointF point) const {
+    return QLineF(center(), point).length();
 }
 
-qreal Entity::distanceFrom(QPointF point) const {
-    return QLineF(center(), point).length();
+float Entity::distanceFrom(Entity *entity) const {
+    return distanceFrom(entity->center());
 }
 
 QPointF Entity::center() const {
