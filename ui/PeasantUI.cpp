@@ -4,10 +4,10 @@
 #include <QLayout>
 #include <QGraphicsScene>
 
-#include "entity/building/HumanFarm.hpp"
+#include "entity/building/buildings_all.hpp"
 
-PeasantUI::PeasantUI(Building *&buildingPtr, Player *player, ResourceManager *rm, QGraphicsScene *scene, QWidget *parent) : QWidget(parent) {
-    this->buildingPtr = &buildingPtr;
+PeasantUI::PeasantUI(Building **buildingPtr, Player *player, ResourceManager *rm, QGraphicsScene *scene, QWidget *parent) : QWidget(parent) {
+    this->buildingPtr = buildingPtr;
     this->player = player;
     this->rm = rm;
     this->scene = scene;
@@ -48,39 +48,43 @@ PeasantUI::PeasantUI(Building *&buildingPtr, Player *player, ResourceManager *rm
 
 }
 
+void PeasantUI::prepareForBuilding(Building *b) {
+    // Pokud už je nějaká možnost zvolena, zruší se
+    if(*buildingPtr){
+        scene->removeItem(*buildingPtr);
+        delete *buildingPtr;
+        *buildingPtr = nullptr;
+        return;
+    }
+    *buildingPtr = b;
+    scene->addItem(b);
+    b->setHighlighted(true);
+}
+
 void PeasantUI::clickFarm() {
-    *buildingPtr = new HumanFarm(QPointF(0,0),false,rm,&(player->food));
-    scene->addItem(*buildingPtr);
-    (*buildingPtr)->setHighlighted(true);
-
+    prepareForBuilding(new HumanFarm(QPointF(0,0),false,rm,&(player->food)));
 }
 
-void PeasantUI::clickBarracks()
-{
-
+void PeasantUI::clickBarracks() {
+    prepareForBuilding(new HumanBarracks(QPointF(0,0),false,rm));
 }
 
-void PeasantUI::clickHall()
-{
-
+void PeasantUI::clickHall() {
+    prepareForBuilding(new HumanTownHall(QPointF(0,0),false,rm));
 }
 
-void PeasantUI::clickStables()
-{
-
+void PeasantUI::clickStables() {
+    prepareForBuilding((new HumanStables(QPointF(0,0),false,rm)));
 }
 
-void PeasantUI::clickBlacks()
-{
-
+void PeasantUI::clickBlacks() {
+    prepareForBuilding(new HumanBlacksmith(QPointF(0,0),false,rm));
 }
 
-void PeasantUI::clickChurch()
-{
-
+void PeasantUI::clickChurch() {
+    prepareForBuilding(new HumanChurch(QPointF(0,0),false,rm));
 }
 
-void PeasantUI::clickMill()
-{
-
+void PeasantUI::clickMill() {
+    prepareForBuilding(new HumanLumberMill(QPointF(0,0),false,rm));
 }

@@ -4,7 +4,7 @@
 #include "entity/Entity.hpp"
 #include "Animation.hpp"
 #include "ResourceManager.hpp"
-#include "race.h"
+#include "Race.hpp"
 #include <QObject>
 
 

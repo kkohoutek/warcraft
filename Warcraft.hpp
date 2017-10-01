@@ -57,6 +57,7 @@ private:
     QPoint position;
     QGraphicsRectItem *rect; // selection rect
 
+    //QWidget *currentUI = nullptr;
     PeasantUI *peasantUI;
     Building *currentBuilding = nullptr;
 

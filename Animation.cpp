@@ -1,5 +1,4 @@
 #include "Animation.hpp"
-#include <QFile>
 
 Animation::Animation(const QPixmap *spriteSheet, const int frameWidth, const int frameHeight, QList<QList<int>> &frames, const int duration, const bool looping) {
     this->spriteSheet = spriteSheet;
@@ -10,6 +9,26 @@ Animation::Animation(const QPixmap *spriteSheet, const int frameWidth, const int
 
     animationTimer.setInterval(duration);
     connect(&animationTimer, SIGNAL(timeout()), this, SLOT(nextFrame()));
+}
+
+void Animation::start() {
+    if(!animationTimer.isActive()) animationTimer.start();
+}
+
+void Animation::stop() {
+    animationTimer.stop();
+}
+
+void Animation::draw(QPainter *painter) {
+    painter->drawPixmap(0, 0, *spriteSheet, currentPositionX(), currentPositionY(), frameWidth, frameHeight);
+}
+
+int Animation::currentPositionX() {
+    return frames[currentFrameIndex][0] * frameWidth;
+}
+
+int Animation::currentPositionY() {
+    return frames[currentFrameIndex][1] * frameHeight;
 }
 
 void Animation::nextFrame() {

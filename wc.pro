@@ -79,8 +79,9 @@ HEADERS  += \
     entity/building/OrcTemple.hpp \
     entity/building/OrcTower.hpp \
     entity/building/OrcTownHall.hpp \
-    race.h \
-    ui/PeasantUI.hpp
+    ui/PeasantUI.hpp \
+    entity/building/buildings_all.hpp \
+    Race.hpp
 
 
 FORMS    +=

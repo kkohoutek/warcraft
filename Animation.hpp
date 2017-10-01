@@ -16,9 +16,9 @@ class Animation : public QObject
 public:
     Animation(const QPixmap *spriteSheet, const int frameWidth, const int frameHeight, QList<QList<int>> &frames, const int duration, const bool looping);
 
-    void start()                    { if(!animationTimer.isActive()) animationTimer.start(); }
-    void stop()                     { animationTimer.stop(); }
-    void draw(QPainter *painter)    { painter->drawPixmap(0, 0, *spriteSheet, currentPositionX(), currentPositionY(), frameWidth, frameHeight); }
+    void start();
+    void stop();
+    void draw(QPainter *painter);
     void setCurrentFrame(int index) { currentFrameIndex = index; }
 
 private:
@@ -31,8 +31,8 @@ private:
 
     QTimer              animationTimer;
 
-    int currentPositionX() const { return frames[currentFrameIndex][0] * frameWidth; }
-    int currentPositionY() const { return frames[currentFrameIndex][1] * frameHeight; }
+    int currentPositionX();
+    int currentPositionY();
 
 private slots:
     void nextFrame();

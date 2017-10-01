@@ -1,24 +1,9 @@
 #include "Warcraft.hpp"
 
-#include "entity/building/HumanFarm.hpp"
-#include "entity/building/HumanBlacksmith.hpp"
-#include "entity/building/HumanChurch.hpp"
-#include "entity/building/HumanBarracks.hpp"
-#include "entity/building/HumanStables.hpp"
-#include "entity/building/HumanTownHall.hpp"
-#include "entity/building/HumanLumberMill.hpp"
-#include "entity/building/HumanTower.hpp"
-#include "entity/unit/Footman.hpp"
-#include "entity/building/OrcBarracks.hpp"
-#include "entity/building/OrcBlacksmith.hpp"
-#include "entity/building/OrcFarm.hpp"
-#include "entity/building/OrcKennels.hpp"
-#include "entity/building/OrcLumberMill.hpp"
-#include "entity/building/OrcTemple.hpp"
-#include "entity/building/OrcTower.hpp"
-#include "entity/building/OrcTownHall.hpp"
+#include "entity/building/buildings_all.hpp"
 #include "entity/Trees.hpp"
 #include "entity/unit/Grunt.hpp"
+#include "entity/unit/Footman.hpp"
 #include "pathfinding.hpp"
 #include "ui/PeasantUI.hpp"
 
@@ -55,7 +40,7 @@ Warcraft::Warcraft() {
 
     graph.update(staticEntities());
 
-    peasantUI = new PeasantUI(currentBuilding, player, rm, scene, this);
+    peasantUI = new PeasantUI(&currentBuilding, player, rm, scene, this);
     peasantUI->hide();
     scene->addWidget(peasantUI);
 
@@ -151,7 +136,7 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
                 player->newBuilding(currentBuilding, worker, 0, 0);
                 currentBuilding = nullptr;
                 graph.update(staticEntities());
-                //peasantUI->hide();
+                peasantUI->hide();
             }
         }
 
@@ -207,7 +192,7 @@ void Warcraft::mouseReleaseEvent(QMouseEvent *releaseEvent) {
 
 
 void Warcraft::mouseMoveEvent(QMouseEvent *event) {
-    if(isPressedLeftButton){
+    if(isPressedLeftButton && !currentBuilding){
         rect->hide();
         QPointF actualPos = mapToScene(event->pos());
         rect->setPen(QPen(Qt::green));
