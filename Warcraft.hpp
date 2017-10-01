@@ -48,7 +48,10 @@ public:
 
     void printGameInfo();
 
-private:
+    static int costGold(Building::Type type);
+    static int costLumber(Building::Type type);
+
+protected:
     ResourceManager *rm;
     Graph graph;
 
@@ -60,6 +63,9 @@ private:
     //QWidget *currentUI = nullptr;
     PeasantUI *peasantUI;
     Building *currentBuilding = nullptr;
+
+    // costs
+    //QMap<Building::Type, QPair<int, int>> buildingCosts;
 
 };
 

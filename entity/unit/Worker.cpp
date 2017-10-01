@@ -409,7 +409,7 @@ void Worker::build(Building *building) {
     cancel();
     buildCommand = new BuildCommand(building);
     scene()->addItem(building);
-    building->hide();
+    building->setOpacity(0.5);
     building->setHighlighted(false);
     setPath(bfs::shortestPath(*graph, center(), building->center()));
     move();
@@ -420,7 +420,7 @@ void Worker::update(){
         if(!buildCommand->what->isBuildingFinished()){
                     if(collidesWithItem(buildCommand->what)){
                         stopMoving();
-                        buildCommand->what->show();
+                        buildCommand->what->setOpacity(1);
                         this->hide();
                         buildCommand->what->startConstruction();
                     }
