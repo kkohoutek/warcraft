@@ -64,15 +64,3 @@ void Player::deselect() {
         selectedBuilding = nullptr;
     }
 }
-
-void Player::newBuilding(Building *building, Worker *worker, int costGold, int costLumber) {
-    if(!units.contains(worker)) return;
-
-    if(gold >= costGold && lumber >= costLumber){
-        gold -= costGold;
-        lumber -= costLumber;
-        worker->build(building);
-        buildings.append(building);
-        deselect();
-    }
-}

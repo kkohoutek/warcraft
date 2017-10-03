@@ -48,12 +48,16 @@ PeasantUI::PeasantUI(Building **buildingPtr, Player *player, ResourceManager *rm
 
 }
 
-void PeasantUI::prepareForBuilding(Building *b) {
+void PeasantUI::cancelOption() {
+    scene->removeItem(*buildingPtr);
+    delete *buildingPtr;
+    *buildingPtr = nullptr;
+}
+
+void PeasantUI::prepare(Building *b) {
     // Pokud už je nějaká možnost zvolena, zruší se
     if(*buildingPtr){
-        scene->removeItem(*buildingPtr);
-        delete *buildingPtr;
-        *buildingPtr = nullptr;
+        cancelOption();
         return;
     }
     *buildingPtr = b;
@@ -62,29 +66,29 @@ void PeasantUI::prepareForBuilding(Building *b) {
 }
 
 void PeasantUI::clickFarm() {
-    prepareForBuilding(new HumanFarm(QPointF(0,0),false,rm,&(player->food)));
+    prepare(new HumanFarm(QPointF(0,0),false,rm,&(player->food)));
 }
 
 void PeasantUI::clickBarracks() {
-    prepareForBuilding(new HumanBarracks(QPointF(0,0),false,rm));
+    prepare(new HumanBarracks(QPointF(0,0),false,rm));
 }
 
 void PeasantUI::clickHall() {
-    prepareForBuilding(new HumanTownHall(QPointF(0,0),false,rm));
+    prepare(new HumanTownHall(QPointF(0,0),false,rm));
 }
 
 void PeasantUI::clickStables() {
-    prepareForBuilding((new HumanStables(QPointF(0,0),false,rm)));
+    prepare(new HumanStables(QPointF(0,0),false,rm));
 }
 
 void PeasantUI::clickBlacks() {
-    prepareForBuilding(new HumanBlacksmith(QPointF(0,0),false,rm));
+    prepare(new HumanBlacksmith(QPointF(0,0),false,rm));
 }
 
 void PeasantUI::clickChurch() {
-    prepareForBuilding(new HumanChurch(QPointF(0,0),false,rm));
+    prepare(new HumanChurch(QPointF(0,0),false,rm));
 }
 
 void PeasantUI::clickMill() {
-    prepareForBuilding(new HumanLumberMill(QPointF(0,0),false,rm));
+    prepare(new HumanLumberMill(QPointF(0,0),false,rm));
 }

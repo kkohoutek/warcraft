@@ -116,7 +116,6 @@ void Graph::resetNodes() {
 }
 
 
-
 QList<QPointF> bfs::shortestPath(Graph &graph, Node *start, Node *goal) {
     if(!goal || !start) return QList<QPointF>();
 

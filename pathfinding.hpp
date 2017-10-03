@@ -1,9 +1,9 @@
 #ifndef PATHFINDING_HPP
 #define PATHFINDING_HPP
 
-#define GRAPH_MARGIN 2
-#define GRAPH_SPACING 32  // Rozestup uzlů horizontálně a vertikálně
-#define NODES_ARRAY_SIZE 2048/GRAPH_SPACING-GRAPH_MARGIN
+#define GRAPH_MARGIN        2
+#define GRAPH_SPACING       32  // Rozestup uzlů horizontálně a vertikálně
+#define NODES_ARRAY_SIZE    2048/GRAPH_SPACING-GRAPH_MARGIN
 
 #include "entity/Entity.hpp"
 
@@ -29,13 +29,12 @@ public:
     // Aktualizuje graf podle listu překážek
     void update(const QList<Entity *> &obstacles);
 
-    /* Dej mi node, která nejlépe odpovídá tomuto bodu
+    /* Dej sem node, která nejlépe odpovídá tomuto bodu
        Pokud noNull, vrátí node, která je nejblíž */
     Node *gimmeNode(QPointF pos, bool noNull = false);
 
     // Defaultuje visited a parent
     void resetNodes();
-
 };
 
 // Breadth-first search

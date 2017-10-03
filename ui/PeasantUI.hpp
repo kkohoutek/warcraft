@@ -10,15 +10,16 @@ class PeasantUI : public QWidget
 public:
     explicit PeasantUI(Building **buildingPtr, Player *player, ResourceManager *rm, QGraphicsScene *scene, QWidget *parent = nullptr);
 
-private:
-    // Pointer na pointer na budovu kterou chce hráč stavět
-    Building **buildingPtr = nullptr;
-    ResourceManager *rm;
-    Player *player;
-    QGraphicsScene *scene;
+    void cancelOption();
 
 private:
-    void prepareForBuilding(Building *b);
+    // Pointer na pointer na budovu kterou chce hráč stavět
+    Building        **buildingPtr;
+    ResourceManager *rm;
+    Player          *player;
+    QGraphicsScene  *scene;
+
+    void prepare(Building *b);
 
 private slots:
     void clickFarm();

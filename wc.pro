@@ -44,7 +44,8 @@ SOURCES += main.cpp\
     entity/building/OrcLumberMill.cpp \
     entity/building/OrcKennels.cpp \
     entity/building/OrcFarm.cpp \
-    ui/PeasantUI.cpp
+    ui/PeasantUI.cpp \
+    ui/Message.cpp
 
 
 HEADERS  += \
@@ -81,7 +82,8 @@ HEADERS  += \
     entity/building/OrcTownHall.hpp \
     ui/PeasantUI.hpp \
     entity/building/buildings_all.hpp \
-    Race.hpp
+    Race.hpp \
+    ui/Message.hpp
 
 
 FORMS    +=

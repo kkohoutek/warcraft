@@ -10,7 +10,7 @@
 #include <QScrollBar>
 #include <QDebug>
 
-#define MAP_SIZE 2048
+#define MAP_AREA 4096
 
 Warcraft::Warcraft() {
     setFixedHeight(600);
@@ -20,7 +20,7 @@ Warcraft::Warcraft() {
     setMouseTracking(true);
 
     QGraphicsScene *scene = new QGraphicsScene(this);
-    scene->setSceneRect(0, 0, MAP_SIZE,MAP_SIZE);
+    scene->setSceneRect(0, 0, MAP_AREA/2, MAP_AREA/2);
     setScene(scene);
     centerOn(0, 0);
 
@@ -29,6 +29,8 @@ Warcraft::Warcraft() {
     rect->hide();
 
     player = new Player(HUMAN);
+    player->lumber = 100000;
+    player->gold = 500;
     enemy = new Player(ORC);
 
     initResources();
@@ -59,9 +61,9 @@ void Warcraft::loadBuildings() {
     spawnBuilding(new HumanTownHall(QPointF(216,216), true, rm), player);;
     spawnBuilding(new HumanFarm(QPointF(70, 262), true, rm, &(player->food)), player);
     spawnBuilding(new HumanFarm(QPointF(310, 290), true, rm, &(player->food)), player);
-    spawnBuilding(new HumanChurch(QPointF(278, 81), true, rm), player);
-    spawnBuilding(new HumanBarracks(QPointF(220, 400), true, rm), player);;
-    spawnBuilding(new OrcTownHall(QPointF(MAP_SIZE-300,MAP_SIZE-300), true, rm), enemy);
+    //spawnBuilding(new HumanChurch(QPointF(278, 81), true, rm), player);
+    //spawnBuilding(new HumanBarracks(QPointF(220, 400), true, rm), player);;
+    spawnBuilding(new OrcTownHall(QPointF(MAP_AREA/2-300,MAP_AREA/2-300), true, rm), enemy);
 }
 
 void Warcraft::loadUnits(){
@@ -71,13 +73,13 @@ void Warcraft::loadUnits(){
     spawnUnit(new Footman(QPointF(500,120), rm), player);
 
     for(int i = 0; i < 4; i++){
-        spawnUnit(new Grunt(QPointF(MAP_SIZE-420+i*40, MAP_SIZE-286-i*40), rm), enemy);;
+        spawnUnit(new Grunt(QPointF(MAP_AREA/2-420+i*40, MAP_AREA/2-286-i*40), rm), enemy);;
     }
 }
 
 void Warcraft::loadWorld() {
     spawnGoldmine(new Goldmine(QPointF(64,64), rm));
-    spawnGoldmine(new Goldmine(QPointF(MAP_SIZE-192, MAP_SIZE-192), rm));
+    spawnGoldmine(new Goldmine(QPointF(MAP_AREA/2-192, MAP_AREA/2-192), rm));
     spawnGoldmine(new Goldmine(QPointF(800,522), rm));
 }
 
@@ -107,11 +109,13 @@ void Warcraft::timerEvent(QTimerEvent *event) {
 
     scene()->update();
 
+    //printGameInfo();
+
     Q_UNUSED(event);
 }
 
 void Warcraft::mousePressEvent(QMouseEvent *event){
-    QPointF actualPos = mapToScene(event->pos());
+    auto actualPos = mapToScene(event->pos());
     auto selected = player->getSelectedUnits();
 
     if(event->button() == Qt::LeftButton){
@@ -119,7 +123,7 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
         position.setX(actualPos.x());
         position.setY(actualPos.y());
 
-        if(selected.size() == 0){
+        if(selected.size() == 0) {
             player->deselect();
         }
 
@@ -133,10 +137,20 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
 
         if(currentBuilding){
             if(currentBuilding->collidingItems().size() == 0){
-                player->newBuilding(currentBuilding, worker, 0, 0);
-                currentBuilding = nullptr;
-                graph.update(staticEntities());
-                peasantUI->hide();
+                int result = newBuilding(player, currentBuilding, worker, cost(currentBuilding->getType()).first, cost(currentBuilding->getType()).second);
+                if(result == 0) {
+                    currentBuilding = nullptr;
+                    graph.update(staticEntities());
+                    peasantUI->hide();
+                } else if (result == 1) {
+                    message.setText("NOT ENOUGH GOLD");
+                    peasantUI->cancelOption();
+                } else if (result == 2) {
+                    message.setText("NOT ENOUGH LUMBER");
+                    peasantUI->cancelOption();
+                }
+            } else {
+                peasantUI->cancelOption();
             }
         }
 
@@ -189,7 +203,6 @@ void Warcraft::mouseReleaseEvent(QMouseEvent *releaseEvent) {
         rect->hide();
     }
 }
-
 
 void Warcraft::mouseMoveEvent(QMouseEvent *event) {
     if(isPressedLeftButton && !currentBuilding){
@@ -266,14 +279,27 @@ void Warcraft::spawnGoldmine(Goldmine *g) {
     scene()->addItem(g);
 }
 
+int Warcraft::newBuilding(Player *player, Building *building, Worker *worker, int costGold, int costLumber) {
+    if(costGold > player->gold) return 1;
+    if(costLumber > player->lumber) return 2;
+
+    player->gold -= costGold;
+    player->lumber -= costLumber;
+    worker->build(building);
+    spawnBuilding(building, player);
+    player->deselect();
+
+    return 0;
+}
+
+
 void Warcraft::paintEvent(QPaintEvent *event) {
     QGraphicsView::paintEvent(event); 
     QPainter painter(viewport());
     painter.setFont(QFont("sans-serif",10));
     painter.setPen(Qt::white);
     painter.drawText(QPointF(width()*3/5, 20), "FOOD: "+QString::number(player->food)+"   GOLD: "+QString::number(player->gold)+"   LUMBER: "+QString::number(player->lumber));
-     // visualize graph
-    /*
+    /* // visualize graph
     for(int i = 0; i < NODES_ARRAY_SIZE; i++){
         for(int j = 0; j < NODES_ARRAY_SIZE; j++){
             Node *n = graph.nodes[i][j];
@@ -281,7 +307,9 @@ void Warcraft::paintEvent(QPaintEvent *event) {
                 painter.drawEllipse(mapFromScene(n->pos), 1, 1);
             }
         }
-    }*/
+    }
+    */
+    message.display(&painter, width()/2, height()/2);
 }
 
 void Warcraft::initResources() {
@@ -309,5 +337,48 @@ void Warcraft::printGameInfo() {
     qDebug() << "Alive entities: " + QString::number(entityCount - deadCount) + " (" + QString::number((entityCount - deadCount) * sizeof(Entity)) + " bytes)";
     qDebug() << "Dead entities: " + QString::number(deadCount) + " (" + QString::number(deadCount * sizeof(Entity)) + " bytes)";
 
+}
+
+
+QPair<int, int> Warcraft::cost(Building::Type type) {
+    QPair<int, int> costs;
+    switch(type){
+    case Building::H_BARRACKS:
+        costs.first = HumanBarracks::COST_GOLD;
+        costs.second = HumanBarracks::COST_LUMBER;
+        break;
+    case Building::H_BLACKSMITH:
+        costs.first = HumanBlacksmith::COST_GOLD;
+        costs.second = HumanBlacksmith::COST_LUMBER;
+        break;
+    case Building::H_CHURCH:
+        costs.first = HumanChurch::COST_GOLD;
+        costs.second = HumanChurch::COST_LUMBER;
+        break;
+    case Building::H_FARM:
+        costs.first = HumanFarm::COST_GOLD;
+        costs.second = HumanFarm::COST_LUMBER;
+        break;
+    case Building::H_LUMBERMILL:
+        costs.first = HumanLumberMill::COST_GOLD;
+        costs.second = HumanLumberMill::COST_LUMBER;
+        break;
+    case Building::H_STABLES:
+        costs.first = HumanStables::COST_GOLD;
+        costs.second = HumanStables::COST_LUMBER;
+        break;
+    case Building::H_TOWER:
+        costs.first = HumanTower::COST_GOLD;
+        costs.second = HumanTower::COST_LUMBER;
+        break;
+    case Building::H_TOWNHALL:
+        costs.first = HumanTownHall::COST_GOLD;
+        costs.second = HumanTownHall::COST_LUMBER;
+        break;
+    default:
+        costs.first = 0;
+        costs.second = 0;
+    }
+    return costs;
 }
 
