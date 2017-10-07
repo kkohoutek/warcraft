@@ -31,7 +31,7 @@ public:
 
     /* Dej sem node, která nejlépe odpovídá tomuto bodu
        Pokud noNull, vrátí node, která je nejblíž */
-    Node *gimmeNode(QPointF pos, bool noNull = false);
+    Node **gimmeNode(QPointF pos, bool noNull = false);
 
     // Defaultuje visited a parent
     void resetNodes();
@@ -42,8 +42,8 @@ private:
 
 // Breadth-first search
 namespace bfs {
-    QList<QPointF> shortestPath(Graph &graph, Node *start, Node *goal);
-    QList<QPointF> shortestPath(Graph &graph, QPointF a, QPointF b);
+    QList<Node **> shortestPath(Graph &graph, Node *start, Node *goal);
+    QList<Node **> shortestPath(Graph &graph, QPointF a, QPointF b);
 }
 
 #endif // PATHFINDING_HPP

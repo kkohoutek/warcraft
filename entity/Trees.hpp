@@ -12,8 +12,6 @@ public:
 
     // QGraphicsItem interface
     QRectF boundingRect() const;
-
-
 };
 
 #endif // TREES_HPP

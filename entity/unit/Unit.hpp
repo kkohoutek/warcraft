@@ -27,7 +27,7 @@ public:
     virtual ~Unit();
 
     void            setTarget(QPointF target);
-    void            setPath(const QList<QPointF> &list);
+    void            setPath(const QList<Node **> &list);
     void            goTo(QPointF goal);
     void            useGraph(Graph *graph) { this->graph = graph; }
 
@@ -64,7 +64,7 @@ protected:
     QList<Animation *> *currentAnimationSet; // Ukazuje na jeden z předešlých listů
 
     QPointF targetPoint;
-    QQueue<QPointF> path; // collection of target points
+    QQueue<Node **> path;
     Graph *graph = nullptr; // pointer to pathfinding graph
     Entity *targetEntity = nullptr;
 

@@ -78,21 +78,21 @@ void Graph::update(const QList<Entity *> &obstacles) {
     }
 }
 
-Node *Graph::gimmeNode(QPointF pos, bool noNull) {
+Node **Graph::gimmeNode(QPointF pos, bool noNull) {
     // Získej indexy podle pozice a udrž je v rozsahu arraye
     int i = qBound(0, qRound(pos.y()/GRAPH_SPACING)-GRAPH_MARGIN, NODES_ARRAY_SIZE-1);
     int j = qBound(0, qRound(pos.x()/GRAPH_SPACING)-GRAPH_MARGIN, NODES_ARRAY_SIZE-1);
 
-    Node *result = nodes[i][j];
+    Node **result = &(nodes[i][j]);
 
-    if(noNull && !result){
+    if(noNull && !*result){
         // Najdi nejbližší
         float minLength = std::numeric_limits<float>::max();
         for(int i = 0; i < NODES_ARRAY_SIZE; i++){
             for(int j = 0; j < NODES_ARRAY_SIZE; j++) {
-                Node *node = nodes[i][j];
-                if(node){
-                    float length = QLineF(pos, node->pos).length();
+                Node **node = &(nodes[i][j]);
+                if(*node){
+                    float length = QLineF(pos, (*node)->pos).length();
                     if(length < minLength){
                         minLength = length;
                         result = node;
@@ -121,8 +121,8 @@ QPointF Graph::posFromIndices(int i, int j) {
 }
 
 
-QList<QPointF> bfs::shortestPath(Graph &graph, Node *start, Node *goal) {
-    if(!goal || !start) return QList<QPointF>();
+QList<Node **> bfs::shortestPath(Graph &graph, Node *start, Node *goal) {
+    if(!goal || !start) return QList<Node **>();
 
     QQueue<Node *> queue;
     start->visited = true;
@@ -143,9 +143,9 @@ QList<QPointF> bfs::shortestPath(Graph &graph, Node *start, Node *goal) {
         }
     }
     // Retrace
-    QList<QPointF> path;
+    QList<Node **> path;
     while(node != start){
-        path.append(node->pos);
+        path.append(graph.gimmeNode(node->pos));
         node = node->parent;
     }
     graph.resetNodes();
@@ -155,6 +155,6 @@ QList<QPointF> bfs::shortestPath(Graph &graph, Node *start, Node *goal) {
 }
 
 
-QList<QPointF> bfs::shortestPath(Graph &graph, QPointF a, QPointF b) {
-    return bfs::shortestPath(graph, graph.gimmeNode(a, true), graph.gimmeNode(b, true));
+QList<Node **> bfs::shortestPath(Graph &graph, QPointF a, QPointF b) {
+    return bfs::shortestPath(graph, *(graph.gimmeNode(a, true)), *(graph.gimmeNode(b, true)));
 }

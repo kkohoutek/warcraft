@@ -1,6 +1,7 @@
 #include "Unit.hpp"
 
 #include <QtMath>
+#include <QDebug>
 
 Unit::Unit(QPointF pos, Unit::Type type, float speed, int damage, int armor, int range) : Entity(pos) {
     this->speed = speed;
@@ -74,11 +75,18 @@ void Unit::update(){
         moveBy(speed * direction().x(), speed * direction().y());
     }
 
-    if(distanceFrom(targetPoint) < 1){
+    if(distanceFrom(targetPoint) < 0.5f){
         moving = false;
         if(!path.isEmpty()) {
-            setTarget(path.dequeue());
-            move();
+
+            Node **node = path.dequeue();
+            if(*node) {
+                setTarget((*node)->pos);
+                move();
+            } else {
+                // Přepočítej cestu
+                setPath(bfs::shortestPath(*graph, center(), (*(path.last()))->pos));
+            }
         } else {
             stopMoving();
         }
@@ -86,14 +94,14 @@ void Unit::update(){
 
 }
 
-void Unit::setPath(const QList<QPointF> &list){
-    if(!path.isEmpty() && path.last() == list.last() || list.isEmpty()) return;
+void Unit::setPath(const QList<Node **> &list){
+    if((!path.isEmpty() && path.last() == list.last() && path.first() == list.first()) || list.isEmpty()) return;
     path.clear();
-    for(QPointF p : list){
-        path.enqueue(p);
+    for(Node ** n : list){
+        path.enqueue(n);
     }
     if(!path.isEmpty()){
-        setTarget(path.dequeue());
+        setTarget((*(path.dequeue()))->pos);
         move();
     }
 }

@@ -426,7 +426,7 @@ void Worker::update(){
                     }
                 } else {
                     this->show();
-                    setPos(graph->gimmeNode(buildCommand->what->center(),true)->pos);
+                    setPos((*(graph->gimmeNode(buildCommand->what->center(),true)))->pos);
                     cancel();
         }
     } else if (mineCommand){

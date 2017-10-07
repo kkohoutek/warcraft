@@ -42,6 +42,7 @@ Warcraft::Warcraft() {
 
     graph.update(staticEntities());
 
+
     peasantUI = new PeasantUI(&currentBuilding, player, rm, scene, this);
     peasantUI->hide();
     scene->addWidget(peasantUI);
