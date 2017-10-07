@@ -11,7 +11,7 @@ PeasantUI::PeasantUI(Building **buildingPtr, Player *player, ResourceManager *rm
     this->player = player;
     this->rm = rm;
     this->scene = scene;
-    this->setGeometry(700,300,80,300);
+    this->setGeometry(695,300,80,255);
     QGridLayout *layout = new QGridLayout(this);
     this->setLayout(layout);
 

@@ -27,11 +27,12 @@ void Graph::update(const QList<Entity *> &obstacles) {
             bool interr = false;
             for(int k = 0;  !interr && k < obstacles.size(); k++){
                 delete nodes[i][j];
-                if(obstacles[k]->boundingRect2().contains((j+GRAPH_MARGIN)*GRAPH_SPACING, (i+GRAPH_MARGIN)*GRAPH_SPACING)){
+                auto pos = posFromIndices(i, j);
+                if(obstacles[k]->boundingRect2().contains(pos.x(), pos.y())){
                     nodes[i][j] = nullptr;
                     interr = true;
-                } else {
-                    nodes[i][j] = new Node((j+GRAPH_MARGIN)*GRAPH_SPACING, (i+GRAPH_MARGIN)*GRAPH_SPACING);
+                } else {                
+                    nodes[i][j] = new Node(pos.x(), pos.y());
                 }
             }
         }
@@ -113,6 +114,10 @@ void Graph::resetNodes() {
             }
         }
     }
+}
+
+QPointF Graph::posFromIndices(int i, int j) {
+    return QPointF((j+GRAPH_MARGIN)*GRAPH_SPACING, (i+GRAPH_MARGIN)*GRAPH_SPACING);
 }
 
 

@@ -1,4 +1,5 @@
 #include "Unit.hpp"
+
 #include <QtMath>
 
 Unit::Unit(QPointF pos, Unit::Type type, float speed, int damage, int armor, int range) : Entity(pos) {
@@ -86,7 +87,7 @@ void Unit::update(){
 }
 
 void Unit::setPath(const QList<QPointF> &list){
-    if(!path.isEmpty() && path.last() == list.last()) return;
+    if(!path.isEmpty() && path.last() == list.last() || list.isEmpty()) return;
     path.clear();
     for(QPointF p : list){
         path.enqueue(p);
@@ -95,6 +96,11 @@ void Unit::setPath(const QList<QPointF> &list){
         setTarget(path.dequeue());
         move();
     }
+}
+
+void Unit::goTo(QPointF goal) {
+    if(!graph) return;
+    setPath(bfs::shortestPath(*graph, center(), goal));
 }
 
 void Unit::attack(Entity *victim) {
@@ -115,10 +121,10 @@ void Unit::die() {
 
 void Unit::stopMoving(){
     moving = false;
-    if(currentAnimationSet == &movementAnims){
+    //if(currentAnimationSet == &movementAnims){
         getCurrentAnimation()->setCurrentFrame(0);
         getCurrentAnimation()->stop();
-    }
+    //}
 }
 
 

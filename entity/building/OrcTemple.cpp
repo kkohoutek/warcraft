@@ -6,7 +6,6 @@ OrcTemple::OrcTemple(QPointF pos, bool finishedOnSpawn, ResourceManager*rm) :
 
 }
 
-QRectF OrcTemple::boundingRect() const
-{
+QRectF OrcTemple::boundingRect() const {
     return QRectF(0,0,92,92);
 }

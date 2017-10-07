@@ -13,7 +13,6 @@ QPixmap *ResourceManager::getSprite(QString id) const {
     return sprites.value(id, nullptr);
 }
 
-
 void ResourceManager::loadSprite(QString id, QPixmap* sprite) {
     sprites.insert(id, sprite);
 }

@@ -6,7 +6,6 @@ OrcTower::OrcTower(QPointF pos, bool finishedOnSpawn, ResourceManager*rm):
 
 }
 
-QRectF OrcTower::boundingRect() const
-{
+QRectF OrcTower::boundingRect() const {
     return QRectF(6,6,84,84);
 }

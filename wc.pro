@@ -15,7 +15,6 @@ TEMPLATE = app
 SOURCES += main.cpp\
     pathfinding.cpp \
     Animation.cpp \
-    Janitor.cpp \
     Player.cpp \
     ResourceManager.cpp \
     Warcraft.cpp \
@@ -49,7 +48,6 @@ SOURCES += main.cpp\
 
 
 HEADERS  += \
-    Janitor.hpp \
     Animation.hpp \
     ResourceManager.hpp \
     entity/building/Building.hpp \

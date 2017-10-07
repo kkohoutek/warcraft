@@ -53,7 +53,7 @@ void Entity::setCurrentAnimation(Animation *anim) {
 
 void Entity::damage(int amount){
     hp -= amount;
-    if(hp < 0) hp = 0;
+    if(hp < 0) die();
 }
 
 float Entity::distanceFrom(QPointF point) const {

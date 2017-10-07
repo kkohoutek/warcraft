@@ -45,8 +45,9 @@ public:
 
     /* Postav hráči novou budovou za pomocí daného workera a vrať 0.
        Pokud není dost zlata vrátí 1.
-       Pokud není dost dřeva vrátí 2. */
-    int newBuilding(Player *player, Building *building, Worker *worker, int costGold, int costLumber);
+       Pokud není dost dřeva vrátí 2.
+       Pokud worker nepatří hráči, vrátí 3. */
+    int newBuilding(Player *player, Building *building, Worker *worker);
 
     QList<Entity *> staticEntities() const;
     QList<Unit *>   allUnits() const;

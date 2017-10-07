@@ -6,7 +6,6 @@ OrcFarm::OrcFarm(QPointF pos, bool finishedOnSpawn, ResourceManager *rm) :
 
 }
 
-QRectF OrcFarm::boundingRect() const
-{
+QRectF OrcFarm::boundingRect() const {
     return QRectF(6,6,78,78);
 }

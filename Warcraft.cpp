@@ -119,6 +119,15 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
     auto selected = player->getSelectedUnits();
 
     if(event->button() == Qt::LeftButton){
+
+        // Klikl hráč na budovu
+        for(Building *b : player->getBuildings()){
+            if(b->boundingRect2().contains(actualPos)){
+                player->selectBuilding(b);
+                return;
+            }
+        }
+
         isPressedLeftButton = true;
         position.setX(actualPos.x());
         position.setY(actualPos.y());
@@ -137,7 +146,7 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
 
         if(currentBuilding){
             if(currentBuilding->collidingItems().size() == 0){
-                int result = newBuilding(player, currentBuilding, worker, cost(currentBuilding->getType()).first, cost(currentBuilding->getType()).second);
+                int result = newBuilding(player, currentBuilding, worker);
                 if(result == 0) {
                     currentBuilding = nullptr;
                     graph.update(staticEntities());
@@ -150,7 +159,9 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
                     peasantUI->cancelOption();
                 }
             } else {
+                message.setText("CAN'T BUILD HERE");
                 peasantUI->cancelOption();
+                peasantUI->hide();
             }
         }
 
@@ -158,12 +169,8 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
         // Nastavení cesty vybraným jednotkám
         for(int i = 0; i < selected.size(); i++){
             Unit *u = selected[i];
-            auto path = bfs::shortestPath(graph, u->center(), actualPos+QPointF(i*32, 0));
-            if(!path.isEmpty()){
-                u->cancel();
-                u->setPath(path);
-                u->move();
-            }
+            u->cancel();
+            u->goTo(actualPos+QPointF(i*32, 0));
         }
 
         // Pokud hráč klikl na goldmine a má zvoleného pracovníka, pošleme ho těžit
@@ -181,7 +188,7 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
 }
 
 void Warcraft::mouseReleaseEvent(QMouseEvent *releaseEvent) {
-    if(releaseEvent->button() == Qt::LeftButton){
+    if(isPressedLeftButton && releaseEvent->button() == Qt::LeftButton){
         isPressedLeftButton = false;
 
         QList<Unit *> selected;
@@ -221,6 +228,23 @@ void Warcraft::keyPressEvent(QKeyEvent *event){
         window()->close();
         break;
     }
+}
+
+int Warcraft::newBuilding(Player *player, Building *building, Worker *worker) {
+    int costGold = cost(building->getType()).first;
+    int costLumber = cost(building->getType()).second;
+
+    if(costGold > player->gold) return 1;
+    if(costLumber > player->lumber) return 2;
+    if(!player->getUnits().contains(worker)) return 3;
+
+    player->gold -= costGold;
+    player->lumber -= costLumber;
+    worker->build(building);
+    spawnBuilding(building, player);
+    player->deselect();
+
+    return 0;
 }
 
 QList<Entity *> Warcraft::staticEntities() const {
@@ -267,6 +291,7 @@ QList<Entity *> Warcraft::deadEntities() const {
 void Warcraft::spawnUnit(Unit *u, Player *owner) {
     if(owner) owner->getUnits().append(u);
     scene()->addItem(u);
+    u->useGraph(&graph);
 }
 
 void Warcraft::spawnBuilding(Building *b, Player *owner) {
@@ -277,19 +302,6 @@ void Warcraft::spawnBuilding(Building *b, Player *owner) {
 void Warcraft::spawnGoldmine(Goldmine *g) {
     goldmines.append(g);
     scene()->addItem(g);
-}
-
-int Warcraft::newBuilding(Player *player, Building *building, Worker *worker, int costGold, int costLumber) {
-    if(costGold > player->gold) return 1;
-    if(costLumber > player->lumber) return 2;
-
-    player->gold -= costGold;
-    player->lumber -= costLumber;
-    worker->build(building);
-    spawnBuilding(building, player);
-    player->deselect();
-
-    return 0;
 }
 
 
@@ -381,4 +393,3 @@ QPair<int, int> Warcraft::cost(Building::Type type) {
     }
     return costs;
 }
-

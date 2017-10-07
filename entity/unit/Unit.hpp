@@ -1,9 +1,10 @@
 #ifndef UNIT_HPP
 #define UNIT_HPP
 
-#include "entity/Entity.hpp"
 #include <QQueue>
 #include <QVector2D>
+#include "entity/Entity.hpp"
+#include "pathfinding.hpp"
 
 /*
  * Tato třída je základem všech jednotek.
@@ -27,6 +28,8 @@ public:
 
     void            setTarget(QPointF target);
     void            setPath(const QList<QPointF> &list);
+    void            goTo(QPointF goal);
+    void            useGraph(Graph *graph) { this->graph = graph; }
 
     virtual void    attack(Entity *victim);
     virtual void    die() override;
@@ -62,6 +65,7 @@ protected:
 
     QPointF targetPoint;
     QQueue<QPointF> path; // collection of target points
+    Graph *graph = nullptr; // pointer to pathfinding graph
     Entity *targetEntity = nullptr;
 
 private:

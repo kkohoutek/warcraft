@@ -10,8 +10,10 @@
 #include <QGraphicsScene>
 #include <QDebug>
 
-Worker::Worker(QPointF pos, Unit::Type type, int *playerGold, int *playerLumber, Graph *graph, ResourceManager *rm) : Unit(pos, type, 0.7f, 0, 0, 0)
-{
+#define MAX_WORKERS_PER_GOLDMINE    5
+#define GOLD_PER_TRIP               10
+
+Worker::Worker(QPointF pos, Unit::Type type, int *playerGold, int *playerLumber, Graph *graph, ResourceManager *rm) : Unit(pos, type, 0.7f, 0, 0, 0) {
     this->playerGold   = playerGold;
     this->playerLumber = playerLumber;
     this->graph = graph;
@@ -393,29 +395,27 @@ bool Worker::canSelect() const {
 void Worker::mine(Goldmine *source, Building *dest){
     cancel();
     mineCommand = new MineCommand(source, dest);
-    setPath(bfs::shortestPath(*graph, center(), source->center()));
-    move();
+    goTo(source->center());
 }
 
 void Worker::harvest(Trees *source, Building *dest){
     cancel();
     harvestCommand = new HarvestCommand(source, dest);
-    setPath(bfs::shortestPath(*graph, center(), source->center()));
-    move();
+    goTo(source->center());
 }
 
 void Worker::build(Building *building) {
-    if(buildCommand != nullptr) return;
+    if(buildCommand) return;
     cancel();
     buildCommand = new BuildCommand(building);
     scene()->addItem(building);
     building->setOpacity(0.5);
     building->setHighlighted(false);
-    setPath(bfs::shortestPath(*graph, center(), building->center()));
-    move();
+    goTo(building->center());
 }
 
 void Worker::update(){
+    Unit::update();
     if(buildCommand){
         if(!buildCommand->what->isBuildingFinished()){
                     if(collidesWithItem(buildCommand->what)){
@@ -431,13 +431,17 @@ void Worker::update(){
         }
     } else if (mineCommand){
         if(currentAnimationSet == &movementAnims && collidesWithItem(mineCommand->source)){
-            mineCommand->source->damage(GOLD_PER_TRIP);
-            stopMoving();
-            setTarget(mineCommand->dest->center());
-            //setPath(bfs::shortestPath(*graph, center(), mineCommand->dest->center())); // anims broken
-            move();
-            currentAnimationSet = &goldCarryAnims;
-
+            if(mineCommand->source->isAlive()){
+                mineCommand->source->damage(GOLD_PER_TRIP);
+                stopMoving();
+                setTarget(mineCommand->dest->center());
+                //setPath(bfs::shortestPath(*graph, center(), mineCommand->dest->center())); // anims broken
+                move();
+                currentAnimationSet = &goldCarryAnims;
+            } else {
+                stopMoving();
+                cancel();
+            }
         } else if (currentAnimationSet == &goldCarryAnims && collidesWithItem(mineCommand->dest)){
             *playerGold += GOLD_PER_TRIP;
             stopMoving();
@@ -447,7 +451,6 @@ void Worker::update(){
             currentAnimationSet = &movementAnims;
         }
     }
-    Unit::update();
 }
 
 void Worker::updateAnimation() {

@@ -35,6 +35,9 @@ public:
 
     // Defaultuje visited a parent
     void resetNodes();
+
+private:
+    static QPointF posFromIndices(int i, int j);
 };
 
 // Breadth-first search

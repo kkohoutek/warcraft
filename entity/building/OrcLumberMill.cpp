@@ -6,7 +6,6 @@ OrcLumberMill::OrcLumberMill(QPointF pos, bool finishedOnSpawn, ResourceManager*
 
 }
 
-QRectF OrcLumberMill::boundingRect() const
-{
+QRectF OrcLumberMill::boundingRect() const {
     return QRectF(0,0,98,98);
 }

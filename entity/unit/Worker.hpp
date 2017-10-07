@@ -6,9 +6,8 @@
 #include "entity/Trees.hpp"
 #include "entity/building/Building.hpp"
 #include "ResourceManager.hpp"
-#include "pathfinding.hpp"
 
-#define GOLD_PER_TRIP 10
+
 
 class Worker : public Unit
 {
@@ -34,7 +33,7 @@ protected:
     struct MineCommand {
         Goldmine *source;
         Building *dest;
-        QList<QPointF> path;
+        //QList<QPointF> path;
         MineCommand(Goldmine *source, Building *dest) { this->source = source; this->dest = dest; }
     };
 
