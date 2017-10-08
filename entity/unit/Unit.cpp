@@ -85,7 +85,10 @@ void Unit::update(){
                 move();
             } else {
                 // Přepočítej cestu
-                setPath(bfs::shortestPath(*graph, center(), (*(path.last()))->pos));
+                Node **goal = path.takeLast();
+                if(goal && *goal){
+                    setPath(bfs::shortestPath(*graph, center(), (*goal)->pos));
+                }
             }
         } else {
             stopMoving();

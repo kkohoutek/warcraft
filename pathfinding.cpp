@@ -145,12 +145,11 @@ QList<Node **> bfs::shortestPath(Graph &graph, Node *start, Node *goal) {
     // Retrace
     QList<Node **> path;
     while(node != start){
-        path.append(graph.gimmeNode(node->pos));
+        path.prepend(graph.gimmeNode(node->pos));
         node = node->parent;
     }
     graph.resetNodes();
-    // Reverse list
-    for(int i = 0; i < (path.size()/2); i++) path.swap(i,path.size()-(1+i));
+
     return path;
 }
 

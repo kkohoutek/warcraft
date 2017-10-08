@@ -30,7 +30,7 @@ Warcraft::Warcraft() {
 
     player = new Player(HUMAN);
     player->lumber = 100000;
-    player->gold = 500;
+    player->gold = 50000;
     enemy = new Player(ORC);
 
     initResources();
@@ -123,7 +123,7 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
 
         // Klikl hráč na budovu
         for(Building *b : player->getBuildings()){
-            if(b->boundingRect2().contains(actualPos)){
+            if(b->canSelect() && b->boundingRect2().contains(actualPos)){
                 player->selectBuilding(b);
                 return;
             }
@@ -149,9 +149,9 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
             if(currentBuilding->collidingItems().size() == 0){
                 int result = newBuilding(player, currentBuilding, worker);
                 if(result == 0) {
-                    currentBuilding = nullptr;
-                    graph.update(staticEntities());
                     peasantUI->hide();
+                    graph.update(staticEntities());
+                    currentBuilding = nullptr;
                 } else if (result == 1) {
                     message.setText("NOT ENOUGH GOLD");
                     peasantUI->cancelOption();

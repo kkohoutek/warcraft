@@ -10,7 +10,6 @@
 
 #include "Player.hpp"
 #include "entity/Goldmine.hpp"
-#include "pathfinding.hpp"
 #include "ResourceManager.hpp"
 #include "ui/PeasantUI.hpp"
 #include "ui/Message.hpp"

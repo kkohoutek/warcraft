@@ -416,9 +416,11 @@ void Worker::build(Building *building) {
 
 void Worker::update(){
     Unit::update();
+
     if(buildCommand){
         if(!buildCommand->what->isBuildingFinished()){
-                    if(collidesWithItem(buildCommand->what)){
+                    //if(collidesWithItem(buildCommand->what)){ // nefunguje s dynamickym pathfindingem
+                    if(path.isEmpty()){
                         stopMoving();
                         buildCommand->what->setOpacity(1);
                         this->hide();
