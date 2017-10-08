@@ -23,18 +23,15 @@ Building::Building(QPointF pos, Building::Type type, bool finishedOnSpawn, Race 
     frames.append(endFrame);
 
     Animation *buildAnimation = new Animation(spriteSheet, 48, 48, frames, buildTime/frames.size(), false);
+    buildAnimation->setCurrentFrame(3);
     setCurrentAnimation(buildAnimation);
 
     if(finishedOnSpawn){
         finished = true;
         setHP(maxHP);
-        buildAnimation->setCurrentFrame(3);
     } else {
         setHP(0);
         finished = false;
-        buildTimer = new QTimer();
-        buildTimer->setInterval(buildTime/maxHP);
-        connect(buildTimer, SIGNAL(timeout()), this, SLOT(constructionUpdate()));
     }
 
     scaleX = 2;
@@ -49,10 +46,15 @@ Building::~Building() {
 }
 
 void Building::startConstruction() {
+    if(buildTimer) return;
+
+    buildTimer = new QTimer();
+    buildTimer->setInterval(buildTime/getMaxHP());
+    connect(buildTimer, SIGNAL(timeout()), this, SLOT(constructionUpdate()));
+    buildTimer->start();
+
+    getCurrentAnimation()->setCurrentFrame(0);
     getCurrentAnimation()->start();
-    if(!buildTimer->isActive()){
-        buildTimer->start();
-    }
 }
 
 void Building::constructionUpdate() {

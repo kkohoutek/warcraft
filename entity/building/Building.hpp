@@ -45,12 +45,13 @@ public:
     bool            isBuildingFinished() const     { return finished; }
     Building::Type  getType() const                { return type; }
 
+protected:
+    int buildTime;
+
 private:
     Building::Type type;
-    int buildTime;
-    QTimer *buildTimer = nullptr;
-
     bool finished;
+    QTimer *buildTimer = nullptr;
 
 private slots:
     void constructionUpdate();

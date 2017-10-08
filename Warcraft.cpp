@@ -121,14 +121,6 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
 
     if(event->button() == Qt::LeftButton){
 
-        // Klikl hráč na budovu
-        for(Building *b : player->getBuildings()){
-            if(b->canSelect() && b->boundingRect2().contains(actualPos)){
-                player->selectBuilding(b);
-                return;
-            }
-        }
-
         isPressedLeftButton = true;
         position.setX(actualPos.x());
         position.setY(actualPos.y());
@@ -162,7 +154,15 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
             } else {
                 message.setText("CAN'T BUILD HERE");
                 peasantUI->cancelOption();
-                peasantUI->hide();
+            }
+            return;
+        }
+
+        // Klikl hráč na budovu
+        for(Building *b : player->getBuildings()){
+            if(b->canSelect() && b->boundingRect2().contains(actualPos)){
+                player->selectBuilding(b);
+                return;
             }
         }
 
@@ -185,7 +185,6 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
             }
         }
     }
-    //QGraphicsView::mousePressEvent(event);
 }
 
 void Warcraft::mouseReleaseEvent(QMouseEvent *releaseEvent) {

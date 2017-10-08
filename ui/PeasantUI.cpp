@@ -63,6 +63,7 @@ void PeasantUI::prepare(Building *b) {
     *buildingPtr = b;
     scene->addItem(b);
     b->setHighlighted(true);
+    b->setOpacity(0.5);
 }
 
 void PeasantUI::clickFarm() {
