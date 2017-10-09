@@ -420,16 +420,17 @@ void Worker::update(){
     if(buildCommand){
         if(!buildCommand->what->isBuildingFinished()){
                     //if(collidesWithItem(buildCommand->what)){ // nefunguje s dynamickym pathfindingem
-                    if(path.isEmpty()){
+                    if(path.size() <= 2){
                         stopMoving();
+                        path.clear();
                         buildCommand->what->setOpacity(1);
                         this->hide();
                         buildCommand->what->startConstruction();
                     }
-                } else {
-                    this->show();
-                    setPos((*(graph->gimmeNode(buildCommand->what->center(),true)))->pos);
-                    cancel();
+        } else {
+            this->show();
+            //setPos((*(graph->gimmeNode(buildCommand->what->center(),true)))->pos);
+            cancel();
         }
     } else if (mineCommand){
         if(currentAnimationSet == &movementAnims && collidesWithItem(mineCommand->source)){
