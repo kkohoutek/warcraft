@@ -1,6 +1,6 @@
 #include "Animation.hpp"
 
-Animation::Animation(const QPixmap *spriteSheet, const int frameWidth, const int frameHeight, QList<QList<int>> &frames, const int duration, const bool looping) {
+Animation::Animation(const QPixmap *spriteSheet, int frameWidth, int frameHeight, QList<QList<int>> &frames, int duration, bool looping) {
     this->spriteSheet = spriteSheet;
     this->frameWidth = frameWidth;
     this->frameHeight = frameHeight;
@@ -23,11 +23,11 @@ void Animation::draw(QPainter *painter) {
     painter->drawPixmap(0, 0, *spriteSheet, currentPositionX(), currentPositionY(), frameWidth, frameHeight);
 }
 
-int Animation::currentPositionX() {
+int Animation::currentPositionX() const {
     return frames[currentFrameIndex][0] * frameWidth;
 }
 
-int Animation::currentPositionY() {
+int Animation::currentPositionY() const {
     return frames[currentFrameIndex][1] * frameHeight;
 }
 

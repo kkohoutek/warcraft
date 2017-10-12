@@ -10,7 +10,7 @@ class Message : public QObject
     Q_OBJECT
 public:
     Message();
-    void display(QPainter *painter, int x, int y);
+    void display(QPainter *painter, int x, int y) const;
     void setText(const QString &text);
 
 private:

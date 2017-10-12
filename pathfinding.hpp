@@ -1,11 +1,12 @@
 #ifndef PATHFINDING_HPP
 #define PATHFINDING_HPP
 
+#include <QLinkedList>
+#include "entity/Entity.hpp"
+
 #define GRAPH_MARGIN        2
 #define GRAPH_SPACING       32  // Rozestup uzlů horizontálně a vertikálně
-#define NODES_ARRAY_SIZE    2048/GRAPH_SPACING-GRAPH_MARGIN
-
-#include "entity/Entity.hpp"
+#define NODES_ARRAY_SIZE    2048/GRAPH_SPACING-GRAPH_MARGIN-GRAPH_MARGIN/2
 
 struct Node {
     Node(int x, int y) { pos.setX(x); pos.setY(y); }
@@ -23,18 +24,18 @@ public:
     // Sestrojí graf se všemi nodes null
     Graph();
     // Sestrojí graf a zavolá update
-    Graph(const QList<Entity *> &obstacles);
+    Graph(const QLinkedList<Entity *> &obstacles);
     ~Graph();
 
     // Aktualizuje graf podle listu překážek
-    void update(const QList<Entity *> &obstacles);
+    void update(const QLinkedList<Entity *> &obstacles);
 
     /* Dej sem node, která nejlépe odpovídá tomuto bodu
        Pokud noNull, vrátí node, která je nejblíž */
     Node **gimmeNode(QPointF pos, bool noNull = false);
 
     // Defaultuje visited a parent
-    void resetNodes();
+    void resetNodes() const;
 
 private:
     static QPointF posFromIndices(int i, int j);
@@ -42,8 +43,8 @@ private:
 
 // Breadth-first search
 namespace bfs {
-    QList<Node **> shortestPath(Graph &graph, Node *start, Node *goal);
-    QList<Node **> shortestPath(Graph &graph, QPointF a, QPointF b);
+    QLinkedList<Node **> shortestPath(Graph &graph, Node *start, Node *goal);
+    QLinkedList<Node **> shortestPath(Graph &graph, QPointF a, QPointF b);
 }
 
 #endif // PATHFINDING_HPP

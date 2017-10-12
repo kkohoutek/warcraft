@@ -179,7 +179,7 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
             if(g->boundingRect2().contains(actualPos)){
                 for(Unit *u : selected){
                     if(u->getType() == Unit::PEASANT) {
-                        static_cast<Worker *>(u)->mine(g, player->getBuildings()[0]);
+                        static_cast<Worker *>(u)->mine(g, player->getBuildings().last());
                     }
                 }
             }
@@ -247,60 +247,62 @@ int Warcraft::newBuilding(Player *player, Building *building, Worker *worker) {
     return 0;
 }
 
-QList<Entity *> Warcraft::staticEntities() const {
-    QList<Entity *> list;
+QLinkedList<Entity *> Warcraft::staticEntities() const {
+    QLinkedList<Entity *> list;
     for(Building *b : player->getBuildings()){
-        list.append(b);
+        list.prepend(b);
     }
     for(Building *b : enemy->getBuildings()){
-        list.append(b);
+        list.prepend(b);
     }
     for(Goldmine *g : goldmines){
-        list.append(g);
+        list.prepend(g);
     }
     return list;
 }
 
-QList<Unit *> Warcraft::allUnits() const {
-    QList<Unit *> allUnits;
-    allUnits.append(player->getUnits());
-    allUnits.append(enemy->getUnits());
+QLinkedList<Unit *> Warcraft::allUnits() const {
+    QLinkedList<Unit *> allUnits;
+    for(Unit *u : player->getUnits()){
+        allUnits.prepend(u);
+    }
+    for(Unit *u : enemy->getUnits()){
+        allUnits.prepend(u);
+    }
     return allUnits;
 }
 
-QList<Entity *> Warcraft::allEntities() const {
-    QList<Entity *> allEntities;
-    allEntities.append(staticEntities());
-
+QLinkedList<Entity *> Warcraft::allEntities() const {
+    QLinkedList<Entity *> allEntities = staticEntities();
     for(Unit *u : allUnits()){
-        allEntities.append(u);
+        allEntities.prepend(u);
     }
     return allEntities;
 }
 
-QList<Entity *> Warcraft::deadEntities() const {
-    QList<Entity *> dead;
+QLinkedList<Entity *> Warcraft::deadEntities() const {
+    QLinkedList<Entity *> dead;
     for(Entity *e : allEntities()){
         if(!e->isAlive()) {
-            dead.append(e);
+            dead.prepend(e);
         }
     }
     return dead;
 }
 
 void Warcraft::spawnUnit(Unit *u, Player *owner) {
-    if(owner) owner->getUnits().append(u);
+    if(owner) owner->getUnits().prepend(u);
     scene()->addItem(u);
     u->useGraph(&graph);
 }
 
 void Warcraft::spawnBuilding(Building *b, Player *owner) {
-    if(owner) owner->getBuildings().append(b);
+    if(owner) owner->getBuildings().prepend(b);
     scene()->addItem(b);
 }
 
 void Warcraft::spawnGoldmine(Goldmine *g) {
-    goldmines.append(g);
+    goldmines.prepend(g);
     scene()->addItem(g);
 }
 
@@ -311,7 +313,9 @@ void Warcraft::paintEvent(QPaintEvent *event) {
     painter.setFont(QFont("sans-serif",10));
     painter.setPen(Qt::white);
     painter.drawText(QPointF(width()*3/5, 20), "FOOD: "+QString::number(player->food)+"   GOLD: "+QString::number(player->gold)+"   LUMBER: "+QString::number(player->lumber));
-    /* // visualize graph
+     // visualize graph
+
+    /*
     for(int i = 0; i < NODES_ARRAY_SIZE; i++){
         for(int j = 0; j < NODES_ARRAY_SIZE; j++){
             Node *n = graph.nodes[i][j];
@@ -321,6 +325,7 @@ void Warcraft::paintEvent(QPaintEvent *event) {
         }
     }
     */
+
     message.display(&painter, width()/2, height()/2);
 }
 
@@ -342,7 +347,7 @@ void Warcraft::initResources() {
     rm->copySprite("DAEMON", "DAEMON_flipped", true, false);
 }
 
-void Warcraft::printGameInfo() {
+void Warcraft::printGameInfo() const {
     int entityCount = allEntities().size();
     qDebug() << "All entities: " + QString::number(entityCount) + " (" + QString::number(entityCount * sizeof(Entity)) + " bytes)";
     int deadCount = deadEntities().size();

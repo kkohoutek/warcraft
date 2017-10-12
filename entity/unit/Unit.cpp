@@ -97,7 +97,7 @@ void Unit::update(){
 
 }
 
-void Unit::setPath(const QList<Node **> &list){
+void Unit::setPath(const QLinkedList<Node **> &list){
     if((!path.isEmpty() && path.last() == list.last() && path.first() == list.first()) || list.isEmpty()) return;
     path.clear();
     for(Node ** n : list){

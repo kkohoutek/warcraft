@@ -5,8 +5,6 @@
 #include <QPixmap>
 #include <QTimer>
 #include <QPainter>
-#include "ResourceManager.hpp"
-
 
 // Tato třída reprezentuje animaci podle sprite sheetu.
 
@@ -14,7 +12,7 @@ class Animation : public QObject
 {
     Q_OBJECT
 public:
-    Animation(const QPixmap *spriteSheet, const int frameWidth, const int frameHeight, QList<QList<int>> &frames, const int duration, const bool looping);
+    Animation(const QPixmap *spriteSheet, int frameWidth, int frameHeight, QList<QList<int>> &frames, int duration, bool looping);
 
     void start();
     void stop();
@@ -31,8 +29,8 @@ private:
 
     QTimer              animationTimer;
 
-    int currentPositionX();
-    int currentPositionY();
+    int currentPositionX() const;
+    int currentPositionY() const;
 
 private slots:
     void nextFrame();

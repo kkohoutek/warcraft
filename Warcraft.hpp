@@ -20,8 +20,8 @@ public:
     Player *player;
     Player *enemy;
 
-    QList<Goldmine *>   goldmines;
-    QList<Trees *>      trees;
+    QLinkedList<Goldmine *>   goldmines;
+    QLinkedList<Trees *>      trees;
 
     Warcraft();
     ~Warcraft();
@@ -48,12 +48,12 @@ public:
        Pokud worker nepatří hráči, vrátí 3. */
     int newBuilding(Player *player, Building *building, Worker *worker);
 
-    QList<Entity *> staticEntities() const;
-    QList<Unit *>   allUnits() const;
-    QList<Entity *> allEntities() const;
-    QList<Entity *> deadEntities() const;
+    QLinkedList<Entity *> staticEntities() const;
+    QLinkedList<Unit *>   allUnits() const;
+    QLinkedList<Entity *> allEntities() const;
+    QLinkedList<Entity *> deadEntities() const;
 
-    void printGameInfo();
+    void printGameInfo() const;
 
     // Specifikace nákladů pro každou budovu (pro gameplay)
     static QPair<int, int> cost(Building::Type type);

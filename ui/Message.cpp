@@ -5,7 +5,7 @@ Message::Message() {
     connect(&duration, SIGNAL(timeout()), this, SLOT(emptyText()));
 }
 
-void Message::display(QPainter *painter, int x, int y) {
+void Message::display(QPainter *painter, int x, int y) const {
     if(!text.isEmpty()){
         painter->drawText(QPointF(x,y), text);
     }

@@ -19,15 +19,15 @@ public:
     void selectBuilding(Building *building);
     void deselect();
 
-    QList<Building *>   &getBuildings()         { return buildings; }
-    QList<Unit *>       &getUnits()             { return units; }
-    QList<Unit *>       &getSelectedUnits()     { return selectedUnits; }
+    QLinkedList<Building *>   &getBuildings()         { return buildings; }
+    QLinkedList<Unit *>       &getUnits()             { return units; }
+    QList<Unit *>             &getSelectedUnits()     { return selectedUnits; }
 
     Race getRace() const                        { return race; }
 
 protected:
-    QList<Building *>   buildings;
-    QList<Unit *>       units;
+    QLinkedList<Building *>   buildings;
+    QLinkedList<Unit *>       units;
     QList<Unit *>       selectedUnits;
 
     Building *selectedBuilding = nullptr;
