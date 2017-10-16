@@ -40,9 +40,6 @@ Warcraft::Warcraft() {
     loadUnits();
     loadBuildings();
 
-    graph.update(staticEntities());
-
-
     peasantUI = new PeasantUI(&currentBuilding, player, rm, scene, this);
     peasantUI->hide();
     scene->addWidget(peasantUI);
@@ -69,7 +66,7 @@ void Warcraft::loadBuildings() {
 
 void Warcraft::loadUnits(){
     for(int i = 0; i < 4; i++){
-        spawnUnit(new Worker(QPointF(128+i*28,128), Unit::PEASANT, &(player->gold), &(player->lumber), &graph, rm), player);;
+        spawnUnit(new Worker(QPointF(128+i*28,128), Unit::PEASANT, &(player->gold), &(player->lumber), rm), player);;
     }
     spawnUnit(new Footman(QPointF(500,120), rm), player);
 
@@ -102,7 +99,8 @@ void Warcraft::timerEvent(QTimerEvent *event) {
     }
 
     if(currentBuilding){
-        currentBuilding->setPos(mapToScene(p));
+        QRectF r = currentBuilding->boundingRect2();
+        currentBuilding->setPos(mapToScene(p) - QPointF(r.width()/2, r.height()/2));
     }
 
     player->update();
@@ -142,7 +140,6 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
                 int result = newBuilding(player, currentBuilding, worker);
                 if(result == 0) {
                     peasantUI->hide();
-                    graph.update(staticEntities());
                     currentBuilding = nullptr;
                 } else if (result == 1) {
                     message.setText("NOT ENOUGH GOLD");
@@ -299,11 +296,15 @@ void Warcraft::spawnUnit(Unit *u, Player *owner) {
 void Warcraft::spawnBuilding(Building *b, Player *owner) {
     if(owner) owner->getBuildings().prepend(b);
     scene()->addItem(b);
+
+    graph.update(staticEntities());
 }
 
 void Warcraft::spawnGoldmine(Goldmine *g) {
     goldmines.prepend(g);
     scene()->addItem(g);
+
+    graph.update(staticEntities());
 }
 
 
@@ -325,6 +326,7 @@ void Warcraft::paintEvent(QPaintEvent *event) {
         }
     }
     */
+
 
     message.display(&painter, width()/2, height()/2);
 }

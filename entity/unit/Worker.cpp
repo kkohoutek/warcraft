@@ -13,10 +13,9 @@
 #define MAX_WORKERS_PER_GOLDMINE    5
 #define GOLD_PER_TRIP               10
 
-Worker::Worker(QPointF pos, Unit::Type type, int *playerGold, int *playerLumber, Graph *graph, ResourceManager *rm) : Unit(pos, type, 0.7f, 0, 0, 0) {
+Worker::Worker(QPointF pos, Unit::Type type, int *playerGold, int *playerLumber, ResourceManager *rm) : Unit(pos, type, 0.7f, 0, 0, 0) {
     this->playerGold   = playerGold;
     this->playerLumber = playerLumber;
-    this->graph = graph;
 
     setMaxHP(40);
     setHP(40);

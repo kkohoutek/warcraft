@@ -30,9 +30,9 @@ public:
     // Aktualizuje graf podle listu překážek
     void update(const QLinkedList<Entity *> &obstacles);
 
-    /* Dej sem node, která nejlépe odpovídá tomuto bodu
-       Pokud noNull, vrátí node, která je nejblíž */
-    Node **gimmeNode(QPointF pos, bool noNull = false);
+    /* Vrátí pointer na pointer z pole nodes, který ukazuje na node se stejnou pos;
+       pokud noNull, bere nejbližší shodu pos. */
+    Node **gimmeNode(const QPointF &pos, bool noNull = false);
 
     // Defaultuje visited a parent
     void resetNodes() const;

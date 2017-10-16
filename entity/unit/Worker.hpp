@@ -8,11 +8,10 @@
 #include "ResourceManager.hpp"
 
 
-
 class Worker : public Unit
 {
 public:
-    Worker(QPointF pos, Unit::Type type, int *playerGold, int *playerLumber, Graph *graph, ResourceManager *rm);
+    Worker(QPointF pos, Unit::Type type, int *playerGold, int *playerLumber, ResourceManager *rm);
     ~Worker();
 
     void    update() override;
@@ -57,7 +56,6 @@ private:
 
     int     *playerGold;    // Pointer na hráčovo zlato
     int     *playerLumber;  // Pointer na hráčovo dřevo
-    Graph   *graph;         // Pointer na pathfinding graph
 
 };
 

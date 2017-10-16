@@ -27,12 +27,12 @@ void Graph::update(const QLinkedList<Entity *> &obstacles) {
             bool interr = false;
             for(Entity * obstacle : obstacles){
                 if(!interr){
-                    delete nodes[i][j];
                     auto pos = posFromIndices(i, j);
                     if(obstacle->boundingRect2().contains(pos.x(), pos.y())){
+                        delete nodes[i][j];
                         nodes[i][j] = nullptr;
                         interr = true;
-                    } else {
+                    } else if(!nodes[i][j]){
                         nodes[i][j] = new Node(pos.x(), pos.y());
                     }
                 }
@@ -80,7 +80,7 @@ void Graph::update(const QLinkedList<Entity *> &obstacles) {
     }
 }
 
-Node **Graph::gimmeNode(QPointF pos, bool noNull) {
+Node **Graph::gimmeNode(const QPointF &pos, bool noNull) {
     // Získej indexy podle pozice a udrž je v rozsahu arraye
     int i = qBound(0, qRound(pos.y()/GRAPH_SPACING)-GRAPH_MARGIN, NODES_ARRAY_SIZE-1);
     int j = qBound(0, qRound(pos.x()/GRAPH_SPACING)-GRAPH_MARGIN, NODES_ARRAY_SIZE-1);
