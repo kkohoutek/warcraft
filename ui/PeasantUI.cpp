@@ -6,8 +6,7 @@
 
 #include "entity/building/buildings_all.hpp"
 
-PeasantUI::PeasantUI(Building **buildingPtr, Player *player, ResourceManager *rm, QGraphicsScene *scene, QWidget *parent) : QWidget(parent) {
-    this->buildingPtr = buildingPtr;
+PeasantUI::PeasantUI(Player *player, ResourceManager *rm, QGraphicsScene *scene, QWidget *parent) : QWidget(parent) {
     this->player = player;
     this->rm = rm;
     this->scene = scene;
@@ -49,21 +48,29 @@ PeasantUI::PeasantUI(Building **buildingPtr, Player *player, ResourceManager *rm
 }
 
 void PeasantUI::cancelOption() {
-    scene->removeItem(*buildingPtr);
-    delete *buildingPtr;
-    *buildingPtr = nullptr;
+    scene->removeItem(currentBuilding);
+    delete currentBuilding;
+    currentBuilding = nullptr;
+}
+
+void PeasantUI::release() {
+    currentBuilding = nullptr;
 }
 
 void PeasantUI::prepare(Building *b) {
     // Pokud už je nějaká možnost zvolena, zruší se
-    if(*buildingPtr){
+    if(currentBuilding){
         cancelOption();
         return;
     }
-    *buildingPtr = b;
+    currentBuilding = b;
     scene->addItem(b);
     b->setHighlighted(true);
     b->setOpacity(0.5);
+}
+
+Building *PeasantUI::getCurrentBuilding() const {
+    return currentBuilding;
 }
 
 void PeasantUI::clickFarm() {

@@ -8,13 +8,14 @@ class PeasantUI : public QWidget
 {
     Q_OBJECT
 public:
-    explicit PeasantUI(Building **buildingPtr, Player *player, ResourceManager *rm, QGraphicsScene *scene, QWidget *parent = nullptr);
+    explicit PeasantUI(Player *player, ResourceManager *rm, QGraphicsScene *scene, QWidget *parent = nullptr);
 
     void cancelOption();
+    void release();
+    Building *getCurrentBuilding() const;
 
 private:
-    // Pointer na pointer na budovu kterou chce hráč stavět
-    Building        **buildingPtr;
+    Building        *currentBuilding = nullptr;
     ResourceManager *rm;
     Player          *player;
     QGraphicsScene  *scene;

@@ -13,7 +13,7 @@
 #define MAX_WORKERS_PER_GOLDMINE    5
 #define GOLD_PER_TRIP               10
 
-Worker::Worker(QPointF pos, Unit::Type type, int *playerGold, int *playerLumber, ResourceManager *rm) : Unit(pos, type, 0.7f, 0, 0, 0) {
+Worker::Worker(QPointF pos, Unit::Type type, int *playerGold, int *playerLumber, ResourceManager *rm) : Unit(pos, type, 0.65f, 0, 0, 0) {
     this->playerGold   = playerGold;
     this->playerLumber = playerLumber;
 
@@ -418,13 +418,16 @@ void Worker::update(){
 
     if(buildCommand){
         if(!buildCommand->what->isBuildingFinished()){
-                    //if(collidesWithItem(buildCommand->what)){ // nefunguje s dynamickym pathfindingem
-                    if(path.size() <= 2){
+                    if(collidesWithItem(buildCommand->what)){
                         stopMoving();
                         path.clear();
                         buildCommand->what->setOpacity(1);
-                        this->hide();
+                        hide();
                         buildCommand->what->startConstruction();
+                    } else if(path.isEmpty()){
+                        path.clear();
+                        setTarget(buildCommand->what->center()); // musíme zajistit, že worker bude kolidovat s budovou
+                        move();
                     }
         } else {
             this->show();

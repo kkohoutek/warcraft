@@ -154,7 +154,7 @@ void Unit::cancel(){
 
 void Unit::move() {
     moving = true;
-    currentAnimationSet = &movementAnims;
+    //currentAnimationSet = &movementAnims;
 }
 
 

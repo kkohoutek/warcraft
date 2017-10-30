@@ -40,7 +40,7 @@ Warcraft::Warcraft() {
     loadUnits();
     loadBuildings();
 
-    peasantUI = new PeasantUI(&currentBuilding, player, rm, scene, this);
+    peasantUI = new PeasantUI(player, rm, scene, this);
     peasantUI->hide();
     scene->addWidget(peasantUI);
 
@@ -56,7 +56,7 @@ Warcraft::~Warcraft() {
 }
 
 void Warcraft::loadBuildings() {
-    spawnBuilding(new HumanTownHall(QPointF(216,216), true, rm), player);;
+    spawnBuilding(new HumanTownHall(QPointF(204,204), true, rm), player);;
     spawnBuilding(new HumanFarm(QPointF(70, 262), true, rm, &(player->food)), player);
     spawnBuilding(new HumanFarm(QPointF(310, 290), true, rm, &(player->food)), player);
     //spawnBuilding(new HumanChurch(QPointF(278, 81), true, rm), player);
@@ -98,6 +98,7 @@ void Warcraft::timerEvent(QTimerEvent *event) {
         verticalScrollBar()->setValue(verticalScrollBar()->value()-20);
     }
 
+    Building *currentBuilding = peasantUI->getCurrentBuilding();
     if(currentBuilding){
         QRectF r = currentBuilding->boundingRect2();
         currentBuilding->setPos(mapToScene(p) - QPointF(r.width()/2, r.height()/2));
@@ -135,12 +136,13 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
             }
         }
 
+        Building *currentBuilding = peasantUI->getCurrentBuilding();
         if(currentBuilding){
             if(currentBuilding->collidingItems().size() == 0){
                 int result = newBuilding(player, currentBuilding, worker);
                 if(result == 0) {
                     peasantUI->hide();
-                    currentBuilding = nullptr;
+                    peasantUI->release();
                 } else if (result == 1) {
                     message.setText("NOT ENOUGH GOLD");
                     peasantUI->cancelOption();
@@ -209,7 +211,7 @@ void Warcraft::mouseReleaseEvent(QMouseEvent *releaseEvent) {
 }
 
 void Warcraft::mouseMoveEvent(QMouseEvent *event) {
-    if(isPressedLeftButton && !currentBuilding){
+    if(isPressedLeftButton && !peasantUI->getCurrentBuilding()){
         rect->hide();
         QPointF actualPos = mapToScene(event->pos());
         rect->setPen(QPen(Qt::green));

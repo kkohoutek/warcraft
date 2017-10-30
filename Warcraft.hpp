@@ -71,7 +71,6 @@ protected:
 
     //QWidget *currentUI = nullptr;
     PeasantUI *peasantUI;
-    Building *currentBuilding = nullptr;
 };
 
 #endif // WARCRAFT_HPP
