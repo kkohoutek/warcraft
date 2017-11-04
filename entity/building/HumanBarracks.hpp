@@ -1,9 +1,9 @@
 #ifndef HUMANBARRACKS_H
 #define HUMANBARRACKS_H
 
-#include "Building.hpp"
+#include "TrainingBuilding.hpp"
 
-class HumanBarracks : public Building
+class HumanBarracks : public TrainingBuilding
 {
 public:
     static const int COST_GOLD = 400;

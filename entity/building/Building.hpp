@@ -36,7 +36,7 @@ public:
     };
 
     // preFrame - předposlední snímek animace, endFrame - poslední snímek
-    Building(QPointF pos, Building::Type type, bool finishedOnSpawn, Race race, QList<int> preFrame, QList<int> endFrame, int buildTime, int maxHP, ResourceManager *rm);
+    Building(QPointF pos, Building::Type type, bool finishedOnSpawn, Race race, const QList<int> &preFrame, const QList<int> &endFrame, int buildTime, int maxHP, ResourceManager *rm);
     virtual ~Building();
 
     void startConstruction();

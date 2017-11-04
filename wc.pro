@@ -45,7 +45,7 @@ SOURCES += main.cpp\
     entity/building/OrcFarm.cpp \
     ui/PeasantUI.cpp \
     ui/Message.cpp \
-    ui/Trainable.cpp
+    entity/building/TrainingBuilding.cpp
 
 
 HEADERS  += \
@@ -83,7 +83,7 @@ HEADERS  += \
     entity/building/buildings_all.hpp \
     Race.hpp \
     ui/Message.hpp \
-    ui/Trainable.hpp
+    entity/building/TrainingBuilding.hpp
 
 
 FORMS    +=

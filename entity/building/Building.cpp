@@ -1,6 +1,6 @@
 #include "Building.hpp"
 
-Building::Building(QPointF pos, Building::Type type, bool finishedOnSpawn, Race race, QList<int> preFrame, QList<int> endFrame, int buildTime, int maxHP, ResourceManager *rm) : Entity(pos)
+Building::Building(QPointF pos, Building::Type type, bool finishedOnSpawn, Race race, const QList<int> &preFrame, const QList<int> &endFrame, int buildTime, int maxHP, ResourceManager *rm) : Entity(pos)
 {
     setMaxHP(maxHP);
     this->buildTime = buildTime;

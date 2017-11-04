@@ -60,7 +60,6 @@ void Warcraft::loadBuildings() {
     spawnBuilding(new HumanFarm(QPointF(70, 262), true, rm, &(player->food)), player);
     spawnBuilding(new HumanFarm(QPointF(310, 290), true, rm, &(player->food)), player);
     //spawnBuilding(new HumanChurch(QPointF(278, 81), true, rm), player);
-    //spawnBuilding(new HumanBarracks(QPointF(220, 400), true, rm), player);;
     spawnBuilding(new OrcTownHall(QPointF(MAP_AREA/2-300,MAP_AREA/2-300), true, rm), enemy);
 }
 
