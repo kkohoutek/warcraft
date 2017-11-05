@@ -19,9 +19,10 @@ public:
     void selectBuilding(Building *building);
     void deselect();
 
-    QLinkedList<Building *>   &getBuildings()         { return buildings; }
-    QLinkedList<Unit *>       &getUnits()             { return units; }
-    QList<Unit *>             &getSelectedUnits()     { return selectedUnits; }
+    QLinkedList<Building *>   &getBuildings()               { return buildings; }
+    QLinkedList<Unit *>       &getUnits()                   { return units; }
+    QList<Unit *>             &getSelectedUnits()           { return selectedUnits; }
+    Building                  *getSelectedBuilding() const  { return selectedBuilding; }
 
     Race getRace() const                        { return race; }
 

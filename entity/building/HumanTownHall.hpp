@@ -1,9 +1,9 @@
 #ifndef HUMANTOWNHALL_HPP
 #define HUMANTOWNHALL_HPP
 
-#include "Building.hpp"
+#include "TrainingBuilding.hpp"
 
-class HumanTownHall : public Building
+class HumanTownHall : public TrainingBuilding
 {
 public:
     static const int COST_GOLD = 600;

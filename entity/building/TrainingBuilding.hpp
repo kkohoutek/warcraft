@@ -15,7 +15,9 @@ public:
     TrainingBuilding(QPointF pos, Building::Type type, bool finishedOnSpawn, Race race, const QList<int> &preFrame, const QList<int> &endFrame, int buildTime, int maxHP, ResourceManager *rm);
     virtual ~TrainingBuilding();
 
-    void enqueueUnit(Unit *unit, int sec);
+    bool enqueueUnit(Unit *unit, int sec);
+    int unitsInQueue() const;
+    virtual bool isQueueFull() const;
 
 protected:
     QQueue<Unit *> trainingQueue;

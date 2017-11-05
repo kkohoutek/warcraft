@@ -45,7 +45,8 @@ SOURCES += main.cpp\
     entity/building/OrcFarm.cpp \
     ui/PeasantUI.cpp \
     ui/Message.cpp \
-    entity/building/TrainingBuilding.cpp
+    entity/building/TrainingBuilding.cpp \
+    ui/HumanTownHallUI.cpp
 
 
 HEADERS  += \
@@ -83,10 +84,12 @@ HEADERS  += \
     entity/building/buildings_all.hpp \
     Race.hpp \
     ui/Message.hpp \
-    entity/building/TrainingBuilding.hpp
+    entity/building/TrainingBuilding.hpp \
+    ui/HumanTownHallUI.hpp
 
 
-FORMS    +=
+FORMS    += \
+    ui/HumanTownHallUI.ui
 
 RESOURCES += \
     gameresources.qrc

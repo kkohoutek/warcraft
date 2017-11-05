@@ -44,6 +44,10 @@ Warcraft::Warcraft() {
     peasantUI->hide();
     scene->addWidget(peasantUI);
 
+    hthUI = new HumanTownHallUI(player, rm, &graph, scene, this);
+    hthUI->hide();
+    scene->addWidget(hthUI);
+
     startTimer(18);
 }
 
@@ -109,6 +113,8 @@ void Warcraft::timerEvent(QTimerEvent *event) {
     scene()->update();
 
     //printGameInfo();
+
+    if(currentUI) currentUI->show();
 
     Q_UNUSED(event);
 }
@@ -205,7 +211,18 @@ void Warcraft::mouseReleaseEvent(QMouseEvent *releaseEvent) {
                 peasantUI->hide();
             }
         }
+
+        Building *selectedBuilding = player->getSelectedBuilding();
+        if(selectedBuilding && selected.isEmpty()){
+            if(selectedBuilding->getType() == Building::H_TOWNHALL){
+                hthUI->setHumanTownHall(reinterpret_cast<HumanTownHall *>(selectedBuilding));
+                hthUI->show();
+            }
+        }
+
         rect->hide();
+
+
     }
 }
 

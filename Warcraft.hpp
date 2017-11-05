@@ -12,6 +12,7 @@
 #include "entity/Goldmine.hpp"
 #include "ResourceManager.hpp"
 #include "ui/PeasantUI.hpp"
+#include "ui/HumanTownHallUI.hpp"
 #include "ui/Message.hpp"
 
 class Warcraft : public QGraphicsView
@@ -69,8 +70,9 @@ protected:
     QPoint position;
     QGraphicsRectItem *rect; // selection rect
 
-    //QWidget *currentUI = nullptr;
+    QWidget *currentUI = nullptr;
     PeasantUI *peasantUI;
+    HumanTownHallUI *hthUI;
 };
 
 #endif // WARCRAFT_HPP

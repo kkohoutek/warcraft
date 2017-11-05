@@ -18,11 +18,21 @@ TrainingBuilding::~TrainingBuilding() {
 
 }
 
-void TrainingBuilding::enqueueUnit(Unit *unit, int sec) {
+bool TrainingBuilding::enqueueUnit(Unit *unit, int sec) {
+    if(isQueueFull()) return false;
     trainingQueue.enqueue(unit);
     if(!trainingTimer.isActive()){
         trainingTimer.start(sec*1000);
     }
+    return true;
+}
+
+int TrainingBuilding::unitsInQueue() const {
+    return trainingQueue.size();
+}
+
+bool TrainingBuilding::isQueueFull() const {
+    return unitsInQueue() >= 5;
 }
 
 void TrainingBuilding::dequeueUnit() {
