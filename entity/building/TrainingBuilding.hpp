@@ -6,8 +6,6 @@
 #include "Building.hpp"
 #include "entity/unit/Unit.hpp"
 
-#define TRAINING_QUEUE_CAP 4
-
 class TrainingBuilding : public Building
 {
     Q_OBJECT

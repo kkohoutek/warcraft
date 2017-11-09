@@ -1,6 +1,7 @@
 #include "TrainingBuilding.hpp"
 #include <QGraphicsScene>
 
+#define TRAINING_QUEUE_CAP 5
 
 TrainingBuilding::TrainingBuilding(QPointF pos, Building::Type type,
                                    bool finishedOnSpawn, Race race,
@@ -10,7 +11,6 @@ TrainingBuilding::TrainingBuilding(QPointF pos, Building::Type type,
                                    int maxHP,
                                    ResourceManager *rm) : Building(pos, type, finishedOnSpawn, race, preFrame, endFrame, buildTime, maxHP, rm)
 {
-    //trainingTimer.setSingleShot(true);
     connect(&trainingTimer, SIGNAL(timeout()), this, SLOT(dequeueUnit()));
 }
 
@@ -20,7 +20,9 @@ TrainingBuilding::~TrainingBuilding() {
 
 bool TrainingBuilding::enqueueUnit(Unit *unit, int sec) {
     if(isQueueFull()) return false;
+    unit->hide();
     trainingQueue.enqueue(unit);
+    scene()->addItem(unit);
     if(!trainingTimer.isActive()){
         trainingTimer.start(sec*1000);
     }
@@ -32,11 +34,11 @@ int TrainingBuilding::unitsInQueue() const {
 }
 
 bool TrainingBuilding::isQueueFull() const {
-    return unitsInQueue() >= 5;
+    return unitsInQueue() >= TRAINING_QUEUE_CAP;
 }
 
 void TrainingBuilding::dequeueUnit() {
-    scene()->addItem(trainingQueue.dequeue());
+    trainingQueue.dequeue()->show();
     if(trainingQueue.isEmpty()) {
         trainingTimer.stop();
     }

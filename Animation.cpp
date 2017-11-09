@@ -19,7 +19,7 @@ void Animation::stop() {
     animationTimer.stop();
 }
 
-void Animation::draw(QPainter *painter) {
+void Animation::draw(QPainter *painter) const {
     painter->drawPixmap(0, 0, *spriteSheet, currentPositionX(), currentPositionY(), frameWidth, frameHeight);
 }
 

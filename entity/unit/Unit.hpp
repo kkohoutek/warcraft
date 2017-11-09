@@ -27,7 +27,7 @@ public:
     virtual ~Unit();
 
     void            setTarget(QPointF target);
-    void            setPath(const QLinkedList<Node **> &list);
+    void            setPath(const QQueue<Node **> &list);
     void            goTo(QPointF goal);
     void            useGraph(Graph *graph) { this->graph = graph; }
 

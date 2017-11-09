@@ -18,14 +18,17 @@
 class Warcraft : public QGraphicsView
 {
 public:
+    Warcraft();
+    ~Warcraft();
+
+private:
+    ResourceManager *rm;
+    Graph graph;
     Player *player;
     Player *enemy;
 
     QLinkedList<Goldmine *>   goldmines;
     QLinkedList<Trees *>      trees;
-
-    Warcraft();
-    ~Warcraft();
 
     void initResources();
     void loadBuildings();
@@ -43,6 +46,7 @@ public:
     void spawnBuilding(Building *b, Player *owner = nullptr);
     void spawnGoldmine(Goldmine *g);
 
+
     /* Postav hráči novou budovou za pomocí daného workera a vrať 0.
        Pokud není dost zlata vrátí 1.
        Pokud není dost dřeva vrátí 2.
@@ -54,14 +58,9 @@ public:
     QLinkedList<Entity *> allEntities() const;
     QLinkedList<Entity *> deadEntities() const;
 
-    void printGameInfo() const;
-
     // Specifikace nákladů pro každou budovu (pro gameplay)
     static QPair<int, int> cost(Building::Type type);
 
-protected:
-    ResourceManager *rm;
-    Graph graph;
 
     /******************* UI STUFF **********************/
     Message message;
@@ -73,6 +72,8 @@ protected:
     QWidget *currentUI = nullptr;
     PeasantUI *peasantUI;
     HumanTownHallUI *hthUI;
+
+    void setUI(QWidget *ui);
 };
 
 #endif // WARCRAFT_HPP

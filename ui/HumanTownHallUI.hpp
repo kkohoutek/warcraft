@@ -18,6 +18,7 @@ public:
     ~HumanTownHallUI();
 
     void setHumanTownHall(HumanTownHall *hall);
+    void updateUI();
 
 private slots:
     void on_peasantButton_clicked();

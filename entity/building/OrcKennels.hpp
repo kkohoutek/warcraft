@@ -14,7 +14,6 @@ public:
     OrcKennels(QPointF pos, bool finishedOnSpawn, ResourceManager *rm);
 
     // QGraphicsItem interface
-
     QRectF boundingRect() const override;
 };
 

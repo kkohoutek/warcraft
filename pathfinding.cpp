@@ -118,13 +118,8 @@ void Graph::resetNodes() const {
     }
 }
 
-QPointF Graph::posFromIndices(int i, int j) {
-    return QPointF((j+GRAPH_MARGIN)*GRAPH_SPACING, (i+GRAPH_MARGIN)*GRAPH_SPACING);
-}
-
-
-QLinkedList<Node **> bfs::shortestPath(Graph &graph, Node *start, Node *goal) {
-    if(!goal || !start) return QLinkedList<Node **>();
+QQueue<Node **> Graph::shortestPath(Node *start, Node *goal) {
+    if(!goal || !start) return QQueue<Node **>();
 
     QQueue<Node *> queue;
     start->visited = true;
@@ -144,18 +139,24 @@ QLinkedList<Node **> bfs::shortestPath(Graph &graph, Node *start, Node *goal) {
             }
         }
     }
+
     // Retrace
-    QLinkedList<Node **> path;
+    QQueue<Node **> path;
     while(node != start){
-        path.prepend(graph.gimmeNode(node->pos));
+        path.prepend(gimmeNode(node->pos));
         node = node->parent;
     }
-    graph.resetNodes();
+    resetNodes();
 
     return path;
 }
 
 
-QLinkedList<Node **> bfs::shortestPath(Graph &graph, QPointF a, QPointF b) {
-    return bfs::shortestPath(graph, *(graph.gimmeNode(a, true)), *(graph.gimmeNode(b, true)));
+QQueue<Node **> Graph::shortestPath(QPointF a, QPointF b) {
+    return shortestPath(*(gimmeNode(a, true)), *(gimmeNode(b, true)));
+}
+
+
+QPointF Graph::posFromIndices(int i, int j) {
+    return QPointF((j+GRAPH_MARGIN)*GRAPH_SPACING, (i+GRAPH_MARGIN)*GRAPH_SPACING);
 }

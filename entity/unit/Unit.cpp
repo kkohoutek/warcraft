@@ -87,7 +87,7 @@ void Unit::update(){
                 // Přepočítej cestu
                 Node **goal = path.takeLast();
                 if(goal && *goal){
-                    setPath(bfs::shortestPath(*graph, center(), (*goal)->pos));
+                    setPath(graph->shortestPath(center(), (*goal)->pos));
                 }
             }
         } else {
@@ -97,12 +97,9 @@ void Unit::update(){
 
 }
 
-void Unit::setPath(const QLinkedList<Node **> &list){
+void Unit::setPath(const QQueue<Node **> &list){
     if((!path.isEmpty() && path.last() == list.last() && path.first() == list.first()) || list.isEmpty()) return;
-    path.clear();
-    for(Node ** n : list){
-        path.enqueue(n);
-    }
+    path = list;
     if(!path.isEmpty()){
         setTarget((*(path.dequeue()))->pos);
         move();
@@ -111,7 +108,7 @@ void Unit::setPath(const QLinkedList<Node **> &list){
 
 void Unit::goTo(QPointF goal) {
     if(!graph) return;
-    setPath(bfs::shortestPath(*graph, center(), goal));
+    setPath(graph->shortestPath(center(), goal));
 }
 
 void Unit::attack(Entity *victim) {

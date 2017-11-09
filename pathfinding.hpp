@@ -19,8 +19,6 @@ struct Node {
 class Graph
 {
 public:
-    Node *nodes[NODES_ARRAY_SIZE][NODES_ARRAY_SIZE];
-
     // Sestrojí graf se všemi nodes null
     Graph();
     // Sestrojí graf a zavolá update
@@ -37,14 +35,13 @@ public:
     // Defaultuje visited a parent
     void resetNodes() const;
 
+    QQueue<Node **> shortestPath(Node *start, Node *goal);
+    QQueue<Node **> shortestPath(QPointF a, QPointF b);
+
 private:
+    Node *nodes[NODES_ARRAY_SIZE][NODES_ARRAY_SIZE];
+
     static QPointF posFromIndices(int i, int j);
 };
-
-// Breadth-first search
-namespace bfs {
-    QLinkedList<Node **> shortestPath(Graph &graph, Node *start, Node *goal);
-    QLinkedList<Node **> shortestPath(Graph &graph, QPointF a, QPointF b);
-}
 
 #endif // PATHFINDING_HPP

@@ -112,9 +112,9 @@ void Warcraft::timerEvent(QTimerEvent *event) {
 
     scene()->update();
 
-    //printGameInfo();
-
-    if(currentUI) currentUI->show();
+    if(currentUI == hthUI){
+        hthUI->updateUI();
+    }
 
     Q_UNUSED(event);
 }
@@ -146,8 +146,8 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
             if(currentBuilding->collidingItems().size() == 0){
                 int result = newBuilding(player, currentBuilding, worker);
                 if(result == 0) {
-                    peasantUI->hide();
                     peasantUI->release();
+                    setUI(nullptr);
                 } else if (result == 1) {
                     message.setText("NOT ENOUGH GOLD");
                     peasantUI->cancelOption();
@@ -204,24 +204,28 @@ void Warcraft::mouseReleaseEvent(QMouseEvent *releaseEvent) {
         player->selectUnits(selected);
 
         for(Unit *u : selected){
-            if(u->getType() == Unit::PEASANT){
-                peasantUI->show();
+            switch(u->getType()){
+            case Unit::PEASANT:
+                setUI(peasantUI);
                 break;
-            } else {
-                peasantUI->hide();
+            default:
+                setUI(nullptr);
             }
         }
 
         Building *selectedBuilding = player->getSelectedBuilding();
         if(selectedBuilding && selected.isEmpty()){
-            if(selectedBuilding->getType() == Building::H_TOWNHALL){
+            switch(selectedBuilding->getType()){
+            case Building::H_TOWNHALL:
                 hthUI->setHumanTownHall(reinterpret_cast<HumanTownHall *>(selectedBuilding));
-                hthUI->show();
+                setUI(hthUI);
+                break;
+            default:
+                setUI(nullptr);
             }
         }
 
         rect->hide();
-
 
     }
 }
@@ -329,9 +333,9 @@ void Warcraft::spawnGoldmine(Goldmine *g) {
 void Warcraft::paintEvent(QPaintEvent *event) {
     QGraphicsView::paintEvent(event); 
     QPainter painter(viewport());
-    painter.setFont(QFont("sans-serif",10));
+    painter.setFont(QFont("Gentium Book Basic",12));
     painter.setPen(Qt::white);
-    painter.drawText(QPointF(width()*3/5, 20), "FOOD: "+QString::number(player->food)+"   GOLD: "+QString::number(player->gold)+"   LUMBER: "+QString::number(player->lumber));
+    painter.drawText(QPointF(width()*3/5, 20), "Food: "+QString::number(player->food)+"   Gold: "+QString::number(player->gold)+"   Lumber: "+QString::number(player->lumber));
      // visualize graph
 
     /*
@@ -366,16 +370,6 @@ void Warcraft::initResources() {
     rm->copySprite("GRUNT", "GRUNT_flipped", true, false);
     rm->copySprite("DAEMON", "DAEMON_flipped", true, false);
 }
-
-void Warcraft::printGameInfo() const {
-    int entityCount = allEntities().size();
-    qDebug() << "All entities: " + QString::number(entityCount) + " (" + QString::number(entityCount * sizeof(Entity)) + " bytes)";
-    int deadCount = deadEntities().size();
-    qDebug() << "Alive entities: " + QString::number(entityCount - deadCount) + " (" + QString::number((entityCount - deadCount) * sizeof(Entity)) + " bytes)";
-    qDebug() << "Dead entities: " + QString::number(deadCount) + " (" + QString::number(deadCount * sizeof(Entity)) + " bytes)";
-
-}
-
 
 QPair<int, int> Warcraft::cost(Building::Type type) {
     QPair<int, int> costs;
@@ -417,4 +411,10 @@ QPair<int, int> Warcraft::cost(Building::Type type) {
         costs.second = 0;
     }
     return costs;
+}
+
+void Warcraft::setUI(QWidget *ui) {
+    if(currentUI) currentUI->hide();
+    currentUI = ui;
+    if(ui) ui->show();
 }

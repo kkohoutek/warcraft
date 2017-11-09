@@ -10,11 +10,10 @@ HumanTownHallUI::HumanTownHallUI(Player *player, ResourceManager *rm, Graph *gra
     this->player = player;
     this->rm = rm;
     this->scene = scene;
-    this->graph = graph;
+    this->graph = graph; 
+    setGeometry(650,520,200,200);
+
     ui->setupUi(this);
-
-    this->setGeometry(650,520,200,200);
-
 }
 
 HumanTownHallUI::~HumanTownHallUI() {
@@ -25,6 +24,10 @@ void HumanTownHallUI::setHumanTownHall(HumanTownHall *hall) {
     this->hall = hall;
 }
 
+void HumanTownHallUI::updateUI() {
+    ui->count->setText(QString::number(hall->unitsInQueue()));
+}
+
 void HumanTownHallUI::on_peasantButton_clicked() {
     if(!hall || hall->isQueueFull()) return;
 
@@ -32,5 +35,7 @@ void HumanTownHallUI::on_peasantButton_clicked() {
     w->useGraph(graph);
     hall->enqueueUnit(w, 3);
     player->getUnits().prepend(w);
+
+    updateUI();
 
 }

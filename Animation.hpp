@@ -16,7 +16,7 @@ public:
 
     void start();
     void stop();
-    void draw(QPainter *painter);
+    void draw(QPainter *painter) const;
     void setCurrentFrame(int index) { currentFrameIndex = index; }
 
 private:
