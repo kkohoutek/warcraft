@@ -2,7 +2,7 @@
 #define PLAYER_HPP
 
 #include "entity/unit/Unit.hpp"
-#include "entity/unit/Worker.hpp"
+#include "entity/building/Building.hpp"
 
 class Player
 {

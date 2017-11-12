@@ -1,7 +1,5 @@
 #include "Unit.hpp"
-
 #include <QtMath>
-#include <QDebug>
 
 Unit::Unit(QPointF pos, Unit::Type type, float speed, int damage, int armor, int range) : Entity(pos) {
     this->speed = speed;

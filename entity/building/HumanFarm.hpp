@@ -11,7 +11,7 @@ public:
     static const int COST_GOLD = 500;
     static const int COST_LUMBER = 300;
     static const int HP = 800;
-    static const int BUILD_TIME = (1000*1000)/2;
+    static const int BUILD_TIME = 5000;
 
     HumanFarm(QPointF pos, bool finishedOnSpawn, ResourceManager *rm, int *playerFood);
 

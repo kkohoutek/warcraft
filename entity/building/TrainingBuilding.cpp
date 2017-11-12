@@ -9,8 +9,11 @@ TrainingBuilding::TrainingBuilding(QPointF pos, Building::Type type,
                                    const QList<int> &endFrame,
                                    int buildTime,
                                    int maxHP,
-                                   ResourceManager *rm) : Building(pos, type, finishedOnSpawn, race, preFrame, endFrame, buildTime, maxHP, rm)
+                                   ResourceManager *rm,
+                                   Player *player)
+    : Building(pos, type, finishedOnSpawn, race, preFrame, endFrame, buildTime, maxHP, rm)
 {
+    this->player = player;
     connect(&trainingTimer, SIGNAL(timeout()), this, SLOT(dequeueUnit()));
 }
 
@@ -38,10 +41,17 @@ bool TrainingBuilding::isQueueFull() const {
 }
 
 void TrainingBuilding::dequeueUnit() {
-    trainingQueue.dequeue()->show();
+    auto u = trainingQueue.dequeue();
+    u->show();
+    player->getUnits().prepend(u);
     if(trainingQueue.isEmpty()) {
         trainingTimer.stop();
     }
 }
+
+void TrainingBuilding::die() {
+
+}
+
 
 

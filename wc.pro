@@ -46,14 +46,14 @@ SOURCES += main.cpp\
     ui/PeasantUI.cpp \
     ui/Message.cpp \
     entity/building/TrainingBuilding.cpp \
-    ui/HumanTownHallUI.cpp
+    ui/HumanTownHallUI.cpp \
+    ui/HumanBarracksUI.cpp
 
 
 HEADERS  += \
     Animation.hpp \
     ResourceManager.hpp \
     entity/building/Building.hpp \
-    entity/building/HumanBarracks.hpp \
     entity/unit/Unit.hpp \
     entity/unit/Worker.hpp \
     entity/unit/Grunt.hpp \
@@ -85,11 +85,15 @@ HEADERS  += \
     Race.hpp \
     ui/Message.hpp \
     entity/building/TrainingBuilding.hpp \
-    ui/HumanTownHallUI.hpp
+    ui/HumanTownHallUI.hpp \
+    ui/HumanBarracksUI.hpp \
+    ui/HumanBarracksUI.hpp \
+    entity/building/HumanBarracks.hpp
 
 
 FORMS    += \
-    ui/HumanTownHallUI.ui
+    ui/HumanTownHallUI.ui \
+    ui/HumanBarracksUI.ui
 
 RESOURCES += \
     gameresources.qrc

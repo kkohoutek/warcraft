@@ -11,7 +11,7 @@ public:
     static const int HP = 800;
     static const int BUILD_TIME = (1500*1000)/100;
 
-    HumanTownHall(QPointF pos, bool finishedOnSpawn, ResourceManager *rm);
+    HumanTownHall(QPointF pos, bool finishedOnSpawn, ResourceManager *rm, Player *player);
 
     // QGraphicsItem interface
     QRectF boundingRect() const override;

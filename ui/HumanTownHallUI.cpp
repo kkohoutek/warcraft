@@ -29,12 +29,14 @@ void HumanTownHallUI::updateUI() {
 }
 
 void HumanTownHallUI::on_peasantButton_clicked() {
-    if(!hall || hall->isQueueFull()) return;
+    if(!hall || hall->isQueueFull() || player->food == 0 || player->gold < Worker::COST_GOLD || Worker::COST_LUMBER) return;
 
-    Worker *w = new Worker(hall->center(),Unit::PEASANT,&(player->gold),&(player->lumber),rm);
+    Worker *w = new Worker(hall->center(),Unit::PEASANT,player,rm);
     w->useGraph(graph);
     hall->enqueueUnit(w, 3);
-    player->getUnits().prepend(w);
+    player->food--;
+    player->gold -= Worker::COST_GOLD;
+    player->lumber -= Worker::COST_LUMBER;
 
     updateUI();
 

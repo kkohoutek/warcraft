@@ -1,5 +1,5 @@
-#ifndef HUMANBARRACKS_H
-#define HUMANBARRACKS_H
+#ifndef HUMANBARRACKS_HPP
+#define HUMANBARRACKS_HPP
 
 #include "TrainingBuilding.hpp"
 
@@ -11,8 +11,8 @@ public:
     static const int HP = 2500;
     static const int BUILD_TIME = (1500*1000)/100;
 
-    HumanBarracks(QPointF pos, bool finishedOnSpawn, ResourceManager *rm);
+    HumanBarracks(QPointF pos, bool finishedOnSpawn, ResourceManager *rm, Player *player);
     QRectF boundingRect() const override;
 };
 
-#endif // HUMANBARRACKS_H
+#endif // HUMANBARRACKS_HPP

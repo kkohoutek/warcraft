@@ -20,9 +20,6 @@ public:
     virtual void update();
     virtual void die();
 
-    void setCurrentAnimation(Animation *anim);
-    Animation *getCurrentAnimation() const  { return currentAnimation; }
-
     void damage(int amount);
 
     void setHP(int hp)              { this->hp = hp; }
@@ -47,6 +44,9 @@ public:
 protected:
     float scaleX = 1;
     float scaleY = 1;
+
+    void setCurrentAnimation(Animation *anim);
+    Animation *getCurrentAnimation() const  { return currentAnimation; }
 
  private:
     Animation *currentAnimation = nullptr;

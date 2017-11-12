@@ -48,6 +48,10 @@ Warcraft::Warcraft() {
     hthUI->hide();
     scene->addWidget(hthUI);
 
+    hbUI = new HumanBarracksUI(player, rm, &graph, scene, this);
+    hbUI->hide();
+    scene->addWidget(hbUI);
+
     startTimer(18);
 }
 
@@ -60,7 +64,7 @@ Warcraft::~Warcraft() {
 }
 
 void Warcraft::loadBuildings() {
-    spawnBuilding(new HumanTownHall(QPointF(204,204), true, rm), player);;
+    spawnBuilding(new HumanTownHall(QPointF(204,204), true, rm, player), player);
     spawnBuilding(new HumanFarm(QPointF(70, 262), true, rm, &(player->food)), player);
     spawnBuilding(new HumanFarm(QPointF(310, 290), true, rm, &(player->food)), player);
     //spawnBuilding(new HumanChurch(QPointF(278, 81), true, rm), player);
@@ -69,7 +73,7 @@ void Warcraft::loadBuildings() {
 
 void Warcraft::loadUnits(){
     for(int i = 0; i < 4; i++){
-        spawnUnit(new Worker(QPointF(128+i*28,128), Unit::PEASANT, &(player->gold), &(player->lumber), rm), player);;
+        spawnUnit(new Worker(QPointF(128+i*28,128), Unit::PEASANT, player, rm), player);;
     }
     spawnUnit(new Footman(QPointF(500,120), rm), player);
 
@@ -112,9 +116,7 @@ void Warcraft::timerEvent(QTimerEvent *event) {
 
     scene()->update();
 
-    if(currentUI == hthUI){
-        hthUI->updateUI();
-    }
+    updateUIs();
 
     Q_UNUSED(event);
 }
@@ -166,7 +168,6 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
         for(Building *b : player->getBuildings()){
             if(b->canSelect() && b->boundingRect2().contains(actualPos)){
                 player->selectBuilding(b);
-                return;
             }
         }
 
@@ -220,6 +221,10 @@ void Warcraft::mouseReleaseEvent(QMouseEvent *releaseEvent) {
                 hthUI->setHumanTownHall(reinterpret_cast<HumanTownHall *>(selectedBuilding));
                 setUI(hthUI);
                 break;
+            case Building::H_BARRACKS:
+                hbUI->setHumanBarracks(reinterpret_cast<HumanBarracks *>(selectedBuilding));
+                setUI(hbUI);
+                break;
             default:
                 setUI(nullptr);
             }
@@ -264,6 +269,14 @@ int Warcraft::newBuilding(Player *player, Building *building, Worker *worker) {
     player->deselect();
 
     return 0;
+}
+
+void Warcraft::updateUIs() {
+    if(currentUI == hthUI){
+        hthUI->updateUI();
+    } else if (currentUI == hbUI){
+        hbUI->updateUI();
+    }
 }
 
 QLinkedList<Entity *> Warcraft::staticEntities() const {
@@ -335,7 +348,12 @@ void Warcraft::paintEvent(QPaintEvent *event) {
     QPainter painter(viewport());
     painter.setFont(QFont("Gentium Book Basic",12));
     painter.setPen(Qt::white);
-    painter.drawText(QPointF(width()*3/5, 20), "Food: "+QString::number(player->food)+"   Gold: "+QString::number(player->gold)+"   Lumber: "+QString::number(player->lumber));
+    painter.drawText(QPointF(width()*3/6, 20),
+        "Units: "+QString::number(player->getUnits().size())+"/100"
+        "    Food: "+QString::number(player->food)+
+        "    Gold: "+QString::number(player->gold)+
+        "    Lumber: "+QString::number(player->lumber));
+
      // visualize graph
 
     /*

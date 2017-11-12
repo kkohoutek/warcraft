@@ -80,11 +80,11 @@ void PeasantUI::clickFarm() {
 }
 
 void PeasantUI::clickBarracks() {
-    prepare(new HumanBarracks(QPointF(0,0),false,rm));
+    prepare(new HumanBarracks(QPointF(0,0),false,rm,player));
 }
 
 void PeasantUI::clickHall() {
-    prepare(new HumanTownHall(QPointF(0,0),false,rm));
+    prepare(new HumanTownHall(QPointF(0,0),false,rm,player));
 }
 
 void PeasantUI::clickStables() {

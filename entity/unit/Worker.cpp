@@ -8,14 +8,12 @@
 #include "entity/building/HumanBlacksmith.hpp"
 #include "entity/building/HumanLumberMill.hpp"
 #include <QGraphicsScene>
-#include <QDebug>
 
 #define MAX_WORKERS_PER_GOLDMINE    5
 #define GOLD_PER_TRIP               10
 
-Worker::Worker(QPointF pos, Unit::Type type, int *playerGold, int *playerLumber, ResourceManager *rm) : Unit(pos, type, 0.65f, 0, 0, 0) {
-    this->playerGold   = playerGold;
-    this->playerLumber = playerLumber;
+Worker::Worker(QPointF pos, Unit::Type type, Player *player, ResourceManager *rm) : Unit(pos, type, 0.65f, 0, 0, 0) {
+    this->player = player;
 
     setMaxHP(40);
     setHP(40);
@@ -27,6 +25,7 @@ Worker::Worker(QPointF pos, Unit::Type type, int *playerGold, int *playerLumber,
         QPixmap *spriteSheetFlipped = rm->getSprite("PEASANT_flipped");
 
         QList<QList<int>> walk0DegFrames;
+        walk0DegFrames.reserve(4);
         walk0DegFrames.append(QList<int>() << 1 << 3);
         walk0DegFrames.append(QList<int>() << 2 << 3);
         walk0DegFrames.append(QList<int>() << 3 << 3);
@@ -448,7 +447,7 @@ void Worker::update(){
                 cancel();
             }
         } else if (currentAnimationSet == &goldCarryAnims && collidesWithItem(mineCommand->dest)){
-            *playerGold += GOLD_PER_TRIP;
+            player->gold += GOLD_PER_TRIP;
             stopMoving();
             setTarget(mineCommand->source->center());
             //setPath(bfs::shortestPath(*graph, center(), mineCommand->source->center())); // anims broken
@@ -465,5 +464,15 @@ void Worker::updateAnimation() {
         currentAnimationSet = &movementAnims;
     }
     Unit::updateAnimation();
+}
+
+Building *Worker::findClosestGoldDestination() const {
+    for(Building *b : player->getBuildings()){
+        if(b->getType() == Building::H_TOWNHALL || b->getType() == Building::O_TOWNHALL){
+
+        }
+    }
+    return nullptr;
+
 }
 

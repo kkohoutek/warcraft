@@ -10,9 +10,11 @@
 
 #include "Player.hpp"
 #include "entity/Goldmine.hpp"
+#include "entity/unit/Worker.hpp"
 #include "ResourceManager.hpp"
 #include "ui/PeasantUI.hpp"
 #include "ui/HumanTownHallUI.hpp"
+#include "ui/HumanBarracksUI.hpp"
 #include "ui/Message.hpp"
 
 class Warcraft : public QGraphicsView
@@ -41,6 +43,8 @@ private:
     void mouseReleaseEvent(QMouseEvent *releaseEvent);
     void mouseMoveEvent(QMouseEvent *event);
     void keyPressEvent(QKeyEvent *event);
+
+    void updateUIs();
 
     void spawnUnit(Unit *u, Player *owner = nullptr);
     void spawnBuilding(Building *b, Player *owner = nullptr);
@@ -72,6 +76,7 @@ private:
     QWidget *currentUI = nullptr;
     PeasantUI *peasantUI;
     HumanTownHallUI *hthUI;
+    HumanBarracksUI *hbUI;
 
     void setUI(QWidget *ui);
 };

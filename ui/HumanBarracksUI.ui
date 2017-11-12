@@ -1,49 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>HumanTownHallUI</class>
- <widget class="QWidget" name="HumanTownHallUI">
-  <property name="enabled">
-   <bool>true</bool>
-  </property>
+ <class>HumanBarracksUI</class>
+ <widget class="QWidget" name="HumanBarracksUI">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>337</width>
-    <height>112</height>
+    <width>419</width>
+    <height>110</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <layout class="QFormLayout" name="formLayout">
-   <property name="labelAlignment">
-    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-   </property>
-   <property name="formAlignment">
-    <set>Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing</set>
-   </property>
-   <item row="1" column="1">
-    <widget class="QLabel" name="count">
-     <property name="font">
-      <font>
-       <family>Gentium Book Basic</family>
-       <pointsize>14</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: white;</string>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Plain</enum>
-     </property>
-     <property name="text">
-      <string>0</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="0">
-    <widget class="QPushButton" name="peasantButton">
+   <item row="0" column="0">
+    <widget class="QPushButton" name="footmanButton">
      <property name="font">
       <font>
        <family>Gentium Book Basic</family>
@@ -54,7 +26,23 @@
       <string notr="true">background: gold;</string>
      </property>
      <property name="text">
-      <string>Peasant</string>
+      <string>Footman</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QLabel" name="label">
+     <property name="font">
+      <font>
+       <family>Gentium Book Basic</family>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: white;</string>
+     </property>
+     <property name="text">
+      <string>0</string>
      </property>
     </widget>
    </item>
