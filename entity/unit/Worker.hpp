@@ -39,7 +39,7 @@ protected:
     struct HarvestCommand {
         Trees *source;
         Building *dest;
-        QList<QPointF> path;
+        //QList<QPointF> path;
         HarvestCommand(Trees *source, Building *dest) { this->source = source; this->dest = dest; }
     };
 

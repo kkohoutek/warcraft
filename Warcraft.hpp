@@ -73,7 +73,7 @@ private:
     QPoint position;
     QGraphicsRectItem *rect; // selection rect
 
-    QWidget *currentUI = nullptr;
+    QWidget *currentUI = nullptr; // = null nebo jeden z následujících
     PeasantUI *peasantUI;
     HumanTownHallUI *hthUI;
     HumanBarracksUI *hbUI;

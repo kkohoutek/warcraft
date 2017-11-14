@@ -113,9 +113,7 @@ void Warcraft::timerEvent(QTimerEvent *event) {
 
     player->update();
     enemy->update();
-
     scene()->update();
-
     updateUIs();
 
     Q_UNUSED(event);

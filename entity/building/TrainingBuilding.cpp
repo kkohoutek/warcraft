@@ -18,7 +18,7 @@ TrainingBuilding::TrainingBuilding(QPointF pos, Building::Type type,
 }
 
 TrainingBuilding::~TrainingBuilding() {
-
+    qDeleteAll(trainingQueue);
 }
 
 bool TrainingBuilding::enqueueUnit(Unit *unit, int sec) {
@@ -44,13 +44,15 @@ void TrainingBuilding::dequeueUnit() {
     auto u = trainingQueue.dequeue();
     u->show();
     player->getUnits().prepend(u);
+
     if(trainingQueue.isEmpty()) {
         trainingTimer.stop();
     }
 }
 
 void TrainingBuilding::die() {
-
+    qDeleteAll(trainingQueue);
+    Building::die();
 }
 
 

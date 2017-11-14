@@ -3,7 +3,6 @@
 
 #include <QMap>
 #include <QPixmap>
-
 /*
  * Tato třída nám umožňuje hospodařit se znovu použitelnými objekty.
  * Instance této třídy přebírá vlastníctví všech ukazatelů, které jsou jí předány.
@@ -14,15 +13,15 @@ public:
     ResourceManager();
     ~ResourceManager();
 
-    QPixmap          *getSprite(const std::string &id) const;
-    void             loadSprite(const std::string &id, QPixmap *sprite);
-    void             deleteSprite(const std::string &id);
-    void             copySprite(const std::string &idSrc, const std::string &idNew, bool horizontalMirror = false, bool verticalMirror = false);
+    QPixmap          *getSprite(const char *id) const;
+    void             loadSprite(const char *id, QPixmap *sprite);
+    void             deleteSprite(const char *id);
+    void             copySprite(const char *idSrc, const char *idNew, bool horizontalMirror = false, bool verticalMirror = false);
 
     int              memoryUsed();
 
 protected:
-    QMap<std::string, QPixmap *> sprites;
+    QMap<const char *, QPixmap *> sprites;
 
 
 };

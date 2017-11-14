@@ -406,7 +406,7 @@ void Worker::build(Building *building) {
     if(buildCommand) return;
     cancel();
     buildCommand = new BuildCommand(building);
-    scene()->addItem(building);
+    //scene()->addItem(building);
     building->setOpacity(0.5);
     building->setHighlighted(false);
     goTo(building->center());

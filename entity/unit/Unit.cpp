@@ -92,7 +92,6 @@ void Unit::update(){
             stopMoving();
         }
     }
-
 }
 
 void Unit::setPath(const QQueue<Node **> &list){

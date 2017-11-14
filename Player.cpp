@@ -2,7 +2,7 @@
 #include <QDebug>
 #include <QGraphicsScene>
 
-#define MAX_SELECTED_UNITS 5
+#define MAX_SELECTED_UNITS 8
 #define MAX_FOOD           100
 #define MAX_GOLD           40000
 #define MAX_LUMBER         20000
