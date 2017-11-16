@@ -32,14 +32,19 @@ protected:
     struct MineCommand {
         Goldmine *source;
         Building *dest;
-        //QList<QPointF> path;
-        MineCommand(Goldmine *source, Building *dest) { this->source = source; this->dest = dest; }
+        Path path;  // Cesta od dolu k budově
+        Path path2; // Cesta od budovy k dolu
+        MineCommand(Goldmine *source, Building *dest, Graph *graph) {
+            this->source = source;
+            this->dest = dest;
+            path = graph->shortestPath(source->center(), dest->center());
+            path2 = graph->shortestPath(dest->center(), source->center());
+        }
     };
 
     struct HarvestCommand {
         Trees *source;
         Building *dest;
-        //QList<QPointF> path;
         HarvestCommand(Trees *source, Building *dest) { this->source = source; this->dest = dest; }
     };
 
@@ -47,7 +52,6 @@ protected:
     BuildCommand    *buildCommand       = nullptr;
     MineCommand     *mineCommand        = nullptr;
 
-    void updateAnimation() override;
     Building *findClosestGoldDestination() const;
 
 private:
@@ -56,7 +60,6 @@ private:
     QList<Animation *> woodCarryAnims;
 
     Player *player;
-
 };
 
 

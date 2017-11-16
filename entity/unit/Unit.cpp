@@ -1,7 +1,8 @@
 #include "Unit.hpp"
 #include <QtMath>
+#include <QDebug>
 
-Unit::Unit(QPointF pos, Unit::Type type, float speed, int damage, int armor, int range) : Entity(pos) {
+Unit::Unit(QPointF pos, Unit::Type type, float speed, float damage, int armor, int range) : Entity(pos) {
     this->speed = speed;
     this->damage = damage;
     this->range = range;
@@ -52,17 +53,21 @@ void Unit::update(){
     Entity::update();
     if(targetEntity) {
         if(targetEntity->isAlive()){
-            if(distanceFrom(targetEntity) <= range + 8){
+            if(distanceFrom(targetEntity) <= (range + 1) * targetEntity->boundingRect().width()){
                 moving = false;
+                path.clear();
                 if(currentAnimationSet != &attackAnims){
                     currentAnimationSet = &attackAnims;
-                    updateAnimation();
+                    setTarget(targetEntity->center());
                 }
-                targetEntity->damage(damage);
+
+                targetEntity->damaged(damage*0.18f, this);
+                qDebug() << damage << targetEntity->getHP();
+            } else if (path.isEmpty()){
+                setPath(graph->shortestPath(center(), targetEntity->center()));
             }
         } else {
             cancel();
-            currentAnimationSet = &movementAnims;
             updateAnimation();
             stopMoving();
         }
@@ -95,12 +100,10 @@ void Unit::update(){
 }
 
 void Unit::setPath(const QQueue<Node **> &list){
-    if((!path.isEmpty() && path.last() == list.last() && path.first() == list.first()) || list.isEmpty()) return;
+    if(list.isEmpty() || (!path.isEmpty() && path.last() == list.last() && path.first() == list.first())) return;
     path = list;
-    if(!path.isEmpty()){
-        setTarget((*(path.dequeue()))->pos);
-        move();
-    }
+    setTarget((*(path.dequeue()))->pos);
+    move();
 }
 
 void Unit::goTo(QPointF goal) {
@@ -109,27 +112,33 @@ void Unit::goTo(QPointF goal) {
 }
 
 void Unit::attack(Entity *victim) {
-    setTarget(victim->center());
+    if(targetEntity == victim) return;
+    setPath(graph->shortestPath(center(), victim->center()));
+    //path.removeLast();
     targetEntity = victim;
-    move();
-
 }
 
 void Unit::die() {
-    stopMoving();
+    moving = false;
     if(!deathAnims.contains(getCurrentAnimation())){
         setCurrentAnimation(deathAnims.at(0));
         getCurrentAnimation()->start();
     }
+    cancel();
     Entity::die();
+}
+
+void Unit::damaged(float amount, Entity *source) {
+    Entity::damaged(amount, source);
+    setHP(getHP() + amount/(armor+1));
+    if(!moving) attack(source);
 }
 
 void Unit::stopMoving(){
     moving = false;
-    //if(currentAnimationSet == &movementAnims){
-        getCurrentAnimation()->setCurrentFrame(0);
-        getCurrentAnimation()->stop();
-    //}
+    getCurrentAnimation()->setCurrentFrame(0);
+    getCurrentAnimation()->stop();
+    path.clear();
 }
 
 
@@ -144,11 +153,11 @@ QVector2D Unit::direction() const {
 
 void Unit::cancel(){
     targetEntity = nullptr;
+    currentAnimationSet = &movementAnims;
 }
 
 void Unit::move() {
     moving = true;
-    //currentAnimationSet = &movementAnims;
 }
 
 

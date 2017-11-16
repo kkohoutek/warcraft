@@ -64,7 +64,7 @@ Warcraft::~Warcraft() {
 }
 
 void Warcraft::loadBuildings() {
-    spawnBuilding(new HumanTownHall(QPointF(204,204), true, rm, player), player);
+    spawnBuilding(new HumanTownHall(QPointF(260,120), true, rm, player), player);
     spawnBuilding(new HumanFarm(QPointF(70, 262), true, rm, &(player->food)), player);
     spawnBuilding(new HumanFarm(QPointF(310, 290), true, rm, &(player->food)), player);
     //spawnBuilding(new HumanChurch(QPointF(278, 81), true, rm), player);
@@ -75,7 +75,7 @@ void Warcraft::loadUnits(){
     for(int i = 0; i < 4; i++){
         spawnUnit(new Worker(QPointF(128+i*28,128), Unit::PEASANT, player, rm), player);;
     }
-    spawnUnit(new Footman(QPointF(500,120), rm), player);
+    spawnUnit(new Footman(QPointF(1500,1500), rm), player);
 
     for(int i = 0; i < 4; i++){
         spawnUnit(new Grunt(QPointF(MAP_AREA/2-420+i*40, MAP_AREA/2-286-i*40), rm), enemy);;
@@ -170,6 +170,26 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
         }
 
     } else if (event->button() == Qt::RightButton){
+        // Klikl hráč na nepřítelskou jednotku
+        for(Unit *eUnit : enemy->getUnits()){
+            if(eUnit->canSelect() && eUnit->boundingRect2().contains(actualPos)){
+                for(Unit *pUnit : selected){
+                    pUnit->attack(eUnit);
+                }
+                return;
+            }
+        }
+
+        //Klikl hráč na nepřátelskou budovu
+        for(Building *eBuilding : enemy->getBuildings()){
+            if(eBuilding->canSelect() && eBuilding->boundingRect2().contains(actualPos)){
+                for(Unit *pUnit : selected){
+                    pUnit->attack(eBuilding);
+                }
+                return;
+            }
+        }
+
         // Nastavení cesty vybraným jednotkám
         for(int i = 0; i < selected.size(); i++){
             Unit *u = selected[i];
@@ -344,7 +364,6 @@ void Warcraft::spawnGoldmine(Goldmine *g) {
 void Warcraft::paintEvent(QPaintEvent *event) {
     QGraphicsView::paintEvent(event); 
     QPainter painter(viewport());
-    painter.setFont(QFont("Gentium Book Basic",12));
     painter.setPen(Qt::white);
     painter.drawText(QPointF(width()*3/6, 20),
         "Units: "+QString::number(player->getUnits().size())+"/100"

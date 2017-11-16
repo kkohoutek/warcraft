@@ -5,7 +5,7 @@
 #define NODE_NEIGHBORS_LIMIT 8   // S kolika sousedy počítáme (max 8)
 
 Graph::Graph() {
-    memset(nodes, 0, sizeof(nodes));
+    std::memset(nodes, 0, sizeof(nodes));
 }
 
 Graph::Graph(const QLinkedList<Entity *> &obstacles) : Graph() {
@@ -45,7 +45,7 @@ void Graph::update(const QLinkedList<Entity *> &obstacles) {
             Node *node = nodes[i][j];
             if(node) {
                 // Vynulluj sousedy
-                memset(node->neighbors, 0, 8 * sizeof(Node *));
+                std::memset(node->neighbors, 0, 8 * sizeof(Node *));
 
                 if(i + 1 < NODES_ARRAY_SIZE){
                     node->neighbors[0] = nodes[i+1][j];
@@ -118,8 +118,8 @@ void Graph::resetNodes() const {
     }
 }
 
-QQueue<Node **> Graph::shortestPath(Node *start, Node *goal) {
-    if(!goal || !start) return QQueue<Node **>();
+Path Graph::shortestPath(Node *start, Node *goal) {
+    if(!goal || !start) return Path();
 
     QQueue<Node *> queue;
     start->visited = true;
@@ -141,7 +141,7 @@ QQueue<Node **> Graph::shortestPath(Node *start, Node *goal) {
     }
 
     // Retrace
-    QQueue<Node **> path;
+    Path path;
     while(node != start){
         path.prepend(gimmeNode(node->pos));
         node = node->parent;
@@ -152,11 +152,25 @@ QQueue<Node **> Graph::shortestPath(Node *start, Node *goal) {
 }
 
 
-QQueue<Node **> Graph::shortestPath(QPointF a, QPointF b) {
+Path Graph::shortestPath(QPointF a, QPointF b) {
     return shortestPath(*(gimmeNode(a, true)), *(gimmeNode(b, true)));
 }
 
 
 QPointF Graph::posFromIndices(int i, int j) {
     return QPointF((j+GRAPH_MARGIN)*GRAPH_SPACING, (i+GRAPH_MARGIN)*GRAPH_SPACING);
+}
+
+bool isPathValid(const Path &path) {
+    for(Node **n : path){
+        if(*n == nullptr){
+            return false;
+        }
+    }
+    return true;
+}
+
+Path reversePath(Path path) {
+    for(int i = 0; i < (path.size()/2); i++) path.swap(i,path.size()-(1+i));
+    return path;
 }

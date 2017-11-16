@@ -4,6 +4,7 @@
 #include <QLinkedList>
 #include "entity/Entity.hpp"
 
+#define Path QQueue<Node **>
 #define GRAPH_MARGIN        2
 #define GRAPH_SPACING       32  // Rozestup uzlů horizontálně a vertikálně
 #define NODES_ARRAY_SIZE    2048/GRAPH_SPACING-GRAPH_MARGIN-GRAPH_MARGIN/2
@@ -35,13 +36,16 @@ public:
     // Defaultuje visited a parent
     void resetNodes() const;
 
-    QQueue<Node **> shortestPath(Node *start, Node *goal);
-    QQueue<Node **> shortestPath(QPointF a, QPointF b);
+    Path shortestPath(Node *start, Node *goal);
+    Path shortestPath(QPointF a, QPointF b);
+
+    static QPointF posFromIndices(int i, int j);
 
 private:
     Node *nodes[NODES_ARRAY_SIZE][NODES_ARRAY_SIZE];
-
-    static QPointF posFromIndices(int i, int j);
 };
+
+bool isPathValid(const QQueue<Node **> &path);
+Path reversePath(Path path);
 
 #endif // PATHFINDING_HPP

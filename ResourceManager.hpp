@@ -13,15 +13,15 @@ public:
     ResourceManager();
     ~ResourceManager();
 
-    QPixmap          *getSprite(const char *id) const;
-    void             loadSprite(const char *id, QPixmap *sprite);
-    void             deleteSprite(const char *id);
-    void             copySprite(const char *idSrc, const char *idNew, bool horizontalMirror = false, bool verticalMirror = false);
+    QPixmap          *getSprite(const QString &id) const;
+    void             loadSprite(const QString &id, QPixmap *sprite);
+    void             deleteSprite(const QString &id);
+    void             copySprite(const QString &idSrc, const QString &idNew, bool horizontalMirror = false, bool verticalMirror = false);
 
     int              memoryUsed();
 
 protected:
-    QMap<const char *, QPixmap *> sprites;
+    QMap<QString, QPixmap *> sprites;
 
 
 };

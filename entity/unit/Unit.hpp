@@ -23,16 +23,17 @@ public:
         GRUNT
     };
 
-    Unit(QPointF pos, Unit::Type type, float speed, int damage, int armor, int range);
+    Unit(QPointF pos, Unit::Type type, float speed, float damage, int armor, int range);
     virtual ~Unit();
 
     void            setTarget(QPointF target);
-    void            setPath(const QQueue<Node **> &list);
+    void            setPath(const Path &list);
     void            goTo(QPointF goal);
     void            useGraph(Graph *graph) { this->graph = graph; }
 
     virtual void    attack(Entity *victim);
     virtual void    die() override;
+    virtual void    damaged(float amount, Entity *source) override;
 
     // Aktualizace dosavadní animace na základě úhlu pohybu */
     virtual void    updateAnimation();
@@ -48,10 +49,16 @@ public:
 
     Unit::Type      getType() const        { return type; }
     bool            isMoving() const       { return moving; }
+    float           getDamage() const      { return damage; }
+    void            setDamage(float d)     { damage = d; }
+    float           getSpeed() const       { return speed; }
+    void            setSpeed(float s)      { speed = s; }
+    int             getArmor() const       { return armor; }
+    void            setArmor(int a)        { armor = a; }
 
 protected:
     float speed;
-    int damage;
+    float damage;
     int armor;
     int range;
 
@@ -64,13 +71,12 @@ protected:
     QList<Animation *> *currentAnimationSet; // Ukazuje na jeden z předešlých listů
 
     QPointF targetPoint;
-    QQueue<Node **> path;
+    Path path;
     Graph *graph = nullptr; // pointer to pathfinding graph
     Entity *targetEntity = nullptr;
 
 private:
     Unit::Type type;
-
 };
 
 #endif // UNIT_HPP

@@ -20,10 +20,10 @@ public:
     virtual void update();
     virtual void die();
 
-    void damage(int amount);
+    virtual void damaged(float amount, Entity *source);
 
-    void setHP(int hp)              { this->hp = hp; }
-    int getHP() const               { return hp; }
+    void setHP(float hp)              { this->hp = hp; }
+    float getHP() const               { return hp; }
 
     void setMaxHP(int hp)           { this->maxHP = hp; }
     int getMaxHP() const            { return maxHP; }
@@ -41,6 +41,8 @@ public:
     // absolute boundingrect
     QRectF boundingRect2() const;
 
+    unsigned int getID() const { return id; }
+
 protected:
     float scaleX = 1;
     float scaleY = 1;
@@ -51,9 +53,12 @@ protected:
  private:
     Animation *currentAnimation = nullptr;
 
-    int hp              = 0;
-    int maxHP           = 0;
-    bool highlighted    = false;
+    unsigned int id;
+    float hp              = 0;
+    int maxHP             = 0;
+    bool highlighted      = false;
+
+    static unsigned int newID;
 
 };
 

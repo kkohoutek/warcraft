@@ -15,6 +15,14 @@ Player::Player(Race race) {
 void Player::update(){
     for(Unit *unit : units){
         unit->update();
+        if(!unit->isAlive()){
+            for(Unit *u : selectedUnits){
+                if(u->getID() == unit->getID()){
+                    selectedUnits.removeOne(u);
+                    u->setHighlighted(false);
+                }
+            }
+        }
     }
     for(Building *building : buildings){
         building->update();

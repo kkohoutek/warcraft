@@ -2,9 +2,11 @@
 #include <QGraphicsScene>
 
 #define SHOW_HP_BARS 1
+unsigned int Entity::newID = 0;
 
 Entity::Entity(QPointF pos) {
     this->setPos(pos);
+    id = Entity::newID++;
 }
 
 Entity::~Entity() {
@@ -35,7 +37,7 @@ void Entity::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
 }
 
 void Entity::update() {
-    if(!isAlive()) return;
+    if(!isAlive()) die();
 }
 
 void Entity::die() {
@@ -51,9 +53,8 @@ void Entity::setCurrentAnimation(Animation *anim) {
     currentAnimation = anim;
 }
 
-void Entity::damage(int amount){
+void Entity::damaged(float amount, Entity *source){
     hp -= amount;
-    if(hp < 0) die();
 }
 
 float Entity::distanceFrom(QPointF point) const {

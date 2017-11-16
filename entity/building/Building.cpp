@@ -1,4 +1,5 @@
 #include "Building.hpp"
+#include <QDebug>
 
 Building::Building(QPointF pos, Building::Type type, bool finishedOnSpawn, Race race, const QList<int> &preFrame, const QList<int> &endFrame, int buildTime, int maxHP, ResourceManager *rm) : Entity(pos)
 {
@@ -50,6 +51,7 @@ void Building::startConstruction() {
 
     buildTimer = new QTimer();
     buildTimer->setInterval(buildTime/getMaxHP());
+    qDebug() << "Interval" << buildTime/getMaxHP();
     connect(buildTimer, SIGNAL(timeout()), this, SLOT(constructionUpdate()));
     buildTimer->start();
 

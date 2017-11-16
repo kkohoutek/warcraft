@@ -1,13 +1,6 @@
 #include "Worker.hpp"
-#include "entity/building/HumanFarm.hpp"
-#include "entity/building/HumanBarracks.hpp"
-#include "entity/building/HumanStables.hpp"
-#include "entity/building/HumanTower.hpp"
-#include "entity/building/HumanTownHall.hpp"
-#include "entity/building/HumanChurch.hpp"
-#include "entity/building/HumanBlacksmith.hpp"
-#include "entity/building/HumanLumberMill.hpp"
 #include <QGraphicsScene>
+#include <QDebug>
 
 #define MAX_WORKERS_PER_GOLDMINE    5
 #define GOLD_PER_TRIP               10
@@ -392,7 +385,7 @@ bool Worker::canSelect() const {
 
 void Worker::mine(Goldmine *source, Building *dest){
     cancel();
-    mineCommand = new MineCommand(source, dest);
+    mineCommand = new MineCommand(source, dest, graph);
     goTo(source->center());
 }
 
@@ -406,7 +399,7 @@ void Worker::build(Building *building) {
     if(buildCommand) return;
     cancel();
     buildCommand = new BuildCommand(building);
-    //scene()->addItem(building);
+    scene()->addItem(building);
     building->setOpacity(0.5);
     building->setHighlighted(false);
     goTo(building->center());
@@ -419,51 +412,59 @@ void Worker::update(){
         if(!buildCommand->what->isBuildingFinished()){
                     if(collidesWithItem(buildCommand->what)){
                         stopMoving();
-                        path.clear();
                         buildCommand->what->setOpacity(1);
                         hide();
                         buildCommand->what->startConstruction();
                     } else if(path.isEmpty()){
-                        path.clear();
                         setTarget(buildCommand->what->center()); // musíme zajistit, že worker bude kolidovat s budovou
                         move();
                     }
         } else {
-            this->show();
-            //setPos((*(graph->gimmeNode(buildCommand->what->center(),true)))->pos);
+            show();
             cancel();
         }
     } else if (mineCommand){
-        if(currentAnimationSet == &movementAnims && collidesWithItem(mineCommand->source)){
-            if(mineCommand->source->isAlive()){
-                mineCommand->source->damage(GOLD_PER_TRIP);
-                stopMoving();
-                setTarget(mineCommand->dest->center());
-                //setPath(bfs::shortestPath(*graph, center(), mineCommand->dest->center())); // anims broken
+        if(currentAnimationSet == &movementAnims){
+            if(collidesWithItem(mineCommand->source)){
+                if(mineCommand->source->isAlive()){
+                    mineCommand->source->damaged(GOLD_PER_TRIP, this);
+                    stopMoving();
+                    // Pokud je cesta invalidní, přepočítáme ji (a path2 je path pozpátku)
+                    if(!isPathValid(mineCommand->path)){
+                        mineCommand->path = graph->shortestPath(mineCommand->source->center(), mineCommand->dest->center());
+                        mineCommand->path2 = reversePath(mineCommand->path);
+                    }
+                    setPath(mineCommand->path);
+                    currentAnimationSet = &goldCarryAnims;
+                    updateAnimation();
+                } else {
+                    stopMoving();
+                    cancel();
+                }
+            } else if (path.isEmpty() && targetPoint == mineCommand->source->center()){
+                // Musíme zajistit, že worker bude kolidovat s source
+                setTarget(mineCommand->source->center());
                 move();
-                currentAnimationSet = &goldCarryAnims;
-            } else {
-                stopMoving();
-                cancel();
             }
-        } else if (currentAnimationSet == &goldCarryAnims && collidesWithItem(mineCommand->dest)){
-            player->gold += GOLD_PER_TRIP;
-            stopMoving();
-            setTarget(mineCommand->source->center());
-            //setPath(bfs::shortestPath(*graph, center(), mineCommand->source->center())); // anims broken
-            move();
-            currentAnimationSet = &movementAnims;
+        } else if (currentAnimationSet == &goldCarryAnims){
+            if(collidesWithItem(mineCommand->dest)){
+                player->gold += GOLD_PER_TRIP;
+                stopMoving();
+                // Pokud je cesta invalidní, přepočítáme ji (a path2 je path pozpátku)
+                if(!isPathValid(mineCommand->path2)){
+                    mineCommand->path2 = graph->shortestPath(mineCommand->dest->center(), mineCommand->source->center());
+                    mineCommand->path = reversePath(mineCommand->path2);
+                }
+                setPath(mineCommand->path2);
+                currentAnimationSet = &movementAnims;
+                updateAnimation();
+            } else if (path.isEmpty() && targetPoint == mineCommand->dest->center()){
+                // Musíme zajistit, že worker bude kolidovat s dest
+                setTarget(mineCommand->dest->center());
+                move();
+            }
         }
     }
-}
-
-void Worker::updateAnimation() {
-    if(mineCommand && targetPoint == mineCommand->dest->center()){
-        currentAnimationSet = &goldCarryAnims;
-    } else {
-        currentAnimationSet = &movementAnims;
-    }
-    Unit::updateAnimation();
 }
 
 Building *Worker::findClosestGoldDestination() const {
@@ -473,6 +474,5 @@ Building *Worker::findClosestGoldDestination() const {
         }
     }
     return nullptr;
-
 }
 
