@@ -59,6 +59,10 @@ void Building::startConstruction() {
     getCurrentAnimation()->start();
 }
 
+void Building::die() {
+    getCurrentAnimation()->setCurrentFrame(0);
+}
+
 void Building::constructionUpdate() {
     if(getHP() + 1 < getMaxHP()){
         setHP(getHP()+1);

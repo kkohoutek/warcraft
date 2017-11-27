@@ -41,6 +41,7 @@ public:
 
     void startConstruction();
 
+    void            die() override;
     bool            isAlive() const override       { return (finished && Entity::isAlive()) || !finished; }
     bool            isBuildingFinished() const     { return finished; }
     Building::Type  getType() const                { return type; }

@@ -118,8 +118,8 @@ void Graph::resetNodes() const {
     }
 }
 
-Path Graph::shortestPath(Node *start, Node *goal) {
-    if(!goal || !start) return Path();
+PATH Graph::shortestPath(Node *start, Node *goal) {
+    if(!goal || !start) return PATH();
 
     QQueue<Node *> queue;
     start->visited = true;
@@ -141,7 +141,7 @@ Path Graph::shortestPath(Node *start, Node *goal) {
     }
 
     // Retrace
-    Path path;
+    PATH path;
     while(node != start){
         path.prepend(gimmeNode(node->pos));
         node = node->parent;
@@ -152,7 +152,7 @@ Path Graph::shortestPath(Node *start, Node *goal) {
 }
 
 
-Path Graph::shortestPath(QPointF a, QPointF b) {
+PATH Graph::shortestPath(QPointF a, QPointF b) {
     return shortestPath(*(gimmeNode(a, true)), *(gimmeNode(b, true)));
 }
 
@@ -161,7 +161,7 @@ QPointF Graph::posFromIndices(int i, int j) {
     return QPointF((j+GRAPH_MARGIN)*GRAPH_SPACING, (i+GRAPH_MARGIN)*GRAPH_SPACING);
 }
 
-bool isPathValid(const Path &path) {
+bool isPathValid(const PATH &path) {
     for(Node **n : path){
         if(*n == nullptr){
             return false;
@@ -170,7 +170,7 @@ bool isPathValid(const Path &path) {
     return true;
 }
 
-Path reversePath(Path path) {
+PATH reversePath(PATH path) {
     for(int i = 0; i < (path.size()/2); i++) path.swap(i,path.size()-(1+i));
     return path;
 }

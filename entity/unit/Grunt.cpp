@@ -1,7 +1,6 @@
 #include "Grunt.hpp"
 
-Grunt::Grunt(QPointF pos, ResourceManager *rm) : Unit(pos,GRUNT,1,1,2,0)
-{
+Grunt::Grunt(QPointF pos, ResourceManager *rm) : Unit(pos,GRUNT,1,1,2,0) {
     setMaxHP(60);
     setHP(60);
 
@@ -140,6 +139,7 @@ Grunt::Grunt(QPointF pos, ResourceManager *rm) : Unit(pos,GRUNT,1,1,2,0)
        attackAnims.append(attack180Deg);
 
        QList<QList<int>> attack225DegFrames;
+       attack225DegFrames.reserve(4);
        attack225DegFrames.append(QList<int>() << 6 << 2);
        attack225DegFrames.append(QList<int>() << 6 << 3);
        attack225DegFrames.append(QList<int>() << 6 << 4);
@@ -150,6 +150,7 @@ Grunt::Grunt(QPointF pos, ResourceManager *rm) : Unit(pos,GRUNT,1,1,2,0)
        attackAnims.append(attack225Deg);
 
        QList<QList<int>> attack270DegFrames;
+       attack270DegFrames.reserve(4);
        attack270DegFrames.append(QList<int>() << 5 << 1);
        attack270DegFrames.append(QList<int>() << 5 << 2);
        attack270DegFrames.append(QList<int>() << 5 << 4);
@@ -160,6 +161,7 @@ Grunt::Grunt(QPointF pos, ResourceManager *rm) : Unit(pos,GRUNT,1,1,2,0)
        attackAnims.append(attack270Deg);
 
        QList<QList<int>> attack315DegFrames;
+       attack315DegFrames.reserve(4);
        attack315DegFrames.append(QList<int>() << 8 << 2);
        attack315DegFrames.append(QList<int>() << 8 << 3);
        attack315DegFrames.append(QList<int>() << 8 << 4);
@@ -170,6 +172,7 @@ Grunt::Grunt(QPointF pos, ResourceManager *rm) : Unit(pos,GRUNT,1,1,2,0)
        attackAnims.append(attack315Deg);
 
        QList<QList<int>> deathFrames;
+       deathFrames.reserve(6);
        deathFrames.append(QList<int>() << 10 << 0);
        deathFrames.append(QList<int>() << 11 << 0);
        deathFrames.append(QList<int>() << 10 << 1);
@@ -178,15 +181,11 @@ Grunt::Grunt(QPointF pos, ResourceManager *rm) : Unit(pos,GRUNT,1,1,2,0)
        deathFrames.append(QList<int>() << 11 << 2);
 
        Animation *death = new Animation(spriteSheet, 32,32, deathFrames, 250, false);
-
        deathAnims.append(death);
 
-        setCurrentAnimation(walk135Deg);
-
-
+       setCurrentAnimation(walk270Deg);
 }
 
-QRectF Grunt::boundingRect() const
-{
+QRectF Grunt::boundingRect() const {
     return QRectF(6,6,36,36);
 }

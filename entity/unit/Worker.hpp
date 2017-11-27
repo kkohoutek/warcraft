@@ -14,6 +14,7 @@ public:
     Worker(QPointF pos, Unit::Type type, Player *player, ResourceManager *rm);
     ~Worker();
 
+    void    attack(Entity *victim) override;
     void    update() override;
     void    cancel() override;
     bool    canSelect() const override;
@@ -32,8 +33,8 @@ protected:
     struct MineCommand {
         Goldmine *source;
         Building *dest;
-        Path path;  // Cesta od dolu k budově
-        Path path2; // Cesta od budovy k dolu
+        PATH path;  // Cesta od dolu k budově
+        PATH path2; // Cesta od budovy k dolu
         MineCommand(Goldmine *source, Building *dest, Graph *graph) {
             this->source = source;
             this->dest = dest;

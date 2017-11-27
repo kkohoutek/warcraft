@@ -12,6 +12,10 @@ Unit::Unit(QPointF pos, Unit::Type type, float speed, float damage, int armor, i
     scaleX = 2;
     scaleY = 2;
 
+    attackAnims.reserve(8);
+    movementAnims.reserve(8);
+    deathAnims.reserve(1);
+
     currentAnimationSet = &movementAnims;
 }
 
@@ -60,9 +64,8 @@ void Unit::update(){
                     currentAnimationSet = &attackAnims;
                     setTarget(targetEntity->center());
                 }
-
                 targetEntity->damaged(damage*0.18f, this);
-                qDebug() << damage << targetEntity->getHP();
+
             } else if (path.isEmpty()){
                 setPath(graph->shortestPath(center(), targetEntity->center()));
             }
@@ -75,7 +78,8 @@ void Unit::update(){
 
     if(moving){
         // Přibliž se k cíli
-        moveBy(speed * direction().x(), speed * direction().y());
+        QVector2D dir = direction();
+        moveBy(speed * dir.x(), speed * dir.y());
     }
 
     if(distanceFrom(targetPoint) < 0.5f){
@@ -131,7 +135,7 @@ void Unit::die() {
 void Unit::damaged(float amount, Entity *source) {
     Entity::damaged(amount, source);
     setHP(getHP() + amount/(armor+1));
-    if(!moving) attack(source);
+    if(!moving && !targetEntity) attack(source);
 }
 
 void Unit::stopMoving(){
@@ -140,7 +144,6 @@ void Unit::stopMoving(){
     getCurrentAnimation()->stop();
     path.clear();
 }
-
 
 void Unit::setTarget(QPointF target){
     targetPoint = target;
