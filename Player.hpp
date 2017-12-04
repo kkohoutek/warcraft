@@ -4,9 +4,14 @@
 #include "entity/unit/Unit.hpp"
 #include "entity/building/Building.hpp"
 
+// Tato třída se stará o hráče a entity, které vlastní.
+
 class Player
 {
 public:
+    static bool deleteDead;
+    static int maxDead;
+
     int gold = 0;
     int lumber = 0;
     int food = 0;
@@ -26,15 +31,16 @@ public:
 
     Race getRace() const                        { return race; }
 
-protected:
+private:
     QLinkedList<Building *>   buildings;
     QLinkedList<Unit *>       units;
     QList<Unit *>       selectedUnits;
 
     Building *selectedBuilding = nullptr;
 
-private:
     Race race;
+    QQueue<Entity *> delQueue;
+    void cleanUp();
 };
 
 #endif // PLAYER_HPP

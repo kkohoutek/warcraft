@@ -15,25 +15,26 @@ public:
     Entity(QPointF pos);
     virtual ~Entity();
 
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
+    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
     virtual void update();
     virtual void die();
-
     virtual void damaged(float amount, Entity *source);
 
-    void setHP(float hp)              { this->hp = hp; }
-    float getHP() const               { return hp; }
+    void setHP(float hp)            { this->hp = hp; }
+    float getHP() const             { return hp; }
 
     void setMaxHP(int hp)           { this->maxHP = hp; }
     int getMaxHP() const            { return maxHP; }
 
     virtual bool isAlive() const    { return hp > 0; }
     virtual bool canSelect() const  { return isVisible() && isAlive(); }
-    void setHighlighted(bool h)     { highlighted = h; }
 
-    float distanceFrom(Entity *entity) const ;
-    float distanceFrom(QPointF point) const;
+    void setHighlighted(bool h)     { highlighted = h; }
+    bool isHighlighted() const      { return highlighted; }
+
+    virtual float distanceFrom(Entity *entity) const ;
+    virtual float distanceFrom(QPointF point) const;
 
     // absolutní pozice středu entity
     QPointF center() const;
@@ -41,7 +42,7 @@ public:
     // absolute boundingrect
     QRectF boundingRect2() const;
 
-    unsigned int getID() const { return id; }
+    int getID() const { return id; }
 
 protected:
     float scaleX = 1;
@@ -53,12 +54,12 @@ protected:
  private:
     Animation *currentAnimation = nullptr;
 
-    unsigned int id;
+    int id;
     float hp              = 0;
     int maxHP             = 0;
     bool highlighted      = false;
 
-    static unsigned int newID;
+    static int newID;
 
 };
 

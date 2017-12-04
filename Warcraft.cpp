@@ -35,20 +35,20 @@ Warcraft::Warcraft() {
 
     initResources();
 
-    scene->setBackgroundBrush(QBrush(*(rm->getSprite("MAP1"))));
+    scene->setBackgroundBrush(QBrush(*(rm.getSprite("MAP1"))));
     loadWorld();
     loadUnits();
     loadBuildings();
 
-    peasantUI = new PeasantUI(player, rm, scene, this);
+    peasantUI = new PeasantUI(player, &rm, scene, this);
     peasantUI->hide();
     scene->addWidget(peasantUI);
 
-    hthUI = new HumanTownHallUI(player, rm, &graph, scene, this);
+    hthUI = new HumanTownHallUI(player, &rm, &graph, scene, this);
     hthUI->hide();
     scene->addWidget(hthUI);
 
-    hbUI = new HumanBarracksUI(player, rm, &graph, scene, this);
+    hbUI = new HumanBarracksUI(player, &rm, &graph, scene, this);
     hbUI->hide();
     scene->addWidget(hbUI);
 
@@ -56,36 +56,37 @@ Warcraft::Warcraft() {
 }
 
 Warcraft::~Warcraft() {
-    qDeleteAll(allEntities());
+    qDeleteAll(goldmines);
+    qDeleteAll(trees);
     delete rect;
     delete player;
     delete enemy;
-    delete rm;
 }
 
 void Warcraft::loadBuildings() {
-    spawnBuilding(new HumanTownHall(QPointF(260,120), true, rm, player), player);
-    spawnBuilding(new HumanFarm(QPointF(70, 262), true, rm, &(player->food)), player);
-    spawnBuilding(new HumanFarm(QPointF(310, 290), true, rm, &(player->food)), player);
+    spawnBuilding(new HumanTownHall(QPointF(260,120), true, &rm, player), player);
+    spawnBuilding(new HumanFarm(QPointF(70, 262), true, &rm, &(player->food)), player);
+    spawnBuilding(new HumanFarm(QPointF(310, 290), true, &rm, &(player->food)), player);
     //spawnBuilding(new HumanChurch(QPointF(278, 81), true, rm), player);
-    spawnBuilding(new OrcTownHall(QPointF(MAP_AREA/2-300,MAP_AREA/2-300), true, rm), enemy);
+    spawnBuilding(new OrcTownHall(QPointF(MAP_AREA/2-300,MAP_AREA/2-300), true, &rm), enemy);
 }
 
 void Warcraft::loadUnits(){
     for(int i = 0; i < 4; i++){
-        spawnUnit(new Worker(QPointF(128+i*28,128), Unit::PEASANT, player, rm), player);;
+        spawnUnit(new Worker(QPointF(128+i*28,128), Unit::PEASANT, player, &rm), player);;
     }
-    spawnUnit(new Footman(QPointF(1500,1500), rm), player);
+    spawnUnit(new Footman(QPointF(1500,1500), &rm), player);
 
     for(int i = 0; i < 4; i++){
-        spawnUnit(new Grunt(QPointF(MAP_AREA/2-420+i*40, MAP_AREA/2-286-i*40), rm), enemy);;
+        spawnUnit(new Grunt(QPointF(MAP_AREA/2-420+i*40, MAP_AREA/2-286-i*40), &rm), enemy);;
     }
+    enemy->getUnits().first()->attack(player->getUnits().first());
 }
 
 void Warcraft::loadWorld() {
-    spawnGoldmine(new Goldmine(QPointF(64,64), rm));
-    spawnGoldmine(new Goldmine(QPointF(MAP_AREA/2-192, MAP_AREA/2-192), rm));
-    spawnGoldmine(new Goldmine(QPointF(800,522), rm));
+    spawnGoldmine(new Goldmine(QPointF(64,64), &rm));
+    spawnGoldmine(new Goldmine(QPointF(MAP_AREA/2-192, MAP_AREA/2-192), &rm));
+    spawnGoldmine(new Goldmine(QPointF(800,522), &rm));
 }
 
 void Warcraft::timerEvent(QTimerEvent *event) {
@@ -121,7 +122,7 @@ void Warcraft::timerEvent(QTimerEvent *event) {
 
 void Warcraft::mousePressEvent(QMouseEvent *event){
     auto actualPos = mapToScene(event->pos());
-    auto selected = player->getSelectedUnits();
+    auto &selected = player->getSelectedUnits();
 
     if(event->button() == Qt::LeftButton){
 
@@ -249,7 +250,6 @@ void Warcraft::mouseReleaseEvent(QMouseEvent *releaseEvent) {
         }
 
         rect->hide();
-
     }
 }
 
@@ -323,21 +323,11 @@ QLinkedList<Unit *> Warcraft::allUnits() const {
 }
 
 QLinkedList<Entity *> Warcraft::allEntities() const {
-    QLinkedList<Entity *> allEntities = staticEntities();
+    QLinkedList<Entity *> &allEntities = staticEntities();
     for(Unit *u : allUnits()){
         allEntities.prepend(u);
     }
     return allEntities;
-}
-
-QLinkedList<Entity *> Warcraft::deadEntities() const {
-    QLinkedList<Entity *> dead;
-    for(Entity *e : allEntities()){
-        if(!e->isAlive()) {
-            dead.prepend(e);
-        }
-    }
-    return dead;
 }
 
 void Warcraft::spawnUnit(Unit *u, Player *owner) {
@@ -389,21 +379,20 @@ void Warcraft::paintEvent(QPaintEvent *event) {
 }
 
 void Warcraft::initResources() {
-    rm = new ResourceManager();
-    rm->loadSprite("ICONS", new QPixmap(":graphics/ICONS"));
-    rm->loadSprite("MAP1", new QPixmap(":graphics/MAP1"));
-    rm->loadSprite("BUILDINGS_H", new QPixmap(":graphics/BUILDINGS_H"));
-    rm->loadSprite("BUILDINGS_O", new QPixmap(":graphics/BUILDINGS_O"));
-    rm->loadSprite("FOOTMAN", new QPixmap(":graphics/FOOTMAN"));
-    rm->loadSprite("GRUNT", new QPixmap(":graphics/GRUNT"));
-    rm->loadSprite("DAEMON", new QPixmap(":graphics/DAEMON"));
-    rm->loadSprite("PEASANT", new QPixmap(":graphics/PEASANT"));
-    rm->loadSprite("MISC", new QPixmap(":graphics/MISC"));
-    rm->loadSprite("WORLD", new QPixmap(":graphics/WORLD"));
-    rm->copySprite("PEASANT", "PEASANT_flipped", true, false);
-    rm->copySprite("FOOTMAN", "FOOTMAN_flipped", true, false);
-    rm->copySprite("GRUNT", "GRUNT_flipped", true, false);
-    rm->copySprite("DAEMON", "DAEMON_flipped", true, false);
+    rm.loadSprite("ICONS", new QPixmap(":graphics/ICONS"));
+    rm.loadSprite("MAP1", new QPixmap(":graphics/MAP1"));
+    rm.loadSprite("BUILDINGS_H", new QPixmap(":graphics/BUILDINGS_H"));
+    rm.loadSprite("BUILDINGS_O", new QPixmap(":graphics/BUILDINGS_O"));
+    rm.loadSprite("FOOTMAN", new QPixmap(":graphics/FOOTMAN"));
+    rm.loadSprite("GRUNT", new QPixmap(":graphics/GRUNT"));
+    rm.loadSprite("DAEMON", new QPixmap(":graphics/DAEMON"));
+    rm.loadSprite("PEASANT", new QPixmap(":graphics/PEASANT"));
+    rm.loadSprite("MISC", new QPixmap(":graphics/MISC"));
+    rm.loadSprite("WORLD", new QPixmap(":graphics/WORLD"));
+    rm.copySprite("PEASANT", "PEASANT_flipped", true, false);
+    rm.copySprite("FOOTMAN", "FOOTMAN_flipped", true, false);
+    rm.copySprite("GRUNT", "GRUNT_flipped", true, false);
+    rm.copySprite("DAEMON", "DAEMON_flipped", true, false);
 }
 
 QPair<int, int> Warcraft::cost(Building::Type type) {
@@ -452,4 +441,12 @@ void Warcraft::setUI(QWidget *ui) {
     if(currentUI) currentUI->hide();
     currentUI = ui;
     if(ui) ui->show();
+}
+
+size_t Warcraft::entitiesMemoryStatus() const {
+    size_t bytes = 0;
+    for(Entity *e : allEntities()){
+        bytes += sizeof(*e);
+    }
+    return bytes;
 }

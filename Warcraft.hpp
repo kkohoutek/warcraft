@@ -24,13 +24,13 @@ public:
     ~Warcraft();
 
 private:
-    ResourceManager *rm;
+    ResourceManager rm;
     Graph graph;
     Player *player;
     Player *enemy;
 
-    QLinkedList<Goldmine *>   goldmines;
-    QLinkedList<Trees *>      trees;
+    QVector<Goldmine *>   goldmines;
+    QVector<Trees *>      trees;
 
     void initResources();
     void loadBuildings();
@@ -60,7 +60,6 @@ private:
     QLinkedList<Entity *> staticEntities() const;
     QLinkedList<Unit *>   allUnits() const;
     QLinkedList<Entity *> allEntities() const;
-    QLinkedList<Entity *> deadEntities() const;
 
     // Specifikace nákladů pro každou budovu (pro gameplay)
     static QPair<int, int> cost(Building::Type type);
@@ -79,6 +78,9 @@ private:
     HumanBarracksUI *hbUI;
 
     void setUI(QWidget *ui);
+
+    /******************* DEBUG STUFF *******************/
+    size_t entitiesMemoryStatus() const;
 };
 
 #endif // WARCRAFT_HPP

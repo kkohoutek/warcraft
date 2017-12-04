@@ -12,7 +12,7 @@ class Animation : public QObject
 {
     Q_OBJECT
 public:
-    Animation(const QPixmap *spriteSheet, int frameWidth, int frameHeight, QList<QList<int>> &frames, int duration, bool looping);
+    Animation(const QPixmap *spriteSheet, int frameWidth, int frameHeight, QList<QList<int>> &frames, int duration, bool looping = false);
 
     void start();
     void stop();

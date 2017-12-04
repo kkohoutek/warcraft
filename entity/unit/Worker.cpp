@@ -5,7 +5,7 @@
 #define MAX_WORKERS_PER_GOLDMINE    5
 #define GOLD_PER_TRIP               10
 
-Worker::Worker(QPointF pos, Unit::Type type, Player *player, ResourceManager *rm) : Unit(pos, type, 0.65f, 0, 0, 0) {
+Worker::Worker(QPointF pos, Unit::Type type, Player *player, ResourceManager *rm) : Unit(pos, type, 0.85f, 0, 0, 0) {
     this->player = player;
 
     setMaxHP(40);
@@ -16,52 +16,69 @@ Worker::Worker(QPointF pos, Unit::Type type, Player *player, ResourceManager *rm
     miningAnims.reserve(8);
 
     switch(type){
-        case PEASANT:
-    {
+        case PEON:
+        //peon
+        break;
+
+    default:
+        this->type = Unit::PEASANT;
         QPixmap *spriteSheet = rm->getSprite("PEASANT");
         QPixmap *spriteSheetFlipped = rm->getSprite("PEASANT_flipped");
 
         QList<QList<int>> walk0DegFrames;
-        walk0DegFrames.reserve(4);
+        walk0DegFrames.reserve(8);
         walk0DegFrames.append(QList<int>() << 1 << 3);
         walk0DegFrames.append(QList<int>() << 2 << 3);
         walk0DegFrames.append(QList<int>() << 3 << 3);
         walk0DegFrames.append(QList<int>() << 2 << 3);
 
-        Animation *walk0Deg = new Animation(spriteSheet, 32,32, walk0DegFrames, 250, true);
+        Animation *walk0Deg = new Animation(spriteSheet, 32,32, walk0DegFrames, 150, true);
 
         movementAnims.append(walk0Deg);
 
         QList<QList<int>> walk45DegFrames;
-        walk45DegFrames.reserve(4);
+        walk45DegFrames.reserve(8);
         walk45DegFrames.append(QList<int>() << 1 << 0);
         walk45DegFrames.append(QList<int>() << 1 << 1);
         walk45DegFrames.append(QList<int>() << 1 << 2);
         walk45DegFrames.append(QList<int>() << 1 << 1);
+        walk45DegFrames.append(QList<int>() << 1 << 0);
+        walk45DegFrames.append(QList<int>() << 1 << 4);
+        walk45DegFrames.append(QList<int>() << 1 << 3);
+        walk45DegFrames.append(QList<int>() << 1 << 4);
 
-        Animation *walk45Deg = new Animation(spriteSheet, 32,32, walk45DegFrames, 250, true);
+        Animation *walk45Deg = new Animation(spriteSheet, 32,32, walk45DegFrames, 150, true);
 
         movementAnims.append(walk45Deg);
 
         QList<QList<int>> walk90DegFrames;
-        walk90DegFrames.reserve(4);
+        walk90DegFrames.reserve(8);
         walk90DegFrames.append(QList<int>() << 0 << 0);
         walk90DegFrames.append(QList<int>() << 0 << 1);
         walk90DegFrames.append(QList<int>() << 0 << 2);
         walk90DegFrames.append(QList<int>() << 0 << 1);
+        walk90DegFrames.append(QList<int>() << 0 << 0);
+        walk90DegFrames.append(QList<int>() << 0 << 4);
+        walk90DegFrames.append(QList<int>() << 0 << 3);
+        walk90DegFrames.append(QList<int>() << 0 << 4);
 
-        Animation *walk90Deg = new Animation(spriteSheet, 32,32, walk90DegFrames, 250, true);
+        Animation *walk90Deg = new Animation(spriteSheet, 32,32, walk90DegFrames, 150, true);
 
         movementAnims.append(walk90Deg);
 
         QList<QList<int>> walk135DegFrames;
-        walk135DegFrames.reserve(4);
+        walk135DegFrames.reserve(8);
         walk135DegFrames.append(QList<int>() << 13 << 0);
         walk135DegFrames.append(QList<int>() << 13 << 1);
         walk135DegFrames.append(QList<int>() << 13 << 2);
         walk135DegFrames.append(QList<int>() << 13 << 1);
+        walk135DegFrames.append(QList<int>() << 13 << 0);
+        walk135DegFrames.append(QList<int>() << 13 << 4);
+        walk135DegFrames.append(QList<int>() << 13 << 3);
+        walk135DegFrames.append(QList<int>() << 13 << 4);
 
-        Animation *walk135Deg = new Animation(spriteSheetFlipped, 32,32, walk135DegFrames, 250, true);
+
+        Animation *walk135Deg = new Animation(spriteSheetFlipped, 32,32, walk135DegFrames, 150, true);
 
         movementAnims.append(walk135Deg);
 
@@ -71,41 +88,55 @@ Worker::Worker(QPointF pos, Unit::Type type, Player *player, ResourceManager *rm
         walk180DegFrames.append(QList<int>() << 12 << 1);
         walk180DegFrames.append(QList<int>() << 11 << 1);
         walk180DegFrames.append(QList<int>() << 12 << 1);
+        walk180DegFrames.append(QList<int>() << 13 << 1);
 
-        Animation *walk180Deg = new Animation(spriteSheetFlipped, 32,32, walk180DegFrames, 250, true);
+
+        Animation *walk180Deg = new Animation(spriteSheetFlipped, 32,32, walk180DegFrames, 150, true);
 
         movementAnims.append(walk180Deg);
 
         QList<QList<int>> walk225DegFrames;
-        walk225DegFrames.reserve(4);
+        walk225DegFrames.reserve(8);
         walk225DegFrames.append(QList<int>() << 11 << 0);
         walk225DegFrames.append(QList<int>() << 11 << 1);
         walk225DegFrames.append(QList<int>() << 11 << 2);
         walk225DegFrames.append(QList<int>() << 11 << 1);
+        walk225DegFrames.append(QList<int>() << 11 << 0);
+        walk225DegFrames.append(QList<int>() << 11 << 4);
+        walk225DegFrames.append(QList<int>() << 11 << 3);
+        walk225DegFrames.append(QList<int>() << 11 << 4);
 
-        Animation *walk225Deg = new Animation(spriteSheetFlipped, 32,32, walk225DegFrames, 250, true);
+        Animation *walk225Deg = new Animation(spriteSheetFlipped, 32,32, walk225DegFrames, 150, true);
 
         movementAnims.append(walk225Deg);
 
         QList<QList<int>> walk270DegFrames;
-        walk270DegFrames.reserve(4);
+        walk270DegFrames.reserve(8);
         walk270DegFrames.append(QList<int>() << 10 << 0);
         walk270DegFrames.append(QList<int>() << 10 << 1);
         walk270DegFrames.append(QList<int>() << 10 << 2);
         walk270DegFrames.append(QList<int>() << 10 << 1);
+        walk270DegFrames.append(QList<int>() << 10 << 0);
+        walk270DegFrames.append(QList<int>() << 10 << 4);
+        walk270DegFrames.append(QList<int>() << 10 << 3);
+        walk270DegFrames.append(QList<int>() << 10 << 4);
 
-        Animation *walk270Deg = new Animation(spriteSheetFlipped, 32,32, walk270DegFrames, 250, true);
+        Animation *walk270Deg = new Animation(spriteSheetFlipped, 32,32, walk270DegFrames, 150, true);
 
         movementAnims.append(walk270Deg);
 
         QList<QList<int>> walk315DegFrames;
-        walk315DegFrames.reserve(4);
+        walk315DegFrames.reserve(8);
         walk315DegFrames.append(QList<int>() << 3 << 0);
         walk315DegFrames.append(QList<int>() << 3 << 1);
         walk315DegFrames.append(QList<int>() << 3 << 2);
         walk315DegFrames.append(QList<int>() << 3 << 1);
+        walk315DegFrames.append(QList<int>() << 3 << 0);
+        walk315DegFrames.append(QList<int>() << 3 << 4);
+        walk315DegFrames.append(QList<int>() << 3 << 3);
+        walk315DegFrames.append(QList<int>() << 3 << 4);
 
-        Animation *walk315Deg = new Animation(spriteSheet, 32,32, walk315DegFrames, 250, true);
+        Animation *walk315Deg = new Animation(spriteSheet, 32,32, walk315DegFrames, 150, true);
 
         movementAnims.append(walk315Deg);
 
@@ -117,7 +148,7 @@ Worker::Worker(QPointF pos, Unit::Type type, Player *player, ResourceManager *rm
         mining0DegFrames.append(QList<int>() << 7 << 1);
         mining0DegFrames.append(QList<int>() << 7 << 0);
 
-        Animation *mining0Deg = new Animation(spriteSheet, 32,32, mining0DegFrames, 250, true);
+        Animation *mining0Deg = new Animation(spriteSheet, 32,32, mining0DegFrames, 150, true);
 
         miningAnims.append(mining0Deg);
 
@@ -128,7 +159,7 @@ Worker::Worker(QPointF pos, Unit::Type type, Player *player, ResourceManager *rm
         mining45DegFrames.append(QList<int>() << 6 << 3);
         mining45DegFrames.append(QList<int>() << 6 << 2);
 
-        Animation *mining45Deg = new Animation(spriteSheet, 32,32, mining45DegFrames, 250, true);
+        Animation *mining45Deg = new Animation(spriteSheet, 32,32, mining45DegFrames, 150, true);
 
         miningAnims.append(mining45Deg);
 
@@ -139,7 +170,7 @@ Worker::Worker(QPointF pos, Unit::Type type, Player *player, ResourceManager *rm
         mining90DegFrames.append(QList<int>() << 5 << 0);
         mining90DegFrames.append(QList<int>() << 5 << 1);
 
-        Animation *mining90Deg = new Animation(spriteSheet, 32,32, mining90DegFrames, 250, true);
+        Animation *mining90Deg = new Animation(spriteSheet, 32,32, mining90DegFrames, 150, true);
 
         miningAnims.append(mining90Deg);
 
@@ -149,7 +180,7 @@ Worker::Worker(QPointF pos, Unit::Type type, Player *player, ResourceManager *rm
         mining135DegFrames.append(QList<int>() << 8 << 4);
         mining135DegFrames.append(QList<int>() << 8 << 3);
 
-        Animation *mining135Deg = new Animation(spriteSheetFlipped, 32,32, mining135DegFrames, 250, true);
+        Animation *mining135Deg = new Animation(spriteSheetFlipped, 32,32, mining135DegFrames, 150, true);
 
         miningAnims.append(mining135Deg);
 
@@ -159,7 +190,7 @@ Worker::Worker(QPointF pos, Unit::Type type, Player *player, ResourceManager *rm
         mining180DegFrames.append(QList<int>() << 7 << 4);
         mining180DegFrames.append(QList<int>() << 7 << 3);
 
-        Animation *mining180Deg = new Animation(spriteSheetFlipped, 32,32, mining180DegFrames, 250, true);
+        Animation *mining180Deg = new Animation(spriteSheetFlipped, 32,32, mining180DegFrames, 150, true);
 
         miningAnims.append(mining180Deg);
 
@@ -169,7 +200,7 @@ Worker::Worker(QPointF pos, Unit::Type type, Player *player, ResourceManager *rm
         mining225DegFrames.append(QList<int>() << 6 << 4);
         mining225DegFrames.append(QList<int>() << 6 << 3);
 
-        Animation *mining225Deg = new Animation(spriteSheetFlipped, 32,32, mining225DegFrames, 250, true);
+        Animation *mining225Deg = new Animation(spriteSheetFlipped, 32,32, mining225DegFrames, 150, true);
 
         miningAnims.append(mining225Deg);
 
@@ -179,7 +210,7 @@ Worker::Worker(QPointF pos, Unit::Type type, Player *player, ResourceManager *rm
         mining270DegFrames.append(QList<int>() << 5 << 4);
         mining270DegFrames.append(QList<int>() << 5 << 3);
 
-        Animation *mining270Deg = new Animation(spriteSheetFlipped, 32,32, mining270DegFrames, 250, true);
+        Animation *mining270Deg = new Animation(spriteSheetFlipped, 32,32, mining270DegFrames, 150, true);
 
         miningAnims.append(mining270Deg);
 
@@ -189,7 +220,7 @@ Worker::Worker(QPointF pos, Unit::Type type, Player *player, ResourceManager *rm
         mining315DegFrames.append(QList<int>() << 8 << 1);
         mining315DegFrames.append(QList<int>() << 8 << 2);
 
-        Animation *mining315Deg = new Animation(spriteSheet, 32,32, mining315DegFrames, 250, true);
+        Animation *mining315Deg = new Animation(spriteSheet, 32,32, mining315DegFrames, 150, true);
 
         miningAnims.append(mining315Deg);
 
@@ -200,19 +231,19 @@ Worker::Worker(QPointF pos, Unit::Type type, Player *player, ResourceManager *rm
         goldCarry0DegFrames.append(QList<int>() << 2 << 13);
         goldCarry0DegFrames.append(QList<int>() << 2 << 12);
 
-        Animation *goldCarry0Deg = new Animation(spriteSheet, 32,32, goldCarry0DegFrames, 250, true);
+        Animation *goldCarry0Deg = new Animation(spriteSheet, 32,32, goldCarry0DegFrames, 150, true);
 
         goldCarryAnims.append(goldCarry0Deg);
 
         //45deg chodi ak postihnuty
         QList<QList<int>> goldCarry45DegFrames;
-        goldCarry45DegFrames.reserve(4);
+        goldCarry45DegFrames.reserve(8);
         goldCarry45DegFrames.append(QList<int>() << 1 << 12);
         goldCarry45DegFrames.append(QList<int>() << 1 << 13);
         goldCarry45DegFrames.append(QList<int>() << 1 << 14);
         goldCarry45DegFrames.append(QList<int>() << 1 << 13);
 
-        Animation *goldCarry45Deg = new Animation(spriteSheet, 32,32, goldCarry45DegFrames, 250, true);
+        Animation *goldCarry45Deg = new Animation(spriteSheet, 32,32, goldCarry45DegFrames, 150, true);
 
         goldCarryAnims.append(goldCarry45Deg);
 
@@ -222,7 +253,7 @@ Worker::Worker(QPointF pos, Unit::Type type, Player *player, ResourceManager *rm
         goldCarry90DegFrames.append(QList<int>() << 0 << 12);
         goldCarry90DegFrames.append(QList<int>() << 0 << 11);
 
-        Animation *goldCarry90Deg = new Animation(spriteSheet, 32,32, goldCarry90DegFrames, 250, true);
+        Animation *goldCarry90Deg = new Animation(spriteSheet, 32,32, goldCarry90DegFrames, 150, true);
 
         goldCarryAnims.append(goldCarry90Deg);
 
@@ -233,7 +264,7 @@ Worker::Worker(QPointF pos, Unit::Type type, Player *player, ResourceManager *rm
         goldCarry135DegFrames.append(QList<int>() << 13 << 12);
         goldCarry135DegFrames.append(QList<int>() << 13 << 11);
 
-        Animation *goldCarry135Deg = new Animation(spriteSheetFlipped, 32,32, goldCarry135DegFrames, 250, true);
+        Animation *goldCarry135Deg = new Animation(spriteSheetFlipped, 32,32, goldCarry135DegFrames, 150, true);
 
         goldCarryAnims.append(goldCarry135Deg);
 
@@ -244,7 +275,7 @@ Worker::Worker(QPointF pos, Unit::Type type, Player *player, ResourceManager *rm
         goldCarry180DegFrames.append(QList<int>() << 12 << 12);
         goldCarry180DegFrames.append(QList<int>() << 12 << 11);
 
-        Animation *goldCarry180Deg = new Animation(spriteSheetFlipped, 32,32, goldCarry180DegFrames, 250, true);
+        Animation *goldCarry180Deg = new Animation(spriteSheetFlipped, 32,32, goldCarry180DegFrames, 150, true);
 
         goldCarryAnims.append(goldCarry180Deg);
 
@@ -255,7 +286,7 @@ Worker::Worker(QPointF pos, Unit::Type type, Player *player, ResourceManager *rm
         goldCarry225DegFrames.append(QList<int>() << 11 << 12);
         goldCarry225DegFrames.append(QList<int>() << 11 << 13);
 
-        Animation *goldCarry225Deg = new Animation(spriteSheetFlipped, 32,32, goldCarry225DegFrames, 250, true);
+        Animation *goldCarry225Deg = new Animation(spriteSheetFlipped, 32,32, goldCarry225DegFrames, 150, true);
 
         goldCarryAnims.append(goldCarry225Deg);
 
@@ -266,7 +297,7 @@ Worker::Worker(QPointF pos, Unit::Type type, Player *player, ResourceManager *rm
         goldCarry270DegFrames.append(QList<int>() << 10 << 12);
         goldCarry270DegFrames.append(QList<int>() << 10 << 13);
 
-        Animation *goldCarry270Deg = new Animation(spriteSheetFlipped, 32,32, goldCarry270DegFrames, 250, true);
+        Animation *goldCarry270Deg = new Animation(spriteSheetFlipped, 32,32, goldCarry270DegFrames, 150, true);
 
         goldCarryAnims.append(goldCarry270Deg);
 
@@ -277,7 +308,7 @@ Worker::Worker(QPointF pos, Unit::Type type, Player *player, ResourceManager *rm
         goldCarry315DegFrames.append(QList<int>() << 3 << 12);
         goldCarry315DegFrames.append(QList<int>() << 3 << 13);
 
-        Animation *goldCarry315Deg = new Animation(spriteSheet, 32,32, goldCarry315DegFrames, 250, true);
+        Animation *goldCarry315Deg = new Animation(spriteSheet, 32,32, goldCarry315DegFrames, 150, true);
 
         goldCarryAnims.append(goldCarry315Deg);
 
@@ -289,7 +320,7 @@ Worker::Worker(QPointF pos, Unit::Type type, Player *player, ResourceManager *rm
         woodCarry0DegFrames.append(QList<int>() << 2 << 7);
         woodCarry0DegFrames.append(QList<int>() << 2 << 6);
 
-        Animation *woodCarry0Deg = new Animation(spriteSheet, 32,32, woodCarry0DegFrames, 250, true);
+        Animation *woodCarry0Deg = new Animation(spriteSheet, 32,32, woodCarry0DegFrames, 150, true);
 
         woodCarryAnims.append(woodCarry0Deg);
 
@@ -300,7 +331,7 @@ Worker::Worker(QPointF pos, Unit::Type type, Player *player, ResourceManager *rm
         woodCarry45DegFrames.append(QList<int>() << 1 << 7);
         woodCarry45DegFrames.append(QList<int>() << 1 << 6);
 
-        Animation *woodCarry45Deg = new Animation(spriteSheet, 32,32, woodCarry45DegFrames, 250, true);
+        Animation *woodCarry45Deg = new Animation(spriteSheet, 32,32, woodCarry45DegFrames, 150, true);
 
         woodCarryAnims.append(woodCarry45Deg);
 
@@ -311,7 +342,7 @@ Worker::Worker(QPointF pos, Unit::Type type, Player *player, ResourceManager *rm
         woodCarry90DegFrames.append(QList<int>() << 0 << 7);
         woodCarry90DegFrames.append(QList<int>() << 0 << 6);
 
-        Animation *woodCarry90Deg = new Animation(spriteSheet, 32,32, woodCarry90DegFrames, 250, true);
+        Animation *woodCarry90Deg = new Animation(spriteSheet, 32,32, woodCarry90DegFrames, 150, true);
 
         woodCarryAnims.append(woodCarry90Deg);
 
@@ -322,7 +353,7 @@ Worker::Worker(QPointF pos, Unit::Type type, Player *player, ResourceManager *rm
         woodCarry135DegFrames.append(QList<int>() << 13 << 7);
         woodCarry135DegFrames.append(QList<int>() << 13 << 6);
 
-        Animation *woodCarry135Deg = new Animation(spriteSheetFlipped, 32,32, woodCarry135DegFrames, 250, true);
+        Animation *woodCarry135Deg = new Animation(spriteSheetFlipped, 32,32, woodCarry135DegFrames, 150, true);
 
         woodCarryAnims.append(woodCarry135Deg);
 
@@ -333,7 +364,7 @@ Worker::Worker(QPointF pos, Unit::Type type, Player *player, ResourceManager *rm
         woodCarry180DegFrames.append(QList<int>() << 12 << 7);
         woodCarry180DegFrames.append(QList<int>() << 12 << 6);
 
-        Animation *woodCarry180Deg = new Animation(spriteSheetFlipped, 32,32, woodCarry180DegFrames, 250, true);
+        Animation *woodCarry180Deg = new Animation(spriteSheetFlipped, 32,32, woodCarry180DegFrames, 150, true);
 
         woodCarryAnims.append(woodCarry180Deg);
 
@@ -344,7 +375,7 @@ Worker::Worker(QPointF pos, Unit::Type type, Player *player, ResourceManager *rm
         woodCarry225DegFrames.append(QList<int>() << 11 << 7);
         woodCarry225DegFrames.append(QList<int>() << 11 << 6);
 
-        Animation *woodCarry225Deg = new Animation(spriteSheetFlipped, 32,32, woodCarry225DegFrames, 250, true);
+        Animation *woodCarry225Deg = new Animation(spriteSheetFlipped, 32,32, woodCarry225DegFrames, 150, true);
 
         woodCarryAnims.append(woodCarry225Deg);
 
@@ -355,7 +386,7 @@ Worker::Worker(QPointF pos, Unit::Type type, Player *player, ResourceManager *rm
         woodCarry270DegFrames.append(QList<int>() << 10 << 7);
         woodCarry270DegFrames.append(QList<int>() << 10 << 6);
 
-        Animation *woodCarry270Deg = new Animation(spriteSheetFlipped, 32,32, woodCarry270DegFrames, 250, true);
+        Animation *woodCarry270Deg = new Animation(spriteSheetFlipped, 32,32, woodCarry270DegFrames, 150, true);
 
         woodCarryAnims.append(woodCarry270Deg);
 
@@ -366,7 +397,7 @@ Worker::Worker(QPointF pos, Unit::Type type, Player *player, ResourceManager *rm
         woodCarry315DegFrames.append(QList<int>() << 3 << 7);
         woodCarry315DegFrames.append(QList<int>() << 3 << 6);
 
-        Animation *woodCarry315Deg = new Animation(spriteSheet, 32,32, woodCarry315DegFrames, 250, true);
+        Animation *woodCarry315Deg = new Animation(spriteSheet, 32,32, woodCarry315DegFrames, 150, true);
 
         woodCarryAnims.append(woodCarry315Deg);
 
@@ -376,21 +407,11 @@ Worker::Worker(QPointF pos, Unit::Type type, Player *player, ResourceManager *rm
         deathFrames.append(QList<int>() << 12 << 1);
         deathFrames.append(QList<int>() << 12 << 2);
 
-        Animation *death = new Animation(spriteSheet, 32,32, deathFrames, 250, false);
+        Animation *death = new Animation(spriteSheet, 32,32, deathFrames, 150, false);
 
         deathAnims.append(death);
 
         setCurrentAnimation(walk270Deg);
-
-        break;
-    }
-
-        case PEON:
-        //peon
-        break;
-
-    default:
-        qFatal("Incorrect UnitType!");
     }
 }
 
@@ -403,6 +424,7 @@ Worker::~Worker() {
 
 void Worker::attack(Entity *victim) {
     // worker nemuže utočit
+    Q_UNUSED(victim);
 }
 
 QRectF Worker::boundingRect() const {
@@ -424,19 +446,21 @@ bool Worker::canSelect() const {
 }
 
 void Worker::mine(Goldmine *source, Building *dest){
+    if(!source || !dest) return;
     cancel();
     mineCommand = new MineCommand(source, dest, graph);
     goTo(source->center());
 }
 
 void Worker::harvest(Trees *source, Building *dest){
+    if(!source || !dest) return;
     cancel();
     harvestCommand = new HarvestCommand(source, dest);
     goTo(source->center());
 }
 
 void Worker::build(Building *building) {
-    if(buildCommand) return;
+    if(buildCommand || !building) return;
     cancel();
     buildCommand = new BuildCommand(building);
     scene()->addItem(building);

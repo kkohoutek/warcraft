@@ -57,6 +57,7 @@ public:
     void            setArmor(int a)        { armor = a; }
 
 protected:
+    Unit::Type type;
     float speed;
     float damage;
     int armor;
@@ -74,9 +75,6 @@ protected:
     PATH path;
     Graph *graph = nullptr; // pointer to pathfinding graph
     Entity *targetEntity = nullptr;
-
-private:
-    Unit::Type type;
 };
 
 #endif // UNIT_HPP

@@ -49,8 +49,12 @@ void Unit::updateAnimation(){
         }
     }
 
-    setCurrentAnimation(currentAnimationSet->at(index));
-    getCurrentAnimation()->start();
+    Animation *anim = currentAnimationSet->at(index);
+    Animation *currentAnim = getCurrentAnimation();
+    if(anim != currentAnim){
+        setCurrentAnimation(anim);
+    }
+    anim->start();
 }
 
 void Unit::update(){
@@ -58,16 +62,19 @@ void Unit::update(){
     if(targetEntity) {
         if(targetEntity->isAlive()){
             if(distanceFrom(targetEntity) <= (range + 1) * targetEntity->boundingRect().width()){
-                moving = false;
-                path.clear();
                 if(currentAnimationSet != &attackAnims){
+                    moving = false;
+                    path.clear();
                     currentAnimationSet = &attackAnims;
                     setTarget(targetEntity->center());
+                    targetEntity->damaged(damage*0.18f, this);
+                } else {
+                    currentAnimationSet = &movementAnims;
                 }
-                targetEntity->damaged(damage*0.18f, this);
 
             } else if (path.isEmpty()){
                 setPath(graph->shortestPath(center(), targetEntity->center()));
+                currentAnimationSet = &movementAnims;
             }
         } else {
             cancel();
@@ -143,6 +150,7 @@ void Unit::stopMoving(){
     getCurrentAnimation()->setCurrentFrame(0);
     getCurrentAnimation()->stop();
     path.clear();
+    //currentAnimationSet = &movementAnims;
 }
 
 void Unit::setTarget(QPointF target){

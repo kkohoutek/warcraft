@@ -5,7 +5,7 @@ Goldmine::Goldmine(QPointF pos, ResourceManager *rm) : Entity(pos) {
     setHP(40000);
     QList<QList<int>> basicAnimationFrames;
     basicAnimationFrames.append(QList<int>() << 8 << 5);
-    setCurrentAnimation(new Animation(rm->getSprite("MISC"), 55, 45, basicAnimationFrames, 0, false));
+    setCurrentAnimation(new Animation(rm->getSprite("MISC"), 55, 45, basicAnimationFrames, 0));
 
     scaleX = 2;
     scaleY = 2;

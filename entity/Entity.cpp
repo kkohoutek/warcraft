@@ -2,7 +2,7 @@
 #include <QGraphicsScene>
 
 #define SHOW_HP_BARS 1
-unsigned int Entity::newID = 0;
+int Entity::newID = 0;
 
 Entity::Entity(QPointF pos) {
     this->setPos(pos);
