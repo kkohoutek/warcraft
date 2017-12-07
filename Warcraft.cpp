@@ -11,6 +11,7 @@
 #include <QDebug>
 
 #define MAP_AREA 4096
+#define MAX_DEAD 2
 
 Warcraft::Warcraft() {
     setFixedHeight(600);
@@ -37,8 +38,8 @@ Warcraft::Warcraft() {
 
     scene->setBackgroundBrush(QBrush(*(rm.getSprite("MAP1"))));
     loadWorld();
-    loadUnits();
     loadBuildings();
+    loadUnits();
 
     peasantUI = new PeasantUI(player, &rm, scene, this);
     peasantUI->hide();
@@ -80,7 +81,7 @@ void Warcraft::loadUnits(){
     for(int i = 0; i < 4; i++){
         spawnUnit(new Grunt(QPointF(MAP_AREA/2-420+i*40, MAP_AREA/2-286-i*40), &rm), enemy);;
     }
-    enemy->getUnits().first()->attack(player->getUnits().first());
+    enemy->getUnits().first()->attack(player->getBuildings().first());
 }
 
 void Warcraft::loadWorld() {
@@ -112,8 +113,10 @@ void Warcraft::timerEvent(QTimerEvent *event) {
         currentBuilding->setPos(mapToScene(p) - QPointF(r.width()/2, r.height()/2));
     }
 
-    player->update();
-    enemy->update();
+    updatePlayer(player);
+    updatePlayer(enemy);
+    cleanUp();
+
     scene()->update();
     updateUIs();
 
@@ -297,6 +300,44 @@ void Warcraft::updateUIs() {
     }
 }
 
+void Warcraft::updatePlayer(Player *p) {
+    for(Unit *unit : p->getUnits()){
+        unit->update();
+        if(!unit->isAlive()){
+            if(unit->isHighlighted()){
+                unit->setHighlighted(false);
+
+                QMutableListIterator<Unit *> i(p->getSelectedUnits());
+                while(i.hasNext()){
+                    Unit *next = i.next();
+                    if(next == unit){
+                        i.remove();
+                        break;
+                    }
+                }
+            }
+            if(!garbage.contains(unit)) {
+                garbage.enqueue(unit);
+            }
+        }
+    }
+
+    for(Building *building : p->getBuildings()){
+        building->update();
+        if(!building->isAlive()){
+            if(p->getSelectedBuilding() == building){
+                building->setHighlighted(false);
+                p->deselect();
+            }
+
+            if(!garbage.contains(building)) {
+                garbage.enqueue(building);
+            }
+        }
+    }
+
+}
+
 QLinkedList<Entity *> Warcraft::staticEntities() const {
     QLinkedList<Entity *> list;
     for(Building *b : player->getBuildings()){
@@ -346,10 +387,8 @@ void Warcraft::spawnBuilding(Building *b, Player *owner) {
 void Warcraft::spawnGoldmine(Goldmine *g) {
     goldmines.prepend(g);
     scene()->addItem(g);
-
     graph.update(staticEntities());
 }
-
 
 void Warcraft::paintEvent(QPaintEvent *event) {
     QGraphicsView::paintEvent(event); 
@@ -374,7 +413,6 @@ void Warcraft::paintEvent(QPaintEvent *event) {
     }
     */
 
-
     message.display(&painter, width()/2, height()/2);
 }
 
@@ -393,6 +431,20 @@ void Warcraft::initResources() {
     rm.copySprite("FOOTMAN", "FOOTMAN_flipped", true, false);
     rm.copySprite("GRUNT", "GRUNT_flipped", true, false);
     rm.copySprite("DAEMON", "DAEMON_flipped", true, false);
+}
+
+
+void Warcraft::cleanUp() {
+    if(garbage.size() <= MAX_DEAD || garbage.isEmpty()) return;
+    Entity *e = garbage.dequeue();
+    qDebug() << player->getBuildings().removeOne(reinterpret_cast<Building *>(e));
+    qDebug() << player->getUnits().removeOne(reinterpret_cast<Unit *>(e));
+    enemy->getUnits().removeOne(reinterpret_cast<Unit *>(e));
+    enemy->getBuildings().removeOne(reinterpret_cast<Building *>(e));
+    goldmines.removeOne(reinterpret_cast<Goldmine *>(e));
+    trees.removeOne(reinterpret_cast<Trees *>(e));
+    e->scene()->removeItem(e);
+    delete e;
 }
 
 QPair<int, int> Warcraft::cost(Building::Type type) {

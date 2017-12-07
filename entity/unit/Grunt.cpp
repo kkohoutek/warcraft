@@ -1,6 +1,6 @@
 #include "Grunt.hpp"
 
-Grunt::Grunt(QPointF pos, ResourceManager *rm) : Unit(pos,GRUNT,0.7f,1,2,0) {
+Grunt::Grunt(QPointF pos, ResourceManager *rm) : Unit(pos,GRUNT,0.7f,20,2,0) {
     setMaxHP(60);
     setHP(60);
 

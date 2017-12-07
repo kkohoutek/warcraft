@@ -506,26 +506,36 @@ void Worker::update(){
                     cancel();
                 }
             } else if (path.isEmpty() && targetPoint == mineCommand->source->center()){
-                // Musíme zajistit, že worker bude kolidovat s source
-                setTarget(mineCommand->source->center());
-                move();
+                if(mineCommand->source->isAlive()){
+                    // Musíme zajistit, že worker bude kolidovat s source
+                    setTarget(mineCommand->source->center());
+                    move();
+                } else {
+                    stopMoving();
+                    cancel();
+                }
             }
         } else if (currentAnimationSet == &goldCarryAnims){
-            if(collidesWithItem(mineCommand->dest)){
-                player->gold += GOLD_PER_TRIP;
-                stopMoving();
-                // Pokud je cesta invalidní, přepočítáme ji (a path2 je path pozpátku)
-                if(!isPathValid(mineCommand->path2)){
-                    mineCommand->path2 = graph->shortestPath(mineCommand->dest->center(), mineCommand->source->center());
-                    mineCommand->path = reversePath(mineCommand->path2);
+            if(mineCommand->dest->isAlive()) {
+                if(collidesWithItem(mineCommand->dest)){
+                    player->gold += GOLD_PER_TRIP;
+                    stopMoving();
+                    // Pokud je cesta invalidní, přepočítáme ji (a path2 je path pozpátku)
+                    if(!isPathValid(mineCommand->path2)){
+                        mineCommand->path2 = graph->shortestPath(mineCommand->dest->center(), mineCommand->source->center());
+                        mineCommand->path = reversePath(mineCommand->path2);
+                    }
+                    setPath(mineCommand->path2);
+                    currentAnimationSet = &movementAnims;
+                    updateAnimation();
+                } else if (path.isEmpty() && targetPoint == mineCommand->dest->center()){
+                    // Musíme zajistit, že worker bude kolidovat s dest
+                    setTarget(mineCommand->dest->center());
+                    move();
                 }
-                setPath(mineCommand->path2);
-                currentAnimationSet = &movementAnims;
-                updateAnimation();
-            } else if (path.isEmpty() && targetPoint == mineCommand->dest->center()){
-                // Musíme zajistit, že worker bude kolidovat s dest
-                setTarget(mineCommand->dest->center());
-                move();
+            } else {
+                stopMoving();
+                cancel();
             }
         }
     }

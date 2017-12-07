@@ -4,21 +4,16 @@
 #include "entity/unit/Unit.hpp"
 #include "entity/building/Building.hpp"
 
-// Tato třída se stará o hráče a entity, které vlastní.
-
+// Tato třída se stará o hráče.
 class Player
 {
 public:
-    static bool deleteDead;
-    static int maxDead;
-
     int gold = 0;
     int lumber = 0;
     int food = 0;
 
     Player(Race race);
 
-    void update();
     void selectUnit(Unit *unit);
     void selectUnits(QList<Unit *> &selected);
     void selectBuilding(Building *building);
@@ -38,9 +33,7 @@ private:
 
     Building *selectedBuilding = nullptr;
 
-    Race race;
-    QQueue<Entity *> delQueue;
-    void cleanUp();
+    Race race;  
 };
 
 #endif // PLAYER_HPP

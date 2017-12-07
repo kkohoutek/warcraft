@@ -59,7 +59,10 @@ void Building::startConstruction() {
 }
 
 void Building::die() {
+    Entity::die();
     getCurrentAnimation()->setCurrentFrame(0);
+    getCurrentAnimation()->stop();
+    finished = true;
 }
 
 void Building::constructionUpdate() {
@@ -67,6 +70,7 @@ void Building::constructionUpdate() {
         setHP(getHP()+1);
     } else {
         buildTimer->stop();
+        buildTimer->disconnect();
         delete buildTimer;
         buildTimer = nullptr;
         finished = true;

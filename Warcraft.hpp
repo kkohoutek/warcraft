@@ -32,6 +32,8 @@ private:
     QVector<Goldmine *>   goldmines;
     QVector<Trees *>      trees;
 
+    QQueue<Entity *> garbage;
+
     void initResources();
     void loadBuildings();
     void loadUnits();
@@ -45,10 +47,13 @@ private:
     void keyPressEvent(QKeyEvent *event);
 
     void updateUIs();
+    void updatePlayer(Player *p);
 
     void spawnUnit(Unit *u, Player *owner = nullptr);
     void spawnBuilding(Building *b, Player *owner = nullptr);
     void spawnGoldmine(Goldmine *g);
+
+    void cleanUp();
 
 
     /* Postav hráči novou budovou za pomocí daného workera a vrať 0.

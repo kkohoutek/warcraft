@@ -23,9 +23,7 @@ TrainingBuilding::~TrainingBuilding() {
 
 bool TrainingBuilding::enqueueUnit(Unit *unit, int sec) {
     if(isQueueFull()) return false;
-    unit->hide();
-    trainingQueue.enqueue(unit);
-    scene()->addItem(unit);
+    trainingQueue.enqueue(unit);;
     if(!trainingTimer.isActive()){
         trainingTimer.start(sec*1000);
     }
@@ -42,7 +40,7 @@ bool TrainingBuilding::isQueueFull() const {
 
 void TrainingBuilding::dequeueUnit() {
     auto u = trainingQueue.dequeue();
-    u->show();
+    scene()->addItem(u);
     player->getUnits().prepend(u);
 
     if(trainingQueue.isEmpty()) {
