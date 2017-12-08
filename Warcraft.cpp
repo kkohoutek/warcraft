@@ -120,6 +120,8 @@ void Warcraft::timerEvent(QTimerEvent *event) {
     scene()->update();
     updateUIs();
 
+    qDebug()<< player->getBuildings().size();
+
     Q_UNUSED(event);
 }
 
@@ -437,12 +439,13 @@ void Warcraft::initResources() {
 void Warcraft::cleanUp() {
     if(garbage.size() <= MAX_DEAD || garbage.isEmpty()) return;
     Entity *e = garbage.dequeue();
-    qDebug() << player->getBuildings().removeOne(reinterpret_cast<Building *>(e));
-    qDebug() << player->getUnits().removeOne(reinterpret_cast<Unit *>(e));
-    enemy->getUnits().removeOne(reinterpret_cast<Unit *>(e));
-    enemy->getBuildings().removeOne(reinterpret_cast<Building *>(e));
-    goldmines.removeOne(reinterpret_cast<Goldmine *>(e));
-    trees.removeOne(reinterpret_cast<Trees *>(e));
+    bool removed = false;
+    removed = player->getBuildings().removeOne(static_cast<Building *>(e));
+    if(!removed) removed = player->getUnits().removeOne(reinterpret_cast<Unit *>(e));
+    if(!removed) removed = enemy->getUnits().removeOne(reinterpret_cast<Unit *>(e));
+    if(!removed) removed = enemy->getBuildings().removeOne(static_cast<Building *>(e));
+    if(!removed) removed = goldmines.removeOne(reinterpret_cast<Goldmine *>(e));
+    if(!removed) removed = trees.removeOne(reinterpret_cast<Trees *>(e));
     e->scene()->removeItem(e);
     delete e;
 }
