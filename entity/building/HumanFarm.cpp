@@ -10,6 +10,7 @@ QRectF HumanFarm::boundingRect() const
 }
 
 void HumanFarm::update() {
+    Entity::update();
     if(isBuildingFinished() && !foodIncreased){
         *playerFood += 4;
         foodIncreased = true;

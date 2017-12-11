@@ -49,7 +49,7 @@ void TrainingBuilding::dequeueUnit() {
 }
 
 void TrainingBuilding::die() {
-    qDeleteAll(trainingQueue);
+    trainingTimer.disconnect();
     Building::die();
 }
 

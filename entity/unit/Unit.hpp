@@ -46,6 +46,7 @@ public:
 
     void            stopMoving();
     QVector2D       direction() const;
+    bool            isWithinRange(Entity *entity) const;
 
     Unit::Type      getType() const        { return type; }
     bool            isMoving() const       { return moving; }

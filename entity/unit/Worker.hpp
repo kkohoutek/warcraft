@@ -17,7 +17,7 @@ public:
     void    attack(Entity *victim) override;
     void    update() override;
     void    cancel() override;
-    bool    canSelect() const override;
+    bool    isSelectable() const override;
     QRectF  boundingRect() const override;
 
     void    mine(Goldmine *source, Building *dest);

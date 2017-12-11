@@ -60,8 +60,8 @@ void Unit::updateAnimation(){
 void Unit::update(){
     Entity::update();
     if(targetEntity) {
-        if(targetEntity->isAlive()){
-            if(distanceFrom(targetEntity) <= (range + 1) * targetEntity->boundingRect().width()){
+        if(targetEntity->isVisible() && targetEntity->isAlive()){
+            if(isWithinRange(targetEntity)){
                 if(currentAnimationSet != &attackAnims){
                     moving = false;
                     path.clear();
@@ -110,7 +110,7 @@ void Unit::update(){
     }
 }
 
-void Unit::setPath(const QQueue<Node **> &list){
+void Unit::setPath(const PATH &list){
     if(list.isEmpty() || (!path.isEmpty() && path.last() == list.last() && path.first() == list.first())) return;
     path = list;
     setTarget((*(path.dequeue()))->pos);
@@ -141,7 +141,8 @@ void Unit::die() {
 
 void Unit::damaged(float amount, Entity *source) {
     Entity::damaged(amount, source);
-    setHP(getHP() + amount/(armor+1));
+    hp += amount;
+    hp -= amount*(1-armor/10)*0.18f;
     if(!moving && !targetEntity) attack(source);
 }
 
@@ -160,6 +161,10 @@ void Unit::setTarget(QPointF target){
 
 QVector2D Unit::direction() const {
     return QVector2D(targetPoint - center()).normalized();
+}
+
+bool Unit::isWithinRange(Entity *entity) const {
+    return distanceFrom(entity) <= (range + 1) * entity->boundingRect().width();
 }
 
 void Unit::cancel(){

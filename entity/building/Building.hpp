@@ -42,10 +42,10 @@ public:
     void startConstruction();
 
     void            die() override;
-    bool            isAlive() const override       { return Entity::isAlive() || (getHP() == 0 && !finished); }
-    bool            canSelect() const override     { return Entity::canSelect() && finished; }
-    bool            isBuildingFinished() const     { return finished; }
-    Building::Type  getType() const                { return type; }
+    bool            isAlive() const override          { return Entity::isAlive() || (getHP() == 0 && !finished); }
+    bool            isSelectable() const override     { return Entity::isSelectable() && finished; }
+    bool            isBuildingFinished() const        { return finished; }
+    Building::Type  getType() const                   { return type; }
 
 protected:
     int buildTime;

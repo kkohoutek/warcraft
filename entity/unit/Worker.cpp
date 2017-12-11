@@ -441,8 +441,8 @@ void Worker::cancel() {
     harvestCommand = nullptr;
 }
 
-bool Worker::canSelect() const {
-    return Entity::canSelect() && buildCommand == nullptr;
+bool Worker::isSelectable() const {
+    return Entity::isSelectable() && buildCommand == nullptr;
 }
 
 void Worker::mine(Goldmine *source, Building *dest){

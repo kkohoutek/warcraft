@@ -21,14 +21,15 @@ public:
     virtual void die();
     virtual void damaged(float amount, Entity *source);
 
-    void setHP(float hp)            { this->hp = hp; }
-    float getHP() const             { return hp; }
+    void setHP(float hp)                { this->hp = hp; }
+    float getHP() const                 { return hp; }
 
-    void setMaxHP(int hp)           { this->maxHP = hp; }
-    int getMaxHP() const            { return maxHP; }
+    void setMaxHP(int hp)               { this->maxHP = hp; }
+    int getMaxHP() const                { return maxHP; }
 
-    virtual bool isAlive() const    { return hp > 0; }
-    virtual bool canSelect() const  { return isVisible() && isAlive(); }
+    virtual bool isAlive() const        { return hp > 0; }
+    virtual bool isSelectable() const   { return isVisible() && isAlive(); }
+    virtual bool isAttackable() const   { return isVisible() && isAlive(); }
 
     void setHighlighted(bool h)     { highlighted = h; }
     bool isHighlighted() const      { return highlighted; }
@@ -45,22 +46,19 @@ public:
     int getID() const { return id; }
 
 protected:
-    float scaleX = 1;
-    float scaleY = 1;
+    float   hp              = 0;
+    int     maxHP           = 0;
+    float   scaleX          = 1;
+    float   scaleY          = 1;
+    bool highlighted        = false;
 
     void setCurrentAnimation(Animation *anim);
     Animation *getCurrentAnimation() const  { return currentAnimation; }
 
  private:
     Animation *currentAnimation = nullptr;
-
     int id;
-    float hp              = 0;
-    int maxHP             = 0;
-    bool highlighted      = false;
-
     static int newID;
-
 };
 
 

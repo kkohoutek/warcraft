@@ -3,8 +3,6 @@
 
 #include "Building.hpp"
 
-
-
 class HumanFarm : public Building
 {
 public:

@@ -11,7 +11,7 @@
 #include <QDebug>
 
 #define MAP_AREA 4096
-#define MAX_DEAD 2
+#define MAX_DEAD 100
 
 Warcraft::Warcraft() {
     setFixedHeight(600);
@@ -81,7 +81,7 @@ void Warcraft::loadUnits(){
     for(int i = 0; i < 4; i++){
         spawnUnit(new Grunt(QPointF(MAP_AREA/2-420+i*40, MAP_AREA/2-286-i*40), &rm), enemy);;
     }
-    enemy->getUnits().first()->attack(player->getBuildings().first());
+    enemy->getUnits().first()->attack(player->getUnits().last());
 }
 
 void Warcraft::loadWorld() {
@@ -119,8 +119,6 @@ void Warcraft::timerEvent(QTimerEvent *event) {
 
     scene()->update();
     updateUIs();
-
-    qDebug()<< player->getBuildings().size();
 
     Q_UNUSED(event);
 }
@@ -170,7 +168,7 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
 
         // Klikl hráč na budovu
         for(Building *b : player->getBuildings()){
-            if(b->canSelect() && b->boundingRect2().contains(actualPos)){
+            if(b->isSelectable() && b->boundingRect2().contains(actualPos)){
                 player->selectBuilding(b);
             }
         }
@@ -178,7 +176,7 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
     } else if (event->button() == Qt::RightButton){
         // Klikl hráč na nepřítelskou jednotku
         for(Unit *eUnit : enemy->getUnits()){
-            if(eUnit->canSelect() && eUnit->boundingRect2().contains(actualPos)){
+            if(eUnit->isSelectable() && eUnit->boundingRect2().contains(actualPos)){
                 for(Unit *pUnit : selected){
                     pUnit->attack(eUnit);
                 }
@@ -188,7 +186,7 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
 
         //Klikl hráč na nepřátelskou budovu
         for(Building *eBuilding : enemy->getBuildings()){
-            if(eBuilding->canSelect() && eBuilding->boundingRect2().contains(actualPos)){
+            if(eBuilding->isSelectable() && eBuilding->boundingRect2().contains(actualPos)){
                 for(Unit *pUnit : selected){
                     pUnit->attack(eBuilding);
                 }
@@ -222,7 +220,7 @@ void Warcraft::mouseReleaseEvent(QMouseEvent *releaseEvent) {
 
         QList<Unit *> selected;
         for(Unit *unit : player->getUnits()){
-            if(unit->canSelect() && rect->rect().intersects(unit->boundingRect2())){
+            if(unit->isSelectable() && rect->rect().intersects(unit->boundingRect2())){
                 selected.append(unit);
             }
         }
@@ -382,7 +380,6 @@ void Warcraft::spawnUnit(Unit *u, Player *owner) {
 void Warcraft::spawnBuilding(Building *b, Player *owner) {
     if(owner) owner->getBuildings().prepend(b);
     scene()->addItem(b);
-
     graph.update(staticEntities());
 }
 

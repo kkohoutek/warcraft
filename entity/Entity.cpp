@@ -1,5 +1,6 @@
 #include "Entity.hpp"
 #include <QGraphicsScene>
+#include <QDebug>
 
 #define SHOW_HP_BARS 1
 int Entity::newID = 0;
@@ -37,7 +38,10 @@ void Entity::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
 }
 
 void Entity::update() {
-    if(!isAlive()) die();
+    //qDebug() << hp;
+    if(!isAlive()) {
+        die();
+    }
 }
 
 void Entity::die() {
