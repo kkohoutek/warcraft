@@ -125,7 +125,7 @@ void Warcraft::timerEvent(QTimerEvent *event) {
 
 void Warcraft::mousePressEvent(QMouseEvent *event){
     auto actualPos = mapToScene(event->pos());
-    auto &selected = player->getSelectedUnits();
+    auto &&selected = player->getSelectedUnits();
 
     if(event->button() == Qt::LeftButton){
 
@@ -364,7 +364,7 @@ QLinkedList<Unit *> Warcraft::allUnits() const {
 }
 
 QLinkedList<Entity *> Warcraft::allEntities() const {
-    QLinkedList<Entity *> &allEntities = staticEntities();
+    QLinkedList<Entity *> &&allEntities = staticEntities();
     for(Unit *u : allUnits()){
         allEntities.prepend(u);
     }
