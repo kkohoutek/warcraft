@@ -23,7 +23,7 @@ Building::Building(QPointF pos, Building::Type type, bool finishedOnSpawn, Race 
     frames.append(endFrame);
 
     Animation *buildAnimation = new Animation(spriteSheet, 48, 48, frames, buildTime/frames.size());
-    buildAnimation->setCurrentFrame(3);
+    buildAnimation->setCurrentFrameIndex(3);
     setCurrentAnimation(buildAnimation);
 
     if(finishedOnSpawn){
@@ -54,13 +54,13 @@ void Building::startConstruction() {
     connect(buildTimer, SIGNAL(timeout()), this, SLOT(constructionUpdate()));
     buildTimer->start();
 
-    getCurrentAnimation()->setCurrentFrame(0);
+    getCurrentAnimation()->setCurrentFrameIndex(0);
     getCurrentAnimation()->start();
 }
 
 void Building::die() {
     Entity::die();
-    getCurrentAnimation()->setCurrentFrame(0);
+    getCurrentAnimation()->setCurrentFrameIndex(0);
     getCurrentAnimation()->stop();
     finished = true;
 }

@@ -45,7 +45,7 @@ private:
     Node *nodes[NODES_ARRAY_SIZE][NODES_ARRAY_SIZE];
 };
 
-bool isPathValid(const QQueue<Node **> &path);
+bool isPathValid(const PATH &path);
 PATH reversePath(PATH path);
 
 #endif // PATHFINDING_HPP

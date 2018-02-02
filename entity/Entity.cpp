@@ -52,7 +52,7 @@ void Entity::die() {
 void Entity::setCurrentAnimation(Animation *anim) {
     if(currentAnimation) {
         currentAnimation->stop();
-        currentAnimation->setCurrentFrame(0);
+        currentAnimation->setCurrentFrameIndex(0);
     }
     currentAnimation = anim;
 }

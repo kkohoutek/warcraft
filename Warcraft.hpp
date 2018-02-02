@@ -83,9 +83,6 @@ private:
     HumanBarracksUI *hbUI;
 
     void setUI(QWidget *ui);
-
-    /******************* DEBUG STUFF *******************/
-    size_t entitiesMemoryStatus() const;
 };
 
 #endif // WARCRAFT_HPP

@@ -494,11 +494,3 @@ void Warcraft::setUI(QWidget *ui) {
     currentUI = ui;
     if(ui) ui->show();
 }
-
-size_t Warcraft::entitiesMemoryStatus() const {
-    size_t bytes = 0;
-    for(Entity *e : allEntities()){
-        bytes += sizeof(*e);
-    }
-    return bytes;
-}

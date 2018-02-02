@@ -67,7 +67,9 @@ void Unit::update(){
                     path.clear();
                     currentAnimationSet = &attackAnims;
                     setTarget(targetEntity->center());
-                    targetEntity->damaged(damage*0.18f, this);
+                    if(getCurrentAnimation()->getCurrentFrameIndex() == attackImpactFrameIndex){
+                        targetEntity->damaged(damage, this);
+                    }
                 } else {
                     currentAnimationSet = &movementAnims;
                 }
@@ -142,13 +144,13 @@ void Unit::die() {
 void Unit::damaged(float amount, Entity *source) {
     Entity::damaged(amount, source);
     hp += amount;
-    hp -= amount*(1-armor/10)*0.18f;
+    hp -= amount*(1-armor/10);
     if(!moving && !targetEntity) attack(source);
 }
 
 void Unit::stopMoving(){
     moving = false;
-    getCurrentAnimation()->setCurrentFrame(0);
+    getCurrentAnimation()->setCurrentFrameIndex(0);
     getCurrentAnimation()->stop();
     path.clear();
     //currentAnimationSet = &movementAnims;
@@ -170,6 +172,7 @@ bool Unit::isWithinRange(Entity *entity) const {
 void Unit::cancel(){
     targetEntity = nullptr;
     currentAnimationSet = &movementAnims;
+    hasHitTarget = false;
 }
 
 void Unit::move() {

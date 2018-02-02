@@ -17,7 +17,9 @@ public:
     void start();
     void stop();
     void draw(QPainter *painter) const;
-    void setCurrentFrame(int index) { currentFrameIndex = index; }
+    void setCurrentFrameIndex(int index)    { currentFrameIndex = index; }
+    int getCurrentFrameIndex() const        { return currentFrameIndex; }
+    int duration() const                    { return animationTimer.interval(); }
 
 private:
     const QPixmap       *spriteSheet;

@@ -65,6 +65,7 @@ protected:
     int range;
 
     bool moving = false;
+    int attackImpactFrameIndex = 3;
 
     // animation sets
     QList<Animation *> movementAnims;
@@ -76,6 +77,7 @@ protected:
     PATH path;
     Graph *graph = nullptr; // pointer to pathfinding graph
     Entity *targetEntity = nullptr;
+
 };
 
 #endif // UNIT_HPP
