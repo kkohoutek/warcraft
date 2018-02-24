@@ -7,7 +7,7 @@ class HumanFarm : public Building
 {
 public:
     static const int COST_GOLD = 500;
-    static const int COST_LUMBER = 300;
+    static const int COST_LUMBER = 0;
     static const int HP = 800;
     static const int BUILD_TIME = 5000;
 

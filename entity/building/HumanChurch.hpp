@@ -6,7 +6,7 @@ class HumanChurch : public Building
 {
 public:
     static const int COST_GOLD = 800;
-    static const int COST_LUMBER = 500;
+    static const int COST_LUMBER = 0;
     static const int HP = 700;
     static const int BUILD_TIME = (2000*1000)/100;
     HumanChurch(QPointF pos, bool finishedOnSpawn, ResourceManager *rm);

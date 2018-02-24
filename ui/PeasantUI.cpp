@@ -1,16 +1,14 @@
 #include "PeasantUI.hpp"
-
 #include <QPushButton>
 #include <QLayout>
 #include <QGraphicsScene>
-
 #include "entity/building/buildings_all.hpp"
 
 PeasantUI::PeasantUI(Player *player, ResourceManager *rm, QGraphicsScene *scene, QWidget *parent) : QWidget(parent) {
     this->player = player;
     this->rm = rm;
     this->scene = scene;
-    this->setGeometry(695,300,80,255);
+    this->setGeometry(695, 300, 80, 255);
     QGridLayout *layout = new QGridLayout(this);
     this->setLayout(layout);
 
@@ -46,7 +44,10 @@ PeasantUI::PeasantUI(Player *player, ResourceManager *rm, QGraphicsScene *scene,
     connect(church, SIGNAL(clicked(bool)), SLOT(clickChurch()));
     connect(blacks, SIGNAL(clicked(bool)), SLOT(clickBlacks()));
     connect(stables, SIGNAL(clicked(bool)), SLOT(clickStables()));
+}
 
+PeasantUI::~PeasantUI() {
+    cancelOption();
 }
 
 void PeasantUI::cancelOption() {
@@ -76,29 +77,29 @@ Building *PeasantUI::getCurrentBuilding() const {
 }
 
 void PeasantUI::clickFarm() {
-    prepare(new HumanFarm(QPointF(0,0),false,rm,&(player->food)));
+    prepare(new HumanFarm(QPointF(0,0), false, rm, &(player->food)));
 }
 
 void PeasantUI::clickBarracks() {
-    prepare(new HumanBarracks(QPointF(0,0),false,rm,player));
+    prepare(new HumanBarracks(QPointF(0,0), false, rm, player));
 }
 
 void PeasantUI::clickHall() {
-    prepare(new HumanTownHall(QPointF(0,0),false,rm,player));
+    prepare(new HumanTownHall(QPointF(0,0), false, rm, player));
 }
 
 void PeasantUI::clickStables() {
-    prepare(new HumanStables(QPointF(0,0),false,rm));
+    prepare(new HumanStables(QPointF(0,0), false, rm));
 }
 
 void PeasantUI::clickBlacks() {
-    prepare(new HumanBlacksmith(QPointF(0,0),false,rm));
+    prepare(new HumanBlacksmith(QPointF(0,0), false, rm));
 }
 
 void PeasantUI::clickChurch() {
-    prepare(new HumanChurch(QPointF(0,0),false,rm));
+    prepare(new HumanChurch(QPointF(0,0), false, rm));
 }
 
 void PeasantUI::clickMill() {
-    prepare(new HumanLumberMill(QPointF(0,0),false,rm));
+    prepare(new HumanLumberMill(QPointF(0,0), false, rm));
 }

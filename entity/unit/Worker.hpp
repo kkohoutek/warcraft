@@ -2,7 +2,6 @@
 #define WORKER_HPP
 
 #include "entity/Goldmine.hpp"
-#include "entity/Trees.hpp"
 #include "Player.hpp"
 
 class Worker : public Unit
@@ -21,7 +20,7 @@ public:
     QRectF  boundingRect() const override;
 
     void    mine(Goldmine *source, Building *dest);
-    void    harvest(Trees *source, Building *dest);
+    //void    harvest(Trees *source, Building *dest);
     void    build(Building *building);
 
 protected:
@@ -43,13 +42,15 @@ protected:
         }
     };
 
+    /*
     struct HarvestCommand {
         Trees *source;
         Building *dest;
         HarvestCommand(Trees *source, Building *dest) { this->source = source; this->dest = dest; }
     };
+    */
 
-    HarvestCommand  *harvestCommand     = nullptr;
+    //HarvestCommand  *harvestCommand     = nullptr;
     BuildCommand    *buildCommand       = nullptr;
     MineCommand     *mineCommand        = nullptr;
 

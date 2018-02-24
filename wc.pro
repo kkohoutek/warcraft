@@ -27,7 +27,6 @@ SOURCES += main.cpp\
     entity/unit/Worker.cpp \
     entity/Entity.cpp \
     entity/Goldmine.cpp \
-    entity/Trees.cpp \
     entity/building/HumanChurch.cpp \
     entity/building/HumanBlacksmith.cpp \
     entity/building/HumanLumberMill.cpp \
@@ -61,7 +60,6 @@ HEADERS  += \
     entity/unit/Daemon.hpp \
     entity/Entity.hpp \
     entity/Goldmine.hpp \
-    entity/Trees.hpp \
     Player.hpp \
     pathfinding.hpp \
     Warcraft.hpp \

@@ -1,6 +1,6 @@
 #include "Footman.hpp"
 
-Footman::Footman(QPointF pos, ResourceManager *rm) : Unit(pos, FOOTMAN, 0.7f, 1, 2, 0)
+Footman::Footman(QPointF pos, ResourceManager *rm) : Unit(pos, FOOTMAN, 0.7f, 1, 2, 0, 12)
 {
     setMaxHP(60);
     setHP(60);
@@ -40,7 +40,7 @@ Footman::Footman(QPointF pos, ResourceManager *rm) : Unit(pos, FOOTMAN, 0.7f, 1,
        movementAnims.append(walk45Deg);
 
        QList<QList<int>> walk90DegFrames;
-       walk90DegFrames.reserve(4);
+       walk90DegFrames.reserve(8);
        walk90DegFrames.append(QList<int>() << 0 << 0);
        walk90DegFrames.append(QList<int>() << 0 << 1);
        walk90DegFrames.append(QList<int>() << 0 << 2);
@@ -55,7 +55,7 @@ Footman::Footman(QPointF pos, ResourceManager *rm) : Unit(pos, FOOTMAN, 0.7f, 1,
        movementAnims.append(walk90Deg);
 
        QList<QList<int>> walk135DegFrames;
-       walk135DegFrames.reserve(4);
+       walk135DegFrames.reserve(8);
        walk135DegFrames.append(QList<int>() << 13 << 0);
        walk135DegFrames.append(QList<int>() << 13 << 1);
        walk135DegFrames.append(QList<int>() << 13 << 2);
@@ -136,7 +136,7 @@ Footman::Footman(QPointF pos, ResourceManager *rm) : Unit(pos, FOOTMAN, 0.7f, 1,
        attack0DegFrames.append(QList<int>() << 8 << 0);
        attack0DegFrames.append(QList<int>() << 8 << 1);
        attack0DegFrames.append(QList<int>() << 7 << 2);
-       attack0DegFrames.append(QList<int>() << 2 << 1);
+       attack0DegFrames.append(QList<int>() << 7 << 2);
        attack0DegFrames.append(QList<int>() << 8 << 1);
        attack0DegFrames.append(QList<int>() << 8 << 0);
 
@@ -145,10 +145,12 @@ Footman::Footman(QPointF pos, ResourceManager *rm) : Unit(pos, FOOTMAN, 0.7f, 1,
        attackAnims.append(attack0Deg);
 
        QList<QList<int>> attack45DegFrames;
-       attack45DegFrames.reserve(4);
+       attack45DegFrames.reserve(6);
        attack45DegFrames.append(QList<int>() << 6 << 4);
        attack45DegFrames.append(QList<int>() << 6 << 3);
        attack45DegFrames.append(QList<int>() << 6 << 2);
+       attack45DegFrames.append(QList<int>() << 6 << 2);
+       attack45DegFrames.append(QList<int>() << 6 << 3);
        attack45DegFrames.append(QList<int>() << 6 << 4);
 
        Animation *attack45Deg = new Animation(spriteSheet, 48,48, attack45DegFrames, 150, true);
@@ -156,9 +158,10 @@ Footman::Footman(QPointF pos, ResourceManager *rm) : Unit(pos, FOOTMAN, 0.7f, 1,
        attackAnims.append(attack45Deg);
 
        QList<QList<int>> attack90DegFrames;
-       attack90DegFrames.reserve(5);
+       attack90DegFrames.reserve(6);
        attack90DegFrames.append(QList<int>() << 5 << 0);
        attack90DegFrames.append(QList<int>() << 5 << 1);
+       attack90DegFrames.append(QList<int>() << 5 << 2);
        attack90DegFrames.append(QList<int>() << 5 << 2);
        attack90DegFrames.append(QList<int>() << 5 << 1);
        attack90DegFrames.append(QList<int>() << 5 << 0);
@@ -168,11 +171,13 @@ Footman::Footman(QPointF pos, ResourceManager *rm) : Unit(pos, FOOTMAN, 0.7f, 1,
        attackAnims.append(attack90Deg);
 
        QList<QList<int>> attack135DegFrames;
-       attack135DegFrames.reserve(4);
+       attack135DegFrames.reserve(6);
        attack135DegFrames.append(QList<int>() << 8 << 0);
        attack135DegFrames.append(QList<int>() << 8 << 1);
        attack135DegFrames.append(QList<int>() << 8 << 2);
+       attack135DegFrames.append(QList<int>() << 8 << 2);
        attack135DegFrames.append(QList<int>() << 8 << 1);
+      attack135DegFrames.append(QList<int>() << 8 << 0);
 
        Animation *attack135Deg = new Animation(spriteSheetFlipped, 48,48, attack135DegFrames, 150, true);
 
@@ -180,10 +185,12 @@ Footman::Footman(QPointF pos, ResourceManager *rm) : Unit(pos, FOOTMAN, 0.7f, 1,
 
        QList<QList<int>> attack180DegFrames;
        attack180DegFrames.reserve(4);
-       attack180DegFrames.append(QList<int>() << 6 << 3);
-       attack180DegFrames.append(QList<int>() << 6 << 4);
-       attack180DegFrames.append(QList<int>() << 7 << 2);
-       attack180DegFrames.append(QList<int>() << 6 << 4);
+       attack180DegFrames.append(QList<int>() << 14-8 << 0);
+       attack180DegFrames.append(QList<int>() << 14-8 << 1);
+       attack180DegFrames.append(QList<int>() << 14-7 << 2);
+       attack180DegFrames.append(QList<int>() << 14-7 << 2);
+       attack180DegFrames.append(QList<int>() << 14-8 << 1);
+       attack180DegFrames.append(QList<int>() << 14-8 << 0);
 
        Animation *attack180Deg = new Animation(spriteSheetFlipped, 48,48, attack180DegFrames, 150, true);
 
@@ -191,30 +198,35 @@ Footman::Footman(QPointF pos, ResourceManager *rm) : Unit(pos, FOOTMAN, 0.7f, 1,
 
        QList<QList<int>> attack225DegFrames;
        attack225DegFrames.reserve(4);
-       attack225DegFrames.append(QList<int>() << 6 << 0);
-       attack225DegFrames.append(QList<int>() << 6 << 1);
-       attack225DegFrames.append(QList<int>() << 6 << 2);
-       attack225DegFrames.append(QList<int>() << 6 << 1);
+       attack225DegFrames.append(QList<int>() << 14-8 << 0);
+       attack225DegFrames.append(QList<int>() << 14-8 << 1);
+       attack225DegFrames.append(QList<int>() << 14-8 << 2);
+       attack225DegFrames.append(QList<int>() << 14-8 << 2);
+       attack225DegFrames.append(QList<int>() << 14-8 << 1);
+       attack225DegFrames.append(QList<int>() << 14-8 << 0);
 
        Animation *attack225Deg = new Animation(spriteSheetFlipped, 48,48, attack225DegFrames, 150, true);
 
        attackAnims.append(attack225Deg);
 
        QList<QList<int>> attack270DegFrames;
-       attack270DegFrames.reserve(4);
+       attack270DegFrames.reserve(6);
        attack270DegFrames.append(QList<int>() << 9 << 0);
        attack270DegFrames.append(QList<int>() << 9 << 1);
        attack270DegFrames.append(QList<int>() << 9 << 2);
+       attack270DegFrames.append(QList<int>() << 9 << 2);
        attack270DegFrames.append(QList<int>() << 9 << 1);
+       attack270DegFrames.append(QList<int>() << 9 << 0);
 
        Animation *attack270Deg = new Animation(spriteSheet, 48,48, attack270DegFrames, 150, true);
 
        attackAnims.append(attack270Deg);
 
        QList<QList<int>> attack315DegFrames;
-       attack315DegFrames.reserve(5);
+       attack315DegFrames.reserve(6);
        attack315DegFrames.append(QList<int>() << 8 << 0);
        attack315DegFrames.append(QList<int>() << 8 << 1);
+       attack315DegFrames.append(QList<int>() << 8 << 2);
        attack315DegFrames.append(QList<int>() << 8 << 2);
        attack315DegFrames.append(QList<int>() << 8 << 1);
        attack315DegFrames.append(QList<int>() << 8 << 0);

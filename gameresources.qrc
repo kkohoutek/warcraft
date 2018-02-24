@@ -10,5 +10,6 @@
         <file alias="DAEMON">res/daemon.png</file>
         <file alias="MAP1">res/map1.png</file>
         <file alias="ICONS">res/icons.png</file>
+        <file alias="PEON">res/PEON.png</file>
     </qresource>
 </RCC>

@@ -1,17 +1,18 @@
 #include "Warcraft.hpp"
-
 #include "entity/building/buildings_all.hpp"
-#include "entity/Trees.hpp"
 #include "entity/unit/Grunt.hpp"
 #include "entity/unit/Footman.hpp"
 #include "pathfinding.hpp"
 #include "ui/PeasantUI.hpp"
-
 #include <QScrollBar>
 #include <QDebug>
 
 #define MAP_AREA 4096
 #define MAX_DEAD 100
+#define UNIT_AWARENESS_RADIUS 92
+
+#define DEBUG_SHOW_GRAPH 0
+#define DEBUG_SHOW_AWARENESS 0
 
 Warcraft::Warcraft() {
     setFixedHeight(600);
@@ -33,6 +34,8 @@ Warcraft::Warcraft() {
     player->lumber = 100000;
     player->gold = 50000;
     enemy = new Player(ORC);
+    player->setEnemy(enemy);
+    enemy->setEnemy(player);
 
     initResources();
 
@@ -58,7 +61,7 @@ Warcraft::Warcraft() {
 
 Warcraft::~Warcraft() {
     qDeleteAll(goldmines);
-    qDeleteAll(trees);
+    //qDeleteAll(trees);
     delete rect;
     delete player;
     delete enemy;
@@ -69,7 +72,7 @@ void Warcraft::loadBuildings() {
     spawnBuilding(new HumanFarm(QPointF(70, 262), true, &rm, &(player->food)), player);
     spawnBuilding(new HumanFarm(QPointF(310, 290), true, &rm, &(player->food)), player);
     //spawnBuilding(new HumanChurch(QPointF(278, 81), true, rm), player);
-    spawnBuilding(new OrcTownHall(QPointF(MAP_AREA/2-300,MAP_AREA/2-300), true, &rm), enemy);
+    spawnBuilding(new OrcTownHall(QPointF(MAP_AREA/2-350,MAP_AREA/2-325), true, &rm), enemy);
 }
 
 void Warcraft::loadUnits(){
@@ -78,10 +81,31 @@ void Warcraft::loadUnits(){
     }
     spawnUnit(new Footman(QPointF(1500,1500), &rm), player);
 
+
+
     for(int i = 0; i < 4; i++){
+        spawnUnit(new Worker(QPointF(700+i*28,650), Unit::PEON, enemy, &rm), enemy);;
+    }
+
+    for(Unit *u : enemy->unitsOfType(Unit::PEON)) {
+        static_cast<Worker *>(u)->mine(goldmines.at(1), enemy->getBuildings().last());
+    }
+
+    for(int i = 0; i < 7; i++){
         spawnUnit(new Grunt(QPointF(MAP_AREA/2-420+i*40, MAP_AREA/2-286-i*40), &rm), enemy);;
     }
+    for(int i = 0; i < 7; i++){
+        spawnUnit(new Grunt(QPointF(MAP_AREA/2-420+i*40, MAP_AREA/2-320-i*40), &rm), enemy);;
+    }
+    for(int i = 0; i < 7; i++){
+        spawnUnit(new Grunt(QPointF(MAP_AREA/2-420+i*40, MAP_AREA/2-360-i*40), &rm), enemy);;
+    }
+    for(int i = 0; i < 7; i++){
+        spawnUnit(new Grunt(QPointF(MAP_AREA/2-420+i*40, MAP_AREA/2-400-i*40), &rm), enemy);;
+    }
+    enemy->getUnits().first()->setPos(300,300);
     enemy->getUnits().first()->attack(player->getUnits().last());
+
 }
 
 void Warcraft::loadWorld() {
@@ -174,21 +198,11 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
         }
 
     } else if (event->button() == Qt::RightButton){
-        // Klikl hráč na nepřítelskou jednotku
-        for(Unit *eUnit : enemy->getUnits()){
-            if(eUnit->isSelectable() && eUnit->boundingRect2().contains(actualPos)){
+        // Klikl hráč na nepřítelskou entitu
+        for(Entity *eEntity : enemy->allEntities()){
+            if(eEntity->isSelectable() && eEntity->boundingRect2().contains(actualPos)){
                 for(Unit *pUnit : selected){
-                    pUnit->attack(eUnit);
-                }
-                return;
-            }
-        }
-
-        //Klikl hráč na nepřátelskou budovu
-        for(Building *eBuilding : enemy->getBuildings()){
-            if(eBuilding->isSelectable() && eBuilding->boundingRect2().contains(actualPos)){
-                for(Unit *pUnit : selected){
-                    pUnit->attack(eBuilding);
+                    pUnit->attack(eEntity);
                 }
                 return;
             }
@@ -205,7 +219,7 @@ void Warcraft::mousePressEvent(QMouseEvent *event){
         for(Goldmine *g : goldmines){
             if(g->boundingRect2().contains(actualPos)){
                 for(Unit *u : selected){
-                    if(u->getType() == Unit::PEASANT) {
+                    if(u->getType() == Unit::PEASANT || u->getType() == Unit::PEON ) {
                         static_cast<Worker *>(u)->mine(g, player->getBuildings().last());
                     }
                 }
@@ -319,6 +333,11 @@ void Warcraft::updatePlayer(Player *p) {
             if(!garbage.contains(unit)) {
                 garbage.enqueue(unit);
             }
+        } else {
+            // Pokud je jednotka v blízkosti nepřátelské jednotky, tak zaútočí sama
+            if(p->getEnemy() && !unit->getTargetEntity() && !unit->isMoving()) {
+                unit->attack(findNearestEnemyEntity(unit, p->getEnemy()));
+            }
         }
     }
 
@@ -396,23 +415,52 @@ void Warcraft::paintEvent(QPaintEvent *event) {
     painter.drawText(QPointF(width()*3/6, 20),
         "Units: "+QString::number(player->getUnits().size())+"/100"
         "    Food: "+QString::number(player->food)+
-        "    Gold: "+QString::number(player->gold)+
-        "    Lumber: "+QString::number(player->lumber));
+        "    Gold: "+QString::number(player->gold));
 
-     // visualize graph
-
-    /*
-    for(int i = 0; i < NODES_ARRAY_SIZE; i++){
-        for(int j = 0; j < NODES_ARRAY_SIZE; j++){
-            Node *n = graph.nodes[i][j];
-            if(n){
-                painter.drawEllipse(mapFromScene(n->pos), 1, 1);
+    if(DEBUG_SHOW_GRAPH) {
+        for(int i = 0; i < NODES_ARRAY_SIZE; i++){
+            for(int j = 0; j < NODES_ARRAY_SIZE; j++){
+                Node *n = graph.node(j, i);
+                if(n){
+                    painter.drawEllipse(mapFromScene(n->pos), 1, 1);
+                }
             }
         }
     }
-    */
+
+    if(DEBUG_SHOW_AWARENESS) {
+        for(Unit *unit : allUnits()) {
+            painter.drawEllipse(mapFromScene(unit->center()), UNIT_AWARENESS_RADIUS, UNIT_AWARENESS_RADIUS);
+        }
+    }
 
     message.display(&painter, width()/2, height()/2);
+}
+
+Entity *Warcraft::findNearestEnemyEntity(Entity *entity, Player *enemy, bool preferUnits) const {
+    float min = UNIT_AWARENESS_RADIUS;
+    Entity *nearest = nullptr;
+    for(Entity *enemyUnit : enemy->getUnits()) {
+        if(enemyUnit->isAlive()) {
+            float distance = entity->distanceFrom(enemyUnit);
+            if(distance <= UNIT_AWARENESS_RADIUS && distance < min) {
+                min = distance;
+                nearest = enemyUnit;
+            }
+        }
+    }
+    if(nearest && preferUnits) return nearest;
+
+    for(Entity *enemyBuilding : enemy->getBuildings()) {
+        if(enemyBuilding->isAlive()) {
+            float distance = entity->distanceFrom(enemyBuilding);
+            if(distance <= UNIT_AWARENESS_RADIUS && distance < min) {
+                min = distance;
+                nearest = enemyBuilding;
+            }
+        }
+    }
+    return nearest;
 }
 
 void Warcraft::initResources() {
@@ -424,11 +472,13 @@ void Warcraft::initResources() {
     rm.loadSprite("GRUNT", new QPixmap(":graphics/GRUNT"));
     rm.loadSprite("DAEMON", new QPixmap(":graphics/DAEMON"));
     rm.loadSprite("PEASANT", new QPixmap(":graphics/PEASANT"));
+    rm.loadSprite("PEON", new QPixmap(":graphics/PEON"));
     rm.loadSprite("MISC", new QPixmap(":graphics/MISC"));
     rm.loadSprite("WORLD", new QPixmap(":graphics/WORLD"));
     rm.copySprite("PEASANT", "PEASANT_flipped", true, false);
     rm.copySprite("FOOTMAN", "FOOTMAN_flipped", true, false);
     rm.copySprite("GRUNT", "GRUNT_flipped", true, false);
+    rm.copySprite("PEON", "PEON_flipped", true, false);
     rm.copySprite("DAEMON", "DAEMON_flipped", true, false);
 }
 
@@ -442,7 +492,7 @@ void Warcraft::cleanUp() {
     if(!removed) removed = enemy->getUnits().removeOne(reinterpret_cast<Unit *>(e));
     if(!removed) removed = enemy->getBuildings().removeOne(static_cast<Building *>(e));
     if(!removed) removed = goldmines.removeOne(reinterpret_cast<Goldmine *>(e));
-    if(!removed) removed = trees.removeOne(reinterpret_cast<Trees *>(e));
+    //if(!removed) removed = trees.removeOne(reinterpret_cast<Trees *>(e));
     e->scene()->removeItem(e);
     delete e;
 }
@@ -490,7 +540,12 @@ QPair<int, int> Warcraft::cost(Building::Type type) {
 }
 
 void Warcraft::setUI(QWidget *ui) {
-    if(currentUI) currentUI->hide();
+    if(currentUI) {
+        currentUI->hide();
+        if(currentUI == peasantUI) {
+            static_cast<PeasantUI *>(currentUI)->cancelOption();
+        }
+    }
     currentUI = ui;
     if(ui) ui->show();
 }

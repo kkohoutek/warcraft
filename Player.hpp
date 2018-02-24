@@ -19,21 +19,28 @@ public:
     void selectBuilding(Building *building);
     void deselect();
 
+    QLinkedList<Building *> buildingsOfType(Building::Type type) const;
+    QLinkedList<Unit *> unitsOfType(Unit::Type type) const;
+    QLinkedList<Entity *> allEntities() const;
+
     QLinkedList<Building *>   &getBuildings()               { return buildings; }
     QLinkedList<Unit *>       &getUnits()                   { return units; }
     QList<Unit *>             &getSelectedUnits()           { return selectedUnits; }
     Building                  *getSelectedBuilding() const  { return selectedBuilding; }
+    Race                       getRace() const              { return race; }
 
-    Race getRace() const                        { return race; }
+    void                       setEnemy(Player *e)          { enemy = e; }
+    Player                    *getEnemy() const             { return enemy; }
 
-private:
+
+protected:
     QLinkedList<Building *>   buildings;
     QLinkedList<Unit *>       units;
     QList<Unit *>       selectedUnits;
 
     Building *selectedBuilding = nullptr;
-
-    Race race;  
+    Race race;
+    Player *enemy = nullptr;
 };
 
 #endif // PLAYER_HPP

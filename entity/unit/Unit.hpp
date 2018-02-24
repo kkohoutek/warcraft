@@ -23,7 +23,8 @@ public:
         GRUNT
     };
 
-    Unit(QPointF pos, Unit::Type type, float speed, float damage, int armor, int range);
+    Unit(QPointF pos, Unit::Type type, float speed, float damage, int armor, int range, int attackSpeed);
+    Unit();
     virtual ~Unit();
 
     void            setTarget(QPointF target);
@@ -48,6 +49,7 @@ public:
     QVector2D       direction() const;
     bool            isWithinRange(Entity *entity) const;
 
+    void            setType(Unit::Type t)  { type = t; }
     Unit::Type      getType() const        { return type; }
     bool            isMoving() const       { return moving; }
     float           getDamage() const      { return damage; }
@@ -56,6 +58,10 @@ public:
     void            setSpeed(float s)      { speed = s; }
     int             getArmor() const       { return armor; }
     void            setArmor(int a)        { armor = a; }
+    int             getAttackSpeed()       { return attackSpeed; }
+    void            setAttackSpeed(int as) { attackSpeed = as; }
+
+    Entity          *getTargetEntity()     { return targetEntity; }
 
 protected:
     Unit::Type type;
@@ -63,9 +69,10 @@ protected:
     float damage;
     int armor;
     int range;
+    int attackSpeed;
 
     bool moving = false;
-    int attackImpactFrameIndex = 3;
+    int attackCooldown = 0;
 
     // animation sets
     QList<Animation *> movementAnims;

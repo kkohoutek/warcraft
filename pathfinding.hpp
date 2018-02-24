@@ -36,6 +36,8 @@ public:
     // Defaultuje visited a parent
     void resetNodes() const;
 
+    Node *node(int i, int j) const;
+
     PATH shortestPath(Node *start, Node *goal);
     PATH shortestPath(QPointF a, QPointF b);
 

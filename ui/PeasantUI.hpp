@@ -9,6 +9,7 @@ class PeasantUI : public QWidget
     Q_OBJECT
 public:
     explicit PeasantUI(Player *player, ResourceManager *rm, QGraphicsScene *scene, QWidget *parent = nullptr);
+    ~PeasantUI();
 
     void cancelOption();
     void release();

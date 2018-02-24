@@ -1,6 +1,6 @@
 #include "Daemon.hpp"
 
-Daemon::Daemon(QPointF pos, ResourceManager *rm) : Unit(pos, DAEMON, 1,65,0,0)
+Daemon::Daemon(QPointF pos, ResourceManager *rm) : Unit(pos, DAEMON, 1,65,0,0,500)
 {
     setMaxHP(300);
     setHP(300);

@@ -2,11 +2,12 @@
 #include <QtMath>
 #include <QDebug>
 
-Unit::Unit(QPointF pos, Unit::Type type, float speed, float damage, int armor, int range) : Entity(pos) {
+Unit::Unit(QPointF pos, Unit::Type type, float speed, float damage, int armor, int range, int attackSpeed) : Entity(pos) {
     this->speed = speed;
     this->damage = damage;
     this->range = range;
     this->armor = armor;
+    this->attackSpeed = attackSpeed;
     this->type = type;
 
     scaleX = 2;
@@ -18,6 +19,8 @@ Unit::Unit(QPointF pos, Unit::Type type, float speed, float damage, int armor, i
 
     currentAnimationSet = &movementAnims;
 }
+
+Unit::Unit() : Unit(QPointF(0, 0), Unit::NONE, 0.5f, 0, 0, 0, 0) { }
 
 Unit::~Unit() {
     setCurrentAnimation(nullptr);
@@ -67,8 +70,9 @@ void Unit::update(){
                     path.clear();
                     currentAnimationSet = &attackAnims;
                     setTarget(targetEntity->center());
-                    if(getCurrentAnimation()->getCurrentFrameIndex() == attackImpactFrameIndex){
+                    if(attackCooldown-- <= 0){
                         targetEntity->damaged(damage, this);
+                        attackCooldown = attackSpeed;
                     }
                 } else {
                     currentAnimationSet = &movementAnims;
@@ -125,7 +129,7 @@ void Unit::goTo(QPointF goal) {
 }
 
 void Unit::attack(Entity *victim) {
-    if(targetEntity == victim) return;
+    if(victim == nullptr || targetEntity == victim || !victim->isAlive()) return;
     setPath(graph->shortestPath(center(), victim->center()));
     //path.removeLast();
     targetEntity = victim;
@@ -172,7 +176,6 @@ bool Unit::isWithinRange(Entity *entity) const {
 void Unit::cancel(){
     targetEntity = nullptr;
     currentAnimationSet = &movementAnims;
-    hasHitTarget = false;
 }
 
 void Unit::move() {

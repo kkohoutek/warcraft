@@ -1,6 +1,6 @@
 #include "Grunt.hpp"
 
-Grunt::Grunt(QPointF pos, ResourceManager *rm) : Unit(pos,GRUNT,0.7f, 1, 2, 0) {
+Grunt::Grunt(QPointF pos, ResourceManager *rm) : Unit(pos,GRUNT,0.7f, 1, 2, 0, 12) {
     setMaxHP(60);
     setHP(60);
 
@@ -129,19 +129,24 @@ Grunt::Grunt(QPointF pos, ResourceManager *rm) : Unit(pos,GRUNT,0.7f, 1, 2, 0) {
        //atack animations
 
        QList<QList<int>> attack0DegFrames;
-       attack0DegFrames.reserve(4);
+       attack0DegFrames.reserve(6);
        attack0DegFrames.append(QList<int>() << 7 << 2);
        attack0DegFrames.append(QList<int>() << 8 << 2);
-       attack0DegFrames.append(QList<int>() << 8 << 0);
-       attack0DegFrames.append(QList<int>() << 8 << 1);
+       attack0DegFrames.append(QList<int>() << 7 << 4);
+       attack0DegFrames.append(QList<int>() << 7 << 4);
+       attack0DegFrames.append(QList<int>() << 8 << 2);
+       attack0DegFrames.append(QList<int>() << 7 << 2);
+
 
        Animation *attack0Deg = new Animation(spriteSheet, 32,32, attack0DegFrames, 150, true);
 
        attackAnims.append(attack0Deg);
 
        QList<QList<int>> attack45DegFrames;
-       attack45DegFrames.reserve(4);
+       attack45DegFrames.reserve(6);
        attack45DegFrames.append(QList<int>() << 6 << 2);
+       attack45DegFrames.append(QList<int>() << 6 << 3);
+       attack45DegFrames.append(QList<int>() << 6 << 4);
        attack45DegFrames.append(QList<int>() << 6 << 4);
        attack45DegFrames.append(QList<int>() << 6 << 3);
        attack45DegFrames.append(QList<int>() << 6 << 2);
@@ -151,8 +156,10 @@ Grunt::Grunt(QPointF pos, ResourceManager *rm) : Unit(pos,GRUNT,0.7f, 1, 2, 0) {
        attackAnims.append(attack45Deg);
 
        QList<QList<int>> attack90DegFrames;
-       attack90DegFrames.reserve(4);
+       attack90DegFrames.reserve(6);
+       attack90DegFrames.append(QList<int>() << 5 << 2);
        attack90DegFrames.append(QList<int>() << 5 << 3);
+       attack90DegFrames.append(QList<int>() << 5 << 4);
        attack90DegFrames.append(QList<int>() << 5 << 4);
        attack90DegFrames.append(QList<int>() << 5 << 3);
        attack90DegFrames.append(QList<int>() << 5 << 2);
@@ -162,10 +169,12 @@ Grunt::Grunt(QPointF pos, ResourceManager *rm) : Unit(pos,GRUNT,0.7f, 1, 2, 0) {
        attackAnims.append(attack90Deg);
 
        QList<QList<int>> attack135DegFrames;
-       attack135DegFrames.reserve(4);
-       attack135DegFrames.append(QList<int>() << 8 << 1);
+       attack135DegFrames.reserve(6);
        attack135DegFrames.append(QList<int>() << 8 << 2);
+       attack135DegFrames.append(QList<int>() << 8 << 3);
        attack135DegFrames.append(QList<int>() << 8 << 4);
+       attack135DegFrames.append(QList<int>() << 8 << 4);
+       attack135DegFrames.append(QList<int>() << 8 << 3);
        attack135DegFrames.append(QList<int>() << 8 << 2);
 
        Animation *attack135Deg = new Animation(spriteSheetFlipped, 32,32, attack135DegFrames, 150, true);
@@ -174,20 +183,24 @@ Grunt::Grunt(QPointF pos, ResourceManager *rm) : Unit(pos,GRUNT,0.7f, 1, 2, 0) {
 
        QList<QList<int>> attack180DegFrames;
        attack180DegFrames.reserve(4);
-       attack180DegFrames.append(QList<int>() << 7 << 3);
-       attack180DegFrames.append(QList<int>() << 7 << 2);
-       attack180DegFrames.append(QList<int>() << 7 << 4);
-       attack180DegFrames.append(QList<int>() << 7 << 3);
+       attack180DegFrames.append(QList<int>() << 14-7 << 2);
+       attack180DegFrames.append(QList<int>() << 14-8 << 2);
+       attack180DegFrames.append(QList<int>() << 14-7 << 4);
+       attack180DegFrames.append(QList<int>() << 14-7 << 4);
+       attack180DegFrames.append(QList<int>() << 14-8 << 2);
+       attack180DegFrames.append(QList<int>() << 14-7 << 2);
 
        Animation *attack180Deg = new Animation(spriteSheetFlipped, 32,32, attack180DegFrames, 150, true);
 
        attackAnims.append(attack180Deg);
 
        QList<QList<int>> attack225DegFrames;
-       attack225DegFrames.reserve(4);
+       attack225DegFrames.reserve(6);
        attack225DegFrames.append(QList<int>() << 6 << 2);
        attack225DegFrames.append(QList<int>() << 6 << 3);
        attack225DegFrames.append(QList<int>() << 6 << 4);
+       attack225DegFrames.append(QList<int>() << 6 << 4);
+       attack225DegFrames.append(QList<int>() << 6 << 3);
        attack225DegFrames.append(QList<int>() << 6 << 2);
 
        Animation *attack225Deg = new Animation(spriteSheetFlipped, 32,32, attack225DegFrames, 150, true);
@@ -195,21 +208,25 @@ Grunt::Grunt(QPointF pos, ResourceManager *rm) : Unit(pos,GRUNT,0.7f, 1, 2, 0) {
        attackAnims.append(attack225Deg);
 
        QList<QList<int>> attack270DegFrames;
-       attack270DegFrames.reserve(4);
-       attack270DegFrames.append(QList<int>() << 5 << 1);
-       attack270DegFrames.append(QList<int>() << 5 << 2);
-       attack270DegFrames.append(QList<int>() << 5 << 4);
-       attack270DegFrames.append(QList<int>() << 5 << 2);
+       attack270DegFrames.reserve(6);
+       attack270DegFrames.append(QList<int>() << 9 << 2);
+       attack270DegFrames.append(QList<int>() << 9 << 3);
+       attack270DegFrames.append(QList<int>() << 9 << 4);
+       attack270DegFrames.append(QList<int>() << 9 << 4);
+       attack270DegFrames.append(QList<int>() << 9 << 3);
+       attack270DegFrames.append(QList<int>() << 9 << 2);
 
-       Animation *attack270Deg = new Animation(spriteSheetFlipped, 32,32, attack270DegFrames, 150, true);
+       Animation *attack270Deg = new Animation(spriteSheet, 32,32, attack270DegFrames, 150, true);
 
        attackAnims.append(attack270Deg);
 
        QList<QList<int>> attack315DegFrames;
-       attack315DegFrames.reserve(4);
+       attack315DegFrames.reserve(6);
        attack315DegFrames.append(QList<int>() << 8 << 2);
        attack315DegFrames.append(QList<int>() << 8 << 3);
        attack315DegFrames.append(QList<int>() << 8 << 4);
+       attack315DegFrames.append(QList<int>() << 8 << 4);
+       attack315DegFrames.append(QList<int>() << 8 << 3);
        attack315DegFrames.append(QList<int>() << 8 << 2);
 
        Animation *attack315Deg = new Animation(spriteSheet, 32,32, attack315DegFrames, 150, true);

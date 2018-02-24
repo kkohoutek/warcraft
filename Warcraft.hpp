@@ -30,7 +30,7 @@ private:
     Player *enemy;
 
     QVector<Goldmine *>   goldmines;
-    QVector<Trees *>      trees;
+    //QVector<Trees *>      trees;
 
     QQueue<Entity *> garbage;
 
@@ -61,6 +61,8 @@ private:
        Pokud není dost dřeva vrátí 2.
        Pokud worker nepatří hráči, vrátí 3. */
     int newBuilding(Player *player, Building *building, Worker *worker);
+
+    Entity *findNearestEnemyEntity(Entity *entity, Player *enemy, bool preferUnits = true) const;
 
     QLinkedList<Entity *> staticEntities() const;
     QLinkedList<Unit *>   allUnits() const;

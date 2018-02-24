@@ -118,6 +118,10 @@ void Graph::resetNodes() const {
     }
 }
 
+Node *Graph::node(int i, int j) const {
+    return nodes[i][j];
+}
+
 PATH Graph::shortestPath(Node *start, Node *goal) {
     if(!goal || !start) return PATH();
 
