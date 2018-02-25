@@ -3,7 +3,7 @@
 #include <QDebug>
 
 #define MAX_WORKERS_PER_GOLDMINE    5
-#define GOLD_PER_TRIP               20
+#define GOLD_PER_TRIP               10
 
 Worker::Worker(QPointF pos, Unit::Type type, Player *player, ResourceManager *rm) : Unit(pos, type, 0.85f, 0, 0, 0, 0) {
     this->player = player;

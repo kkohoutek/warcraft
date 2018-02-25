@@ -31,8 +31,9 @@ private:
 
     QVector<Goldmine *>   goldmines;
     //QVector<Trees *>      trees;
+    QQueue<Entity *>      garbage;
 
-    QQueue<Entity *> garbage;
+    unsigned int ticksUntilAssault;
 
     void initResources();
     void loadBuildings();
@@ -54,6 +55,7 @@ private:
     void spawnGoldmine(Goldmine *g);
 
     void cleanUp();
+    void checkWin();
 
 
     /* Postav hráči novou budovou za pomocí daného workera a vrať 0.
@@ -85,6 +87,13 @@ private:
     HumanBarracksUI *hbUI;
 
     void setUI(QWidget *ui);
+
+public:
+    /******************* CVARS ********************/
+    static bool debug_showAwareness;
+    static bool debug_showGraph;
+    static int  unitAwarenessRadius;
+
 };
 
 #endif // WARCRAFT_HPP

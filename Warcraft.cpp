@@ -9,10 +9,10 @@
 
 #define MAP_AREA 4096
 #define MAX_DEAD 100
-#define UNIT_AWARENESS_RADIUS 92
 
-#define DEBUG_SHOW_GRAPH 0
-#define DEBUG_SHOW_AWARENESS 0
+bool Warcraft::debug_showAwareness = true;
+bool Warcraft::debug_showGraph = true;
+int Warcraft::unitAwarenessRadius = 192;
 
 Warcraft::Warcraft() {
     setFixedHeight(600);
@@ -32,8 +32,10 @@ Warcraft::Warcraft() {
 
     player = new Player(HUMAN);
     player->lumber = 100000;
-    player->gold = 50000;
+    player->gold = 0;
     enemy = new Player(ORC);
+    enemy->lumber = 100000;
+    enemy->gold = 0;
     player->setEnemy(enemy);
     enemy->setEnemy(player);
 
@@ -55,6 +57,8 @@ Warcraft::Warcraft() {
     hbUI = new HumanBarracksUI(player, &rm, &graph, scene, this);
     hbUI->hide();
     scene->addWidget(hbUI);
+
+    ticksUntilAssault = 30;
 
     startTimer(18);
 }
@@ -82,9 +86,8 @@ void Warcraft::loadUnits(){
     spawnUnit(new Footman(QPointF(1500,1500), &rm), player);
 
 
-
     for(int i = 0; i < 4; i++){
-        spawnUnit(new Worker(QPointF(700+i*28,650), Unit::PEON, enemy, &rm), enemy);;
+        spawnUnit(new Worker(QPointF(810+i*28,1400), Unit::PEON, enemy, &rm), enemy);;
     }
 
     for(Unit *u : enemy->unitsOfType(Unit::PEON)) {
@@ -103,8 +106,6 @@ void Warcraft::loadUnits(){
     for(int i = 0; i < 7; i++){
         spawnUnit(new Grunt(QPointF(MAP_AREA/2-420+i*40, MAP_AREA/2-400-i*40), &rm), enemy);;
     }
-    enemy->getUnits().first()->setPos(300,300);
-    enemy->getUnits().first()->attack(player->getUnits().last());
 
 }
 
@@ -115,7 +116,7 @@ void Warcraft::loadWorld() {
 }
 
 void Warcraft::timerEvent(QTimerEvent *event) {
-    QPoint p = mapFromGlobal(QCursor::pos());
+    QPoint &&p = mapFromGlobal(QCursor::pos());
     // Pohyb kamery
     if(p.x() >=  window()->width() - 50 && p.x() <= window()->width() && p.y() >= 0 && p.y() <= window()->height() ){
         horizontalScrollBar()->setValue(horizontalScrollBar()->value()+20);
@@ -137,12 +138,23 @@ void Warcraft::timerEvent(QTimerEvent *event) {
         currentBuilding->setPos(mapToScene(p) - QPointF(r.width()/2, r.height()/2));
     }
 
+    if(ticksUntilAssault-- <= 0) {
+        // Všechny enemy jednotky zaútočí
+        for(Unit *unit : enemy->getUnits()) {
+            if(unit->getType() != Unit::Type::PEON && unit->getType() != Unit::Type::PEASANT) {
+                unit->goTo(QPointF(60,150));
+            }
+        }
+    }
+
     updatePlayer(player);
     updatePlayer(enemy);
     cleanUp();
 
     scene()->update();
     updateUIs();
+
+    checkWin();
 
     Q_UNUSED(event);
 }
@@ -286,6 +298,18 @@ void Warcraft::keyPressEvent(QKeyEvent *event){
     case Qt::Key_Escape:
         window()->close();
         break;
+    case Qt::Key_F1:
+        debug_showAwareness = !debug_showAwareness;
+        break;
+    case Qt::Key_F2:
+        debug_showGraph = !debug_showGraph;
+        break;
+    case Qt::Key_Plus:
+        unitAwarenessRadius++;
+        break;
+    case Qt::Key_Minus:
+        unitAwarenessRadius--;
+        break;
     }
 }
 
@@ -417,7 +441,7 @@ void Warcraft::paintEvent(QPaintEvent *event) {
         "    Food: "+QString::number(player->food)+
         "    Gold: "+QString::number(player->gold));
 
-    if(DEBUG_SHOW_GRAPH) {
+    if(debug_showGraph) {
         for(int i = 0; i < NODES_ARRAY_SIZE; i++){
             for(int j = 0; j < NODES_ARRAY_SIZE; j++){
                 Node *n = graph.node(j, i);
@@ -428,9 +452,9 @@ void Warcraft::paintEvent(QPaintEvent *event) {
         }
     }
 
-    if(DEBUG_SHOW_AWARENESS) {
+    if(debug_showAwareness) {
         for(Unit *unit : allUnits()) {
-            painter.drawEllipse(mapFromScene(unit->center()), UNIT_AWARENESS_RADIUS, UNIT_AWARENESS_RADIUS);
+            painter.drawEllipse(mapFromScene(unit->center()), unitAwarenessRadius, unitAwarenessRadius);
         }
     }
 
@@ -438,12 +462,12 @@ void Warcraft::paintEvent(QPaintEvent *event) {
 }
 
 Entity *Warcraft::findNearestEnemyEntity(Entity *entity, Player *enemy, bool preferUnits) const {
-    float min = UNIT_AWARENESS_RADIUS;
+    float min = unitAwarenessRadius;
     Entity *nearest = nullptr;
     for(Entity *enemyUnit : enemy->getUnits()) {
         if(enemyUnit->isAlive()) {
             float distance = entity->distanceFrom(enemyUnit);
-            if(distance <= UNIT_AWARENESS_RADIUS && distance < min) {
+            if(distance <= unitAwarenessRadius && distance < min) {
                 min = distance;
                 nearest = enemyUnit;
             }
@@ -454,7 +478,7 @@ Entity *Warcraft::findNearestEnemyEntity(Entity *entity, Player *enemy, bool pre
     for(Entity *enemyBuilding : enemy->getBuildings()) {
         if(enemyBuilding->isAlive()) {
             float distance = entity->distanceFrom(enemyBuilding);
-            if(distance <= UNIT_AWARENESS_RADIUS && distance < min) {
+            if(distance <= unitAwarenessRadius && distance < min) {
                 min = distance;
                 nearest = enemyBuilding;
             }
@@ -495,6 +519,12 @@ void Warcraft::cleanUp() {
     //if(!removed) removed = trees.removeOne(reinterpret_cast<Trees *>(e));
     e->scene()->removeItem(e);
     delete e;
+}
+
+void Warcraft::checkWin() {
+    if(enemy->allEntities().isEmpty()) message.setText("VYHRAL JSI!");
+    else if (player->allEntities().isEmpty()) message.setText("PROHRAL JSI!");
+
 }
 
 QPair<int, int> Warcraft::cost(Building::Type type) {

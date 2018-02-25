@@ -56,42 +56,32 @@ void Player::deselect() {
     }
 }
 
-QLinkedList<Building *> Player::buildingsOfType(Building::Type type) const
-{
+QLinkedList<Building *> Player::buildingsOfType(Building::Type type) const {
     QLinkedList<Building *> list;
-    for(Building *b : buildings)
-    {
-        if(b->getType() == type)
-        {
+    for(Building *b : buildings) {
+        if(b->getType() == type) {
             list.append(b);
         }
     }
     return list;
 }
 
-QLinkedList<Unit *> Player::unitsOfType(Unit::Type type) const
-{
+QLinkedList<Unit *> Player::unitsOfType(Unit::Type type) const {
     QLinkedList<Unit *> list;
-    for(Unit *u : units)
-    {
-        if(u->getType() == type)
-        {
+    for(Unit *u : units) {
+        if(u->getType() == type) {
             list.append(u);
         }
     }
     return list;
-
 }
 
-QLinkedList<Entity *> Player::allEntities() const
-{
+QLinkedList<Entity *> Player::allEntities() const {
     QLinkedList<Entity *> list;
-    for(Unit *u : units)
-    {
+    for(Unit *u : units) {
         list.append(u);
     }
-    for(Building *b : buildings)
-    {
+    for(Building *b : buildings) {
         list.append(b);
     }
     return list;
