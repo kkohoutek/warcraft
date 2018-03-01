@@ -32,7 +32,7 @@ void HumanBarracksUI::on_footmanButton_clicked() {
 
     Footman *f = new Footman(barracks->center(),rm);
     f->useGraph(graph);
-    barracks->enqueueUnit(f, 3);
+    barracks->enqueueUnit(f, 10);
     player->food--;
     player->gold -= Footman::COST_GOLD;
     player->lumber -= Footman::COST_LUMBER;

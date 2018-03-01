@@ -57,7 +57,6 @@ private:
     void cleanUp();
     void checkWin();
 
-
     /* Postav hráči novou budovou za pomocí daného workera a vrať 0.
        Pokud není dost zlata vrátí 1.
        Pokud není dost dřeva vrátí 2.

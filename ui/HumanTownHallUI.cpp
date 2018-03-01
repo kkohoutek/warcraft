@@ -33,7 +33,7 @@ void HumanTownHallUI::on_peasantButton_clicked() {
 
     Worker *w = new Worker(hall->center(),Unit::PEASANT,player,rm);
     w->useGraph(graph);
-    hall->enqueueUnit(w, 3);
+    hall->enqueueUnit(w, 5);
     player->food--;
     player->gold -= Worker::COST_GOLD;
     player->lumber -= Worker::COST_LUMBER;

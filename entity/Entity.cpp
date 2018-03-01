@@ -1,8 +1,6 @@
 #include "Entity.hpp"
 #include <QGraphicsScene>
-#include <QDebug>
 
-#define SHOW_HP_BARS 1
 int Entity::newID = 0;
 
 Entity::Entity(QPointF pos) {
@@ -21,12 +19,12 @@ void Entity::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
         painter->scale(1/scaleX,1/scaleY);
     }
     {
-        QRectF r = boundingRect();
+        QRectF &&r = boundingRect();
         if(highlighted){
             painter->setPen(QPen(Qt::green));
             painter->drawRect(r);
         }
-        if(SHOW_HP_BARS && hp > 0){
+        if(hp > 0){
             painter->setBrush(QBrush(Qt::green));
             painter->setPen(QPen(Qt::green));
             painter->drawRect(r.topLeft().x(), r.topLeft().y()-5, hp*r.width()/maxHP, 1.25f); // health bar

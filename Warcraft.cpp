@@ -10,9 +10,9 @@
 #define MAP_AREA 4096
 #define MAX_DEAD 100
 
-bool Warcraft::debug_showAwareness = true;
-bool Warcraft::debug_showGraph = true;
-int Warcraft::unitAwarenessRadius = 192;
+bool Warcraft::debug_showAwareness      = false;
+bool Warcraft::debug_showGraph          = false;
+int Warcraft::unitAwarenessRadius       = 192;
 
 Warcraft::Warcraft() {
     setFixedHeight(600);
@@ -32,7 +32,7 @@ Warcraft::Warcraft() {
 
     player = new Player(HUMAN);
     player->lumber = 100000;
-    player->gold = 0;
+    player->gold = 10000;
     enemy = new Player(ORC);
     enemy->lumber = 100000;
     enemy->gold = 0;
@@ -58,7 +58,7 @@ Warcraft::Warcraft() {
     hbUI->hide();
     scene->addWidget(hbUI);
 
-    ticksUntilAssault = 30;
+    ticksUntilAssault = 60000;
 
     startTimer(18);
 }
@@ -83,7 +83,7 @@ void Warcraft::loadUnits(){
     for(int i = 0; i < 4; i++){
         spawnUnit(new Worker(QPointF(128+i*28,128), Unit::PEASANT, player, &rm), player);;
     }
-    spawnUnit(new Footman(QPointF(1500,1500), &rm), player);
+    spawnUnit(new Footman(QPointF(1400,1500), &rm), player);
 
 
     for(int i = 0; i < 4; i++){
@@ -308,7 +308,7 @@ void Warcraft::keyPressEvent(QKeyEvent *event){
         unitAwarenessRadius++;
         break;
     case Qt::Key_Minus:
-        unitAwarenessRadius--;
+        if(unitAwarenessRadius > 1) unitAwarenessRadius--;
         break;
     }
 }

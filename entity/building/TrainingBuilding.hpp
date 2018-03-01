@@ -17,13 +17,15 @@ public:
     bool enqueueUnit(Unit *unit, int sec);
     int unitsInQueue() const;
     virtual bool isQueueFull() const;
-
     void die() override;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
 protected:
     QQueue<Unit *> trainingQueue;
     QTimer trainingTimer;
     Player *player;
+
+    int elapsedTime; // pro kreslení training baru
 
 protected slots:
     void dequeueUnit();
