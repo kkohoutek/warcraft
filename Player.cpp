@@ -4,7 +4,7 @@
 
 #define MAX_SELECTED_UNITS 8
 #define MAX_FOOD           100
-#define MAX_GOLD           40000
+#define MAX_GOLD           100000
 #define MAX_LUMBER         20000
 
 Player::Player(Race race) {

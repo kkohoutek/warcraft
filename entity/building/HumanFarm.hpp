@@ -6,10 +6,10 @@
 class HumanFarm : public Building
 {
 public:
-    static const int COST_GOLD = 500;
+    static const int COST_GOLD = 800;
     static const int COST_LUMBER = 0;
-    static const int HP = 800;
-    static const int BUILD_TIME = 5000;
+    static const int HP = 400;
+    static const int BUILD_TIME = 40000;
 
     HumanFarm(QPointF pos, bool finishedOnSpawn, ResourceManager *rm, int *playerFood);
 

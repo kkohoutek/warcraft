@@ -6,10 +6,10 @@
 class HumanTownHall : public TrainingBuilding
 {
 public:
-    static const int COST_GOLD = 600;
+    static const int COST_GOLD = 800;
     static const int COST_LUMBER = 0;
-    static const int HP = 800;
-    static const int BUILD_TIME = (1500*1000)/100;
+    static const int HP = 2500;
+    static const int BUILD_TIME = 40000;
 
     HumanTownHall(QPointF pos, bool finishedOnSpawn, ResourceManager *rm, Player *player);
 

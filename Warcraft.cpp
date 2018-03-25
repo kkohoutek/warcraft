@@ -12,7 +12,7 @@
 
 bool Warcraft::debug_showAwareness      = false;
 bool Warcraft::debug_showGraph          = false;
-int Warcraft::unitAwarenessRadius       = 192;
+int Warcraft::unitAwarenessRadius       = 228;
 
 Warcraft::Warcraft() {
     setFixedHeight(600);
@@ -31,11 +31,9 @@ Warcraft::Warcraft() {
     rect->hide();
 
     player = new Player(HUMAN);
-    player->lumber = 100000;
-    player->gold = 10000;
+    player->gold = 100;
     enemy = new Player(ORC);
-    enemy->lumber = 100000;
-    enemy->gold = 0;
+    enemy->gold = 100;
     player->setEnemy(enemy);
     enemy->setEnemy(player);
 
@@ -76,14 +74,23 @@ void Warcraft::loadBuildings() {
     spawnBuilding(new HumanFarm(QPointF(70, 262), true, &rm, &(player->food)), player);
     spawnBuilding(new HumanFarm(QPointF(310, 290), true, &rm, &(player->food)), player);
     //spawnBuilding(new HumanChurch(QPointF(278, 81), true, rm), player);
+
+
     spawnBuilding(new OrcTownHall(QPointF(MAP_AREA/2-350,MAP_AREA/2-325), true, &rm), enemy);
+    spawnBuilding(new OrcBarracks(QPointF(1850,1600), true, &rm), enemy);
+    spawnBuilding(new OrcBarracks(QPointF(1850,1400), true, &rm), enemy);
+    spawnBuilding(new OrcFarm(QPointF(1550,1700), true, &rm), enemy);
+    spawnBuilding(new OrcFarm(QPointF(1520,1900), true, &rm), enemy);
+    spawnBuilding(new OrcFarm(QPointF(2477,1862), true, &rm), enemy);
+    spawnBuilding(new OrcFarm(QPointF(1352,1654), true, &rm), enemy);
+    spawnBuilding(new OrcFarm(QPointF(1650,1500), true, &rm), enemy);
 }
 
 void Warcraft::loadUnits(){
     for(int i = 0; i < 4; i++){
         spawnUnit(new Worker(QPointF(128+i*28,128), Unit::PEASANT, player, &rm), player);;
     }
-    spawnUnit(new Footman(QPointF(1400,1500), &rm), player);
+    spawnUnit(new Footman(QPointF(220,300), &rm), player);
 
 
     for(int i = 0; i < 4; i++){
@@ -91,28 +98,26 @@ void Warcraft::loadUnits(){
     }
 
     for(Unit *u : enemy->unitsOfType(Unit::PEON)) {
-        static_cast<Worker *>(u)->mine(goldmines.at(1), enemy->getBuildings().last());
+        static_cast<Worker *>(u)->mine(goldmines.at(0), enemy->getBuildings().last());
     }
 
-    for(int i = 0; i < 7; i++){
+    for(int i = 0; i < 5; i++){
         spawnUnit(new Grunt(QPointF(MAP_AREA/2-420+i*40, MAP_AREA/2-286-i*40), &rm), enemy);;
     }
-    for(int i = 0; i < 7; i++){
+    for(int i = 0; i < 5; i++){
         spawnUnit(new Grunt(QPointF(MAP_AREA/2-420+i*40, MAP_AREA/2-320-i*40), &rm), enemy);;
     }
-    for(int i = 0; i < 7; i++){
+    for(int i = 0; i < 5; i++){
         spawnUnit(new Grunt(QPointF(MAP_AREA/2-420+i*40, MAP_AREA/2-360-i*40), &rm), enemy);;
     }
-    for(int i = 0; i < 7; i++){
+    for(int i = 0; i < 5; i++){
         spawnUnit(new Grunt(QPointF(MAP_AREA/2-420+i*40, MAP_AREA/2-400-i*40), &rm), enemy);;
     }
-
 }
 
 void Warcraft::loadWorld() {
     spawnGoldmine(new Goldmine(QPointF(64,64), &rm));
     spawnGoldmine(new Goldmine(QPointF(MAP_AREA/2-192, MAP_AREA/2-192), &rm));
-    spawnGoldmine(new Goldmine(QPointF(800,522), &rm));
 }
 
 void Warcraft::timerEvent(QTimerEvent *event) {
@@ -146,6 +151,8 @@ void Warcraft::timerEvent(QTimerEvent *event) {
             }
         }
     }
+
+    qDebug() << mapToScene(QCursor::pos());
 
     updatePlayer(player);
     updatePlayer(enemy);
@@ -305,10 +312,10 @@ void Warcraft::keyPressEvent(QKeyEvent *event){
         debug_showGraph = !debug_showGraph;
         break;
     case Qt::Key_Plus:
-        unitAwarenessRadius++;
+        //unitAwarenessRadius++;
         break;
     case Qt::Key_Minus:
-        if(unitAwarenessRadius > 1) unitAwarenessRadius--;
+        //if(unitAwarenessRadius > 1) unitAwarenessRadius--;
         break;
     }
 }
@@ -437,7 +444,7 @@ void Warcraft::paintEvent(QPaintEvent *event) {
     QPainter painter(viewport());
     painter.setPen(Qt::white);
     painter.drawText(QPointF(width()*3/6, 20),
-        "Units: "+QString::number(player->getUnits().size())+"/100"
+        "Units: "+QString::number(player->getUnits().size())+
         "    Food: "+QString::number(player->food)+
         "    Gold: "+QString::number(player->gold));
 

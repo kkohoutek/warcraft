@@ -28,7 +28,7 @@ void Graph::update(const QLinkedList<Entity *> &obstacles) {
             for(Entity * obstacle : obstacles){
                 if(!interr){
                     auto &&pos = posFromIndices(i, j);
-                    if(obstacle->boundingRect2().contains(pos.x(), pos.y())){
+                    if(obstacle->isAlive() && obstacle->boundingRect2().contains(pos.x(), pos.y())){
                         delete nodes[i][j];
                         nodes[i][j] = nullptr;
                         interr = true;

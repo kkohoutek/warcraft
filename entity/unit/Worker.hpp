@@ -57,9 +57,9 @@ protected:
     Building *findClosestGoldDestination() const;
 
 private:
-    QList<Animation *> miningAnims;
+    //QList<Animation *> miningAnims;
     QList<Animation *> goldCarryAnims;
-    QList<Animation *> woodCarryAnims;
+    //QList<Animation *> woodCarryAnims;
 
     Player *player;
 };

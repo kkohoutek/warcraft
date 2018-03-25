@@ -22,8 +22,6 @@ public:
 
 protected:
     QMap<QString, QPixmap *> sprites;
-
-
 };
 
 #endif // RESOURCEMANAGER_HPP

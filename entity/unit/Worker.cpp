@@ -12,8 +12,8 @@ Worker::Worker(QPointF pos, Unit::Type type, Player *player, ResourceManager *rm
     setHP(40);
 
     goldCarryAnims.reserve(8);
-    woodCarryAnims.reserve(8);
-    miningAnims.reserve(8);
+    //woodCarryAnims.reserve(8);
+    //miningAnims.reserve(8);
 
     QPixmap *spriteSheet = nullptr;
     QPixmap *spriteSheetFlipped = nullptr;
@@ -145,7 +145,7 @@ Worker::Worker(QPointF pos, Unit::Type type, Player *player, ResourceManager *rm
 
     movementAnims.append(walk315Deg);
 
-
+    /*
     QList<QList<int>> mining0DegFrames;
     mining0DegFrames.reserve(4);
     mining0DegFrames.append(QList<int>() << 7 << 2);
@@ -228,6 +228,7 @@ Worker::Worker(QPointF pos, Unit::Type type, Player *player, ResourceManager *rm
     Animation *mining315Deg = new Animation(spriteSheet, 32,32, mining315DegFrames, 150, true);
 
     miningAnims.append(mining315Deg);
+    */
 
     QList<QList<int>> goldCarry0DegFrames;
     goldCarry0DegFrames.reserve(4);
@@ -317,7 +318,7 @@ Worker::Worker(QPointF pos, Unit::Type type, Player *player, ResourceManager *rm
 
     goldCarryAnims.append(goldCarry315Deg);
 
-
+    /*
     QList<QList<int>> woodCarry0DegFrames;
     woodCarry0DegFrames.reserve(4);
     woodCarry0DegFrames.append(QList<int>() << 2 << 5);
@@ -405,6 +406,7 @@ Worker::Worker(QPointF pos, Unit::Type type, Player *player, ResourceManager *rm
     Animation *woodCarry315Deg = new Animation(spriteSheet, 32,32, woodCarry315DegFrames, 150, true);
 
     woodCarryAnims.append(woodCarry315Deg);
+    */
 
     QList<QList<int>> deathFrames;
     deathFrames.reserve(4);

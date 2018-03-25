@@ -6,10 +6,10 @@
 class HumanBarracks : public TrainingBuilding
 {
 public:
-    static const int COST_GOLD = 400;
+    static const int COST_GOLD = 1100;
     static const int COST_LUMBER = 0;
-    static const int HP = 2500;
-    static const int BUILD_TIME = 5000;
+    static const int HP = 800;
+    static const int BUILD_TIME = 60000;
 
     HumanBarracks(QPointF pos, bool finishedOnSpawn, ResourceManager *rm, Player *player);
     QRectF boundingRect() const override;

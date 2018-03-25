@@ -1,8 +1,8 @@
 #include "Goldmine.hpp"
 
 Goldmine::Goldmine(QPointF pos, ResourceManager *rm) : Entity(pos) {
-    setMaxHP(60000);
-    setHP(60000);
+    setMaxHP(100000);
+    setHP(100000);
     QList<QList<int>> basicAnimationFrames;
     basicAnimationFrames.append(QList<int>() << 8 << 5);
     setCurrentAnimation(new Animation(rm->getSprite("MISC"), 55, 45, basicAnimationFrames, 0));
