@@ -495,7 +495,6 @@ Entity *Warcraft::findNearestEnemyEntity(Entity *entity, Player *enemy, bool pre
 }
 
 void Warcraft::initResources() {
-    rm.loadSprite("ICONS", new QPixmap(":graphics/ICONS"));
     rm.loadSprite("MAP1", new QPixmap(":graphics/MAP1"));
     rm.loadSprite("BUILDINGS_H", new QPixmap(":graphics/BUILDINGS_H"));
     rm.loadSprite("BUILDINGS_O", new QPixmap(":graphics/BUILDINGS_O"));
@@ -505,7 +504,6 @@ void Warcraft::initResources() {
     rm.loadSprite("PEASANT", new QPixmap(":graphics/PEASANT"));
     rm.loadSprite("PEON", new QPixmap(":graphics/PEON"));
     rm.loadSprite("MISC", new QPixmap(":graphics/MISC"));
-    rm.loadSprite("WORLD", new QPixmap(":graphics/WORLD"));
     rm.copySprite("PEASANT", "PEASANT_flipped", true, false);
     rm.copySprite("FOOTMAN", "FOOTMAN_flipped", true, false);
     rm.copySprite("GRUNT", "GRUNT_flipped", true, false);
