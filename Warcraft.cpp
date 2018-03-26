@@ -152,8 +152,6 @@ void Warcraft::timerEvent(QTimerEvent *event) {
         }
     }
 
-    qDebug() << mapToScene(QCursor::pos());
-
     updatePlayer(player);
     updatePlayer(enemy);
     cleanUp();
@@ -363,6 +361,12 @@ void Warcraft::updatePlayer(Player *p) {
             }
             if(!garbage.contains(unit)) {
                 garbage.enqueue(unit);
+                // Vrátit jídlo
+                if(player->getUnits().contains(unit)) {
+                    player->food += 1;
+                } else if (enemy->getUnits().contains(unit)) {
+                    player->food += 1;
+                }
             }
         } else {
             // Pokud je jednotka v blízkosti nepřátelské jednotky, tak zaútočí sama
